@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -10,21 +11,21 @@ class ViewTransactionTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function user_can_view_transactions()
+    public function users_can_view_transactions()
     {
         $transaction = Transaction::create([
-            'transaction_type' => 'in',
-            'amount'           => 120000,
-            'date'             => '01/01/2020'
+//            'transaction_type' => 'in',
+            'amount' => 12000,
+            'date'   => '01/01/2020'
         ]);
 
-        $this->json('get', 'transactions')
+        $this->getJson('transactions')
             ->assertExactJson([
-                'data' => [
-                    'id'               => $transaction->id,
-                    'transaction_type' => 'in',
-                    'amount'           => 12000,
-                    'date'             => '01/01/2020'
+                [
+                    'id'     => $transaction->id,
+//                    'transaction_type' => 'in',
+                    'amount' => "12000",
+                    'date'   => '01/01/2020'
                 ]
             ]);
     }
