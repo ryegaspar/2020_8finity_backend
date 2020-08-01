@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Transaction;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,7 +17,7 @@ class ViewTransactionTest extends TestCase
         $transaction = Transaction::create([
 //            'transaction_type' => 'in',
             'amount' => 12000,
-            'date'   => '01/01/2020'
+            'date'   => Carbon::parse("2020-01-01")
         ]);
 
         $this->getJson('transactions')
@@ -25,7 +26,7 @@ class ViewTransactionTest extends TestCase
                     'id'     => $transaction->id,
 //                    'transaction_type' => 'in',
                     'amount' => "12000",
-                    'date'   => '01/01/2020'
+                    'date'   => 'Jan 1, 2020'
                 ]
             ]);
     }
