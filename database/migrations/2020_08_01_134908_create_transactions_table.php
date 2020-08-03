@@ -15,7 +15,7 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-//            $table->enum('transaction_type', ['in', 'out']);
+            $table->enum('transaction_type', ['in', 'out'])->default('in');
             $table->unsignedBigInteger('amount');
             $table->date('date');
             $table->timestamps();
