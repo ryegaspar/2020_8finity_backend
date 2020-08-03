@@ -25,7 +25,7 @@ class ViewTransactionTest extends TestCase
                 [
                     'id'     => $transaction->id,
 //                    'transaction_type' => 'in',
-                    'amount' => "12000",
+                    'amount' => "₱120.00",
                     'date'   => 'Jan 1, 2020'
                 ]
             ]);

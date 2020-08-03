@@ -22,4 +22,14 @@ class TransactionTest extends TestCase
 
         $this->assertEquals('Jan 1, 2020', $date);
     }
+
+    /** @test */
+    public function can_get_formatted_amount()
+    {
+        $transaction = factory(Transaction::class)->create([
+            'amount' => 1000
+        ]);
+
+        $this->assertEquals("₱10.00", $transaction->amount);
+    }
 }

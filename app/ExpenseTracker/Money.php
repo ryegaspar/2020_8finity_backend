@@ -10,6 +10,9 @@ use NumberFormatter;
 
 class Money
 {
+    /**
+     * @var BaseMoney
+     */
     protected $money;
 
     /**
