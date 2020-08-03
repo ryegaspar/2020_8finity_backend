@@ -9,12 +9,10 @@ use Tests\TestCase;
 
 class TransactionTest extends TestCase
 {
-    use RefreshDatabase;
-
     /** @test */
     public function can_get_formatted_date()
     {
-        $transaction = factory(Transaction::class)->create([
+        $transaction = factory(Transaction::class)->make([
             'date' => Carbon::parse("2020-01-01")
         ]);
 
@@ -26,7 +24,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function can_get_formatted_amount()
     {
-        $transaction = factory(Transaction::class)->create([
+        $transaction = factory(Transaction::class)->make([
             'amount' => 1000
         ]);
 
