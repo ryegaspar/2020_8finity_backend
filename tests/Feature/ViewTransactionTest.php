@@ -14,19 +14,31 @@ class ViewTransactionTest extends TestCase
     /** @test */
     public function users_can_view_transactions()
     {
-        $transaction = Transaction::create([
-//            'transaction_type' => 'in',
-            'amount' => 12000,
-            'date'   => Carbon::parse("2020-01-01")
+        $transaction1 = Transaction::create([
+            'transaction_type' => 'in',
+            'amount'           => 12000,
+            'date'             => Carbon::parse("2020-01-01")
+        ]);
+
+        $transaction2 = Transaction::create([
+            'transaction_type' => 'out',
+            'amount'           => 8000,
+            'date'             => Carbon::parse("2020-01-01")
         ]);
 
         $this->getJson('transactions')
             ->assertExactJson([
                 [
-                    'id'     => $transaction->id,
-//                    'transaction_type' => 'in',
-                    'amount' => "₱120.00",
-                    'date'   => 'Jan 1, 2020'
+                    'id'               => $transaction1->id,
+                    'transaction_type' => 'income',
+                    'amount'           => "₱120.00",
+                    'date'             => 'Jan 1, 2020'
+                ],
+                [
+                    'id'               => $transaction2->id,
+                    'transaction_type' => 'expense',
+                    'amount'           => "₱80.00",
+                    'date'             => 'Jan 1, 2020'
                 ]
             ]);
     }
