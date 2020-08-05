@@ -4,12 +4,15 @@ namespace Tests\Unit;
 
 use App\Transaction;
 use Carbon\Carbon;
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
+use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class TransactionTest extends TestCase
 {
     use RefreshDatabase;
+    use ArraySubsetAsserts;
 
     /** @test */
     public function can_get_formatted_date()
@@ -54,10 +57,33 @@ class TransactionTest extends TestCase
         $expenseB = factory(Transaction::class)->create(['transaction_type' => 'out']);
         $notExpenseC = factory(Transaction::class)->create(['transaction_type' => 'in']);
 
-        $income = Transaction::expense()->get();
+        $income = Transaction::expenses()->get();
 
         $this->assertTrue($income->contains($expenseA));
         $this->assertTrue($income->contains($expenseB));
         $this->assertFalse($income->contains($notExpenseC));
+    }
+
+    /** @test */
+    public function transactions_are_group_by_date_and_sorted()
+    {
+        $transactionA = factory(Transaction::class)->create(['date' => '01-01-2020']);
+        $transactionB = factory(Transaction::class)->create(['date' => '01-02-2020']);
+
+        $transactions = Transaction::transactionsByDate()->get()->toArray();
+
+        $transactions1 = [
+            'amount' => "₱100.00",
+            'date' => '01-02-2020'
+        ];
+
+        $transactions2 = [
+            'amount' => "₱100.00",
+            'date' => '01-01-2020'
+        ];
+
+        Assert::assertArraySubset($transactions1, $transactions[0], true);
+        Assert::assertArraySubset($transactions2, $transactions[1], true);
+//        $this->assertSame($transactions1, $transactions[0]);
     }
 }

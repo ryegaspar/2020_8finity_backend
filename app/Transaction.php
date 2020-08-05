@@ -26,8 +26,13 @@ class Transaction extends Model
         $builder->where('transaction_type', 'in');
     }
 
-    public function scopeExpense(Builder $builder)
+    public function scopeExpenses(Builder $builder)
     {
         $builder->where('transaction_type', 'out');
+    }
+
+    public function scopeTransactionsByDate(Builder $builder)
+    {
+        $builder->groupBy('date')->orderBy('date','desc');
     }
 }
