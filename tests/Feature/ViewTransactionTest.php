@@ -28,17 +28,19 @@ class ViewTransactionTest extends TestCase
 
         $this->getJson('transactions')
             ->assertExactJson([
-                [
-                    'id'               => $transaction1->id,
-                    'transaction_type' => 'income',
-                    'amount'           => "₱120.00",
-                    'date'             => 'Jan 1, 2020'
-                ],
-                [
-                    'id'               => $transaction2->id,
-                    'transaction_type' => 'expense',
-                    'amount'           => "₱80.00",
-                    'date'             => 'Jan 1, 2020'
+                'data' => [
+                    [
+                        'id'               => $transaction1->id,
+                        'transaction_type' => 'income',
+                        'amount'           => "₱120.00",
+                        'date'             => 'Jan 1, 2020'
+                    ],
+                    [
+                        'id'               => $transaction2->id,
+                        'transaction_type' => 'expense',
+                        'amount'           => "₱80.00",
+                        'date'             => 'Jan 1, 2020'
+                    ]
                 ]
             ]);
     }

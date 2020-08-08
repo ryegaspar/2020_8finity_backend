@@ -65,25 +65,31 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function transactions_are_group_by_date_and_sorted()
+    public function transactions_can_be_group_by_date_and_ordered_descending()
     {
-        $transactionA = factory(Transaction::class)->create(['date' => '01-01-2020']);
-        $transactionB = factory(Transaction::class)->create(['date' => '01-02-2020']);
+        factory(Transaction::class)->create(['date' => '2020-01-01', 'amount' => 20000]);
+        factory(Transaction::class)->create(['date' => '2020-01-01', 'amount' => 10000]);
+        factory(Transaction::class)->create(['date' => '2020-01-02', 'amount' => 5000]);
 
-        $transactions = Transaction::transactionsByDate()->get()->toArray();
+        $transactions = Transaction::transactionsByDate()->toArray();
 
-        $transactions1 = [
-            'amount' => "₱100.00",
-            'date' => '01-02-2020'
+        $expectedTransaction1 = [
+            'amount' => "₱200.00",
+            'date'   => '2020-01-01'
         ];
 
-        $transactions2 = [
+        $expectedTransaction2 = [
             'amount' => "₱100.00",
-            'date' => '01-01-2020'
+            'date'   => '2020-01-01'
         ];
 
-        Assert::assertArraySubset($transactions1, $transactions[0], true);
-        Assert::assertArraySubset($transactions2, $transactions[1], true);
-//        $this->assertSame($transactions1, $transactions[0]);
+        $expectedTransaction3 = [
+            'amount' => '₱50.00',
+            'date'   => '2020-01-02'
+        ];
+
+        Assert::assertArraySubset($expectedTransaction1, $transactions['01'][0], true);
+        Assert::assertArraySubset($expectedTransaction2, $transactions['01'][1], true);
+        Assert::assertArraySubset($expectedTransaction3, $transactions['02'][0], true);
     }
 }

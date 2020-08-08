@@ -31,8 +31,12 @@ class Transaction extends Model
         $builder->where('transaction_type', 'out');
     }
 
-    public function scopeTransactionsByDate(Builder $builder)
+    public static function transactionsByDate($startTime = null, $endTime = null)
     {
-        $builder->groupBy('date')->orderBy('date','desc');
+        return self::orderBy('date', 'desc')
+            ->get()
+            ->groupBy(function ($val) {
+                return Carbon::parse($val->date)->format('d');
+            });
     }
 }
