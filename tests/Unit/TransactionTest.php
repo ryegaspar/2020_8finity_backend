@@ -71,7 +71,7 @@ class TransactionTest extends TestCase
         factory(Transaction::class)->create(['date' => '2020-01-01', 'amount' => 10000]);
         factory(Transaction::class)->create(['date' => '2020-01-02', 'amount' => 5000]);
 
-        $transactions = Transaction::transactionsByDate()->toArray();
+        $transactions = Transaction::transactionsByDate('2020-01-01', '2020-01-31')->toArray();
 
         $expectedTransaction1 = [
             'amount' => "₱200.00",

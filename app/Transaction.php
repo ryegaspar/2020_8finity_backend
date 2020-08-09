@@ -33,10 +33,21 @@ class Transaction extends Model
 
     public static function transactionsByDate($startTime = null, $endTime = null)
     {
-        return self::orderBy('date', 'desc')
+        [$startTime, $endTime] = self::getTime($startTime, $endTime);
+
+        return self::whereBetween('date', [$startTime, $endTime])
+            ->orderBy('date', 'desc')
             ->get()
             ->groupBy(function ($val) {
                 return Carbon::parse($val->date)->format('d');
             });
+    }
+
+    protected static function getTime($startTime = null, $endTime = null)
+    {
+        $startTime = ($startTime ? Carbon::parse($startTime) : Carbon::parse('-6 months'))->format('Y-m-d');
+        $endTime = ($endTime ? Carbon::parse($endTime) : Carbon::today())->format('Y-m-d');
+
+        return [$startTime, $endTime];
     }
 }
