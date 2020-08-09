@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
+    const ByDate = 'Y-m-d';
+    const ByWeek = 'Y-W';
+    const ByMonth = 'Y-m';
+    const ByYear = 'Y';
+
     protected $guarded = [];
 
     public function getFormattedDateAttribute()
@@ -31,15 +36,15 @@ class Transaction extends Model
         $builder->where('transaction_type', 'out');
     }
 
-    public static function transactionsByDate($startTime = null, $endTime = null)
+    public static function transactionsBy($startTime = null, $endTime = null, $groupBy = self::ByDate)
     {
         [$startTime, $endTime] = self::getTime($startTime, $endTime);
 
         return self::whereBetween('date', [$startTime, $endTime])
             ->orderBy('date', 'desc')
             ->get()
-            ->groupBy(function ($val) {
-                return Carbon::parse($val->date)->format('d');
+            ->groupBy(function ($val) use ($groupBy) {
+                return Carbon::parse($val->date)->format($groupBy);
             });
     }
 
