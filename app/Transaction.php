@@ -36,11 +36,11 @@ class Transaction extends Model
         $builder->where('transaction_type', 'out');
     }
 
-    public static function transactionsBy($startTime = null, $endTime = null, $groupBy = self::ByDate)
+    public static function transactionsBy($startDate = null, $endDate = null, $groupBy = self::ByDate)
     {
-        [$startTime, $endTime] = self::getTime($startTime, $endTime);
+        [$startDate, $endDate] = self::getTime($startDate, $endDate);
 
-        return self::whereBetween('date', [$startTime, $endTime])
+        return self::whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
             ->get()
             ->groupBy(function ($val) use ($groupBy) {
@@ -48,11 +48,11 @@ class Transaction extends Model
             });
     }
 
-    protected static function getTime($startTime = null, $endTime = null)
+    protected static function getTime($startDate = null, $endDate = null)
     {
-        $startTime = ($startTime ? Carbon::parse($startTime) : Carbon::parse('-6 months'))->format('Y-m-d');
-        $endTime = ($endTime ? Carbon::parse($endTime) : Carbon::today())->format('Y-m-d');
+        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::parse('-3 months'))->format('Y-m-d');
+        $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today())->format('Y-m-d');
 
-        return [$startTime, $endTime];
+        return [$startDate, $endDate];
     }
 }
