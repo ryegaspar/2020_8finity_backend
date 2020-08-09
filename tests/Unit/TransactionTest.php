@@ -33,7 +33,8 @@ class TransactionTest extends TestCase
             'amount' => 1000
         ]);
 
-        $this->assertEquals("₱10.00", $transaction->amount);
+        $this->assertEquals(1000, $transaction->amount);
+        $this->assertEquals("₱10.00", $transaction->amountFormatted);
     }
 
     /** @test */

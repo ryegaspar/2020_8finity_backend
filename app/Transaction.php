@@ -16,9 +16,9 @@ class Transaction extends Model
         return Carbon::parse($this->date)->format('M j, Y');
     }
 
-    public function getAmountAttribute($value)
+    public function getAmountFormattedAttribute()
     {
-        return (new Money($value))->formatted();
+        return (new Money($this->amount))->formatted();
     }
 
     public function scopeIncome(Builder $builder)

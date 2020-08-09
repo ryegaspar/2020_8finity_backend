@@ -17,6 +17,7 @@ class TransactionResource extends JsonResource
         return [
             'id'               => $this->id,
             'amount'           => $this->amount,
+            'amount_formatted' => $this->amountFormatted,
             'date'             => $this->formatted_date,
             'transaction_type' => $this->transaction_type == 'in' ? 'income' : 'expense'
         ];
