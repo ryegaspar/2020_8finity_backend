@@ -21,9 +21,7 @@ class TransactionTest extends TestCase
             'date' => Carbon::parse("2020-01-01")
         ]);
 
-        $date = $transaction->formatted_date;
-
-        $this->assertEquals('Jan 1, 2020', $date);
+        $this->assertEquals('2020-01-01', $transaction->formatted_date);
     }
 
     /** @test */
