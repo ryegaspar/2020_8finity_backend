@@ -12,7 +12,7 @@ class Transaction extends Model
     const ByDate = 'Y-m-d';
     const ByWeek = 'Y-W';
     const ByMonth = 'Y-m';
-    const ByYear = 'Y';
+//    const ByYear = 'Y';
 
     protected $guarded = [];
 
@@ -36,9 +36,18 @@ class Transaction extends Model
         $builder->where('transaction_type', 'out');
     }
 
+    public static function transactionsBetween($startDate = null, $endDate = null)
+    {
+        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
+
+        return self::whereBetween('date', [$startDate, $endDate])
+            ->orderBy('date', 'desc')
+            ->get();
+    }
+
     public static function transactionsBy($startDate = null, $endDate = null, $groupBy = self::ByDate)
     {
-        [$startDate, $endDate] = self::getTime($startDate, $endDate);
+        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
 
         return self::whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
@@ -48,7 +57,7 @@ class Transaction extends Model
             });
     }
 
-    protected static function getTime($startDate = null, $endDate = null)
+    protected static function getValidDate($startDate = null, $endDate = null)
     {
         $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::parse('-3 months'))->format('Y-m-d');
         $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today())->format('Y-m-d');
