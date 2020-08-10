@@ -45,21 +45,9 @@ class Transaction extends Model
             ->get();
     }
 
-    public static function transactionsBy($startDate = null, $endDate = null, $groupBy = self::ByDate)
-    {
-        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
-
-        return self::whereBetween('date', [$startDate, $endDate])
-            ->orderBy('date', 'desc')
-            ->get()
-            ->groupBy(function ($val) use ($groupBy) {
-                return Carbon::parse($val->date)->format($groupBy);
-            });
-    }
-
     protected static function getValidDate($startDate = null, $endDate = null)
     {
-        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::parse('-3 months'))->format('Y-m-d');
+        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth()->subMonths(2))->format('Y-m-d');
         $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today())->format('Y-m-d');
 
         return [$startDate, $endDate];

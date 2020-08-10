@@ -64,31 +64,34 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function transactions_can_be_group_by_and_ordered()
+    public function default_start_date_is_2_months_ago_and_end_date_is_today()
     {
-        factory(Transaction::class)->create(['date' => '2020-01-01', 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => '2020-01-01', 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => '2020-01-02', 'amount' => 5000]);
+        $twoMonthsAgo = Carbon::now()->startOfMonth()->subMonths(2)->format('Y-m-d');
+        $threeMonthsAgo = Carbon::now()->startOfMonth()->subMonths(3)->format('Y-m-d');
 
-        $transactions = Transaction::transactionsBy('2020-01-01', '2020-01-31')->toArray();
+        factory(Transaction::class)->create(['date' => $twoMonthsAgo, 'amount' => 20000]);
+        factory(Transaction::class)->create(['date' => $twoMonthsAgo, 'amount' => 10000]);
+        factory(Transaction::class)->create(['date' => $threeMonthsAgo, 'amount' => 5000]);
+
+        $transactions = Transaction::transactionsBetween()->toArray();
 
         $expectedTransaction1 = [
             'amount' => "20000",
-            'date'   => '2020-01-01'
+            'date'   => $twoMonthsAgo
         ];
 
         $expectedTransaction2 = [
             'amount' => "10000",
-            'date'   => '2020-01-01'
+            'date'   => $twoMonthsAgo
         ];
 
-        $expectedTransaction3 = [
+        $oldTransaction = [
             'amount' => '5000',
-            'date'   => '2020-01-02'
+            'date'   => $threeMonthsAgo
         ];
 
-        Assert::assertArraySubset($expectedTransaction1, $transactions['2020-01-01'][0], true);
-        Assert::assertArraySubset($expectedTransaction2, $transactions['2020-01-01'][1], true);
-        Assert::assertArraySubset($expectedTransaction3, $transactions['2020-01-02'][0], true);
+        Assert::assertArraySubset($expectedTransaction1, $transactions[0], true);
+        Assert::assertArraySubset($expectedTransaction2, $transactions[1], true);
+        $this->assertEquals(2, count($transactions));
     }
 }

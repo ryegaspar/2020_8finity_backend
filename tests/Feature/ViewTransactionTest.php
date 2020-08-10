@@ -12,7 +12,7 @@ class ViewTransactionTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function users_can_view_transactions()
+    public function can_view_transactions()
     {
         $transactionDay = Carbon::parse("first day of this month")->format("Y-m-d");
 
