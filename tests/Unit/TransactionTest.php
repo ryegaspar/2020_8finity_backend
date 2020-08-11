@@ -128,4 +128,37 @@ class TransactionTest extends TestCase
         Assert::assertArraySubset($expectedTransaction2, $transactions[1], true);
         Assert::assertArraySubset($expectedTransaction3, $transactions[2], true);
     }
+
+    /** @test */
+    public function can_fetch_transaction_with_defined_dates()
+    {
+        $fiveMonthsAgo = Carbon::now()->startOfMonth()->subMonths(5)->format('Y-m-d');
+        $threeMonthsAgo = Carbon::now()->startOfMonth()->subMonths(3)->format('Y-m-d');
+        $today = Carbon::now()->format('Y-m-d');
+
+        factory(Transaction::class)->create(['date' => $threeMonthsAgo, 'amount' => 20000]);
+        factory(Transaction::class)->create(['date' => $fiveMonthsAgo, 'amount' => 10000]);
+        factory(Transaction::class)->create(['date' => $today, 'amount' => 5000]);
+
+        $transactions = Transaction::transactionsBetween($fiveMonthsAgo, $threeMonthsAgo)->toArray();
+
+        $expectedTransaction1 = [
+            'amount' => "20000",
+            'date'   => $threeMonthsAgo
+        ];
+
+        $expectedTransaction2 = [
+            'amount' => "10000",
+            'date'   => $fiveMonthsAgo
+        ];
+
+        $oldTransaction = [
+            'amount' => '5000',
+            'date'   => $today
+        ];
+
+        Assert::assertArraySubset($expectedTransaction1, $transactions[0], true);
+        Assert::assertArraySubset($expectedTransaction2, $transactions[1], true);
+        $this->assertEquals(2, count($transactions));
+    }
 }
