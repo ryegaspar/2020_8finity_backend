@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Category;
 use App\Transaction;
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
@@ -33,6 +34,14 @@ class TransactionTest extends TestCase
 
         $this->assertEquals(1000, $transaction->amount);
         $this->assertEquals("₱10.00", $transaction->amountFormatted);
+    }
+
+    /** @test */
+    public function a_transaction_has_categories()
+    {
+        $transaction = factory(Transaction::class)->create();
+
+        $this->assertInstanceOf(Category::class, $transaction->category);
     }
 
     /** @test */

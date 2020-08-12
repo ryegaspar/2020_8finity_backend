@@ -36,6 +36,11 @@ class Transaction extends Model
         $builder->where('transaction_type', 'out');
     }
 
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public static function transactionsBetween($startDate = null, $endDate = null)
     {
         [$startDate, $endDate] = self::getValidDate($startDate, $endDate);

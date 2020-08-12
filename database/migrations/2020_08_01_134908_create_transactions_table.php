@@ -15,10 +15,16 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('category_id');
             $table->enum('transaction_type', ['in', 'out'])->default('in');
             $table->unsignedBigInteger('amount');
             $table->date('date');
             $table->timestamps();
+
+            $table->foreign('category_id')
+                ->references('id')
+                ->on('categories')
+                ->cascadeOnDelete();
         });
     }
 
