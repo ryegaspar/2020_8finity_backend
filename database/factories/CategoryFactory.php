@@ -11,3 +11,19 @@ $factory->define(Category::class, function (Faker $faker) {
         'icon'        => 'fa fa-money-bill'
     ];
 });
+
+$factory->state(Category::class, 'income', function ($faker) {
+    return [
+        'type'        => 'in',
+        'description' => 'salary',
+        'icon'        => 'fa fa-money-bill'
+    ];
+});
+
+$factory->state(Category::class, 'expense', function ($faker) {
+    return [
+        'type'        => 'out',
+        'description' => 'shopping',
+        'icon'        => 'fa fa-shopping-cart'
+    ];
+});
