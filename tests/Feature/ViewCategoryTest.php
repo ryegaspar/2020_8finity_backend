@@ -3,10 +3,7 @@
 namespace Tests\Feature;
 
 use App\Category;
-use App\Transaction;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ViewCategoryTest extends TestCase
