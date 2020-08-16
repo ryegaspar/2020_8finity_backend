@@ -34,7 +34,8 @@ class Transaction extends Model
     {
         [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
 
-        return self::whereBetween('date', [$startDate, $endDate])
+        return self::with(['category'])
+            ->whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
             ->get();
     }
