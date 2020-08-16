@@ -9,7 +9,7 @@ use Faker\Generator as Faker;
 
 $factory->define(Transaction::class, function (Faker $faker) {
     return [
-        'category_id' => factory(Category::class)->create(),
+        'category_id' => factory(Category::class),
         'amount'      => 10000,
         'date'        => Carbon::parse("-2 weeks"),
     ];

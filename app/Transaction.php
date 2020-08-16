@@ -4,7 +4,6 @@ namespace App;
 
 use App\ExpenseTracker\Money;
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
@@ -24,16 +23,6 @@ class Transaction extends Model
     public function getAmountFormattedAttribute()
     {
         return (new Money($this->amount))->formatted();
-    }
-
-    public function scopeIncome(Builder $builder)
-    {
-        $builder->where('transaction_type', 'in');
-    }
-
-    public function scopeExpenses(Builder $builder)
-    {
-        $builder->where('transaction_type', 'out');
     }
 
     public function category()
