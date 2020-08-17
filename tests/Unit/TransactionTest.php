@@ -45,6 +45,16 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
+    public function eager_loads_categories_when_getting_transactions_between()
+    {
+        factory(Transaction::class)->create();
+
+        $transactions = Transaction::transactionsBetween();
+
+        $this->assertTrue($transactions[0]->relationLoaded('category'));
+    }
+
+    /** @test */
     public function default_start_date_is_2_months_ago_and_end_date_is_today()
     {
         $twoMonthsAgo = Carbon::now()->startOfMonth()->subMonths(2)->format('Y-m-d');
