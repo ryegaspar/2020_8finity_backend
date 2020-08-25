@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ViewTransactionTest extends TestCase
+class getTransactionTest extends TestCase
 {
     use RefreshDatabase;
 

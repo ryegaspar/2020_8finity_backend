@@ -6,12 +6,12 @@ use App\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class ViewCategoryTest extends TestCase
+class getCategoryTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function can_view_categories()
+    public function can_get_categories()
     {
         $category1 = Category::create([
             'type'        => 'in',
