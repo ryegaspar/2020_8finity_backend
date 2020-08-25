@@ -9,6 +9,11 @@ use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function show()
     {
         return response()->json(new CategoryCollection(Category::all()));
