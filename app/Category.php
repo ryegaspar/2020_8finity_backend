@@ -7,5 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
+    public const EXPENSE = 'out';
+    public const INCOME = 'in';
+
     protected $guarded = [];
 }

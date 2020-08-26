@@ -19,5 +19,6 @@ Route::middleware('auth:sanctum')
         return $request->user();
     });
 
+Route::get('/transactions/summary', 'TransactionSummaryController@show');
 Route::get('/transactions', 'TransactionsController@show');
 Route::get('/categories', 'CategoriesController@show');

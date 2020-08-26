@@ -8,11 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    const ByDate = 'Y-m-d';
-    const ByWeek = 'Y-W';
-    const ByMonth = 'Y-m';
-//    const ByYear = 'Y';
-
     protected $guarded = [];
 
     public function getFormattedDateAttribute()
@@ -28,6 +23,19 @@ class Transaction extends Model
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    public static function sumByCategoryType($type = 'in')
+    {
+        return self::whereHas('category', function ($query) use ($type) {
+            $query->where('categories.type', $type);
+        })
+            ->with([
+                'category' => function ($query) use ($type) {
+                    $query->where('categories.type', $type);
+                }
+            ])
+            ->sum('amount');
     }
 
     public static function transactionsBetween($startDate = null, $endDate = null)
