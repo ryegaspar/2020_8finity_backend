@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateCategoriesTable extends Migration
@@ -20,6 +21,65 @@ class CreateCategoriesTable extends Migration
             $table->string('icon');
             $table->timestamps();
         });
+
+        DB::table('categories')
+            ->insert([
+                [
+                    'type'        => 'in',
+                    'description' => 'sales',
+                    'icon'        => 'piggy-bank'
+                ],
+                [
+                    'type'        => 'in',
+                    'description' => 'carry over',
+                    'icon'        => 'money-bill-wave'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'employee salary',
+                    'icon'        => 'credit-card'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'electric bill',
+                    'icon'        => 'lightbulb'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'internet',
+                    'icon'        => 'wifi'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'water',
+                    'icon'        => 'water'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'fuel',
+                    'icon'        => 'gas-pump'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'gas',
+                    'icon'        => 'fire'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'food',
+                    'icon'        => 'utensils'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'entertainment',
+                    'icon'        => 'tv'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'grocery',
+                    'icon'        => 'shopping-basket'
+                ]
+            ]);
     }
 
     /**
