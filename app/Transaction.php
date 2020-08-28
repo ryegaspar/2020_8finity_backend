@@ -25,8 +25,10 @@ class Transaction extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public static function sumByCategoryType($type = 'in')
+    public static function sumByCategoryTypeBetween($type = 'in', $startDate = null, $endDate = null)
     {
+        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
+
         return self::whereHas('category', function ($query) use ($type) {
             $query->where('categories.type', $type);
         })
@@ -35,6 +37,7 @@ class Transaction extends Model
                     $query->where('categories.type', $type);
                 }
             ])
+            ->whereBetween('date', [$startDate, $endDate])
             ->sum('amount');
     }
 
@@ -50,7 +53,7 @@ class Transaction extends Model
 
     protected static function getValidDate($startDate = null, $endDate = null)
     {
-        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth()->subMonths(3))->format('Y-m-d');
+        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth())->format('Y-m-d');
         $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today())->format('Y-m-d');
 
         return [$startDate, $endDate];

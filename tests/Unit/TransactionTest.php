@@ -55,30 +55,30 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function default_start_date_is_3_months_ago_and_end_date_is_today()
+    public function default_start_date_is_start_of_the_month_until_current_date()
     {
-        $threeMonthsAgo = Carbon::now()->startOfMonth()->subMonths(3)->format('Y-m-d');
-        $fourMonthsAgo = Carbon::now()->startOfMonth()->subMonths(4)->format('Y-m-d');
+        $thisMonth = Carbon::now()->startOfMonth()->addDays(3)->format('Y-m-d');
+        $twoMonthsAgo = Carbon::now()->startOfMonth()->subMonths(2)->format('Y-m-d');
 
-        factory(Transaction::class)->create(['date' => $threeMonthsAgo, 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => $threeMonthsAgo, 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => $fourMonthsAgo, 'amount' => 5000]);
+        factory(Transaction::class)->create(['date' => $thisMonth, 'amount' => 20000]);
+        factory(Transaction::class)->create(['date' => $thisMonth, 'amount' => 10000]);
+        factory(Transaction::class)->create(['date' => $twoMonthsAgo, 'amount' => 5000]);
 
         $transactions = Transaction::transactionsBetween()->toArray();
 
         $expectedTransaction1 = [
             'amount' => "20000",
-            'date'   => $threeMonthsAgo
+            'date'   => $thisMonth
         ];
 
         $expectedTransaction2 = [
             'amount' => "10000",
-            'date'   => $threeMonthsAgo
+            'date'   => $thisMonth
         ];
 
         $oldTransaction = [
             'amount' => '5000',
-            'date'   => $fourMonthsAgo
+            'date'   => $twoMonthsAgo
         ];
 
         Assert::assertArraySubset($expectedTransaction1, $transactions[0], true);
@@ -89,29 +89,29 @@ class TransactionTest extends TestCase
     /** @test */
     public function are_ordered_by_date_in_descending_order()
     {
-        $oneMonthAgo = Carbon::now()->startOfMonth()->subMonths(1)->format('Y-m-d');
-        $fiveDaysAgo = Carbon::now()->subDays(5)->format('Y-m-d');
-        $today = Carbon::now()->format('Y-m-d');
+        $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
+        $fifthOfMonth = Carbon::now()->subDays(5)->format('Y-m-d');
+        $tenthOfMonth = Carbon::now()->format('Y-m-d');
 
-        factory(Transaction::class)->create(['date' => $oneMonthAgo, 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => $fiveDaysAgo, 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => $today, 'amount' => 5000]);
+        factory(Transaction::class)->create(['date' => $startOfMonth, 'amount' => 10000]);
+        factory(Transaction::class)->create(['date' => $fifthOfMonth, 'amount' => 20000]);
+        factory(Transaction::class)->create(['date' => $tenthOfMonth, 'amount' => 5000]);
 
         $transactions = Transaction::transactionsBetween()->toArray();
 
         $expectedTransaction1 = [
             'amount' => "5000",
-            'date'   => $today
+            'date'   => $tenthOfMonth
         ];
 
         $expectedTransaction2 = [
             'amount' => "20000",
-            'date'   => $fiveDaysAgo
+            'date'   => $fifthOfMonth
         ];
 
         $expectedTransaction3 = [
             'amount' => '10000',
-            'date'   => $oneMonthAgo
+            'date'   => $startOfMonth
         ];
 
         $this->assertEquals(3, count($transactions));

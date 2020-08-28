@@ -10,8 +10,9 @@ class TransactionSummaryController extends Controller
 {
     public function show()
     {
-        $expenses = Transaction::sumByCategoryType(Category::EXPENSE);
-        $income = Transaction::sumByCategoryType(Category::INCOME);
+        $expenses = Transaction::sumByCategoryTypeBetween(Category::EXPENSE);
+        $income = Transaction::sumByCategoryTypeBetween(Category::INCOME);
+
         $total = $income - $expenses;
 
         return response()->json([

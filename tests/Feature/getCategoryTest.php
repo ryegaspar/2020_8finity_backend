@@ -33,33 +33,77 @@ class getCategoryTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $category1 = Category::create([
-            'type'        => 'in',
-            'description' => 'Salary',
-            'icon'        => 'fa fa-money-bill'
-        ]);
-
-        $category2 = Category::create([
-            'type'        => 'out',
-            'description' => 'Shopping',
-            'icon'        => 'fa fa-shopping-cart'
-        ]);
-
         $this->actingAs($user)
             ->getJson('categories')
+            ->assertStatus(200)
             ->assertExactJson([
                 'data' => [
                     [
-                        'id'          => $category1->id,
+                        'id'          => 1,
                         'type'        => 'income',
-                        'description' => 'Salary',
-                        'icon'        => 'fa fa-money-bill'
+                        'description' => 'sales',
+                        'icon'        => 'piggy-bank',
                     ],
                     [
-                        'id'          => $category2->id,
+                        'id'          => 2,
+                        'type'        => 'income',
+                        'description' => 'carry over',
+                        'icon'        => 'money-bill-wave',
+                    ],
+                    [
+                        'id'          => 3,
                         'type'        => 'expense',
-                        'description' => 'Shopping',
-                        'icon'        => 'fa fa-shopping-cart'
+                        'description' => 'employee salary',
+                        'icon'        => 'credit-card',
+                    ],
+                    [
+                        'id'          => 4,
+                        'type'        => 'expense',
+                        'description' => 'electric bill',
+                        'icon'        => 'lightbulb',
+                    ],
+                    [
+                        'id'          => 5,
+                        'type'        => 'expense',
+                        'description' => 'internet',
+                        'icon'        => 'wifi',
+                    ],
+                    [
+                        'id'          => 6,
+                        'type'        => 'expense',
+                        'description' => 'water',
+                        'icon'        => 'water',
+
+                    ],
+                    [
+                        'id'          => 7,
+                        'type'        => 'expense',
+                        'description' => 'fuel',
+                        'icon'        => 'gas-pump',
+                    ],
+                    [
+                        'id'          => 8,
+                        'type'        => 'expense',
+                        'description' => 'gas',
+                        'icon'        => 'fire',
+                    ],
+                    [
+                        'id'          => 9,
+                        'type'        => 'expense',
+                        'description' => 'food',
+                        'icon'        => 'utensils',
+                    ],
+                    [
+                        'id'          => 10,
+                        'type'        => 'expense',
+                        'description' => 'entertainment',
+                        'icon'        => 'tv',
+                    ],
+                    [
+                        'id'          => 11,
+                        'type'        => 'expense',
+                        'description' => 'grocery',
+                        'icon'        => 'shopping-basket',
                     ]
                 ]
             ]);

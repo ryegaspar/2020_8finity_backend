@@ -18,7 +18,7 @@ class getTransactionSummaryTest extends TestCase
     public function can_view_transaction_summary()
     {
         $transactionDay1 = Carbon::now()->startOfMonth()->format("Y-m-d"); // first day of this month
-        $transactionDay2 = Carbon::now()->startOfMonth()->subMonths(12)->format("Y-m-d"); // first day of same month last year
+        $transactionDay2 = Carbon::now()->startOfMonth()->addDays(14)->format("Y-m-d"); // 15th of the month
 
         $categoryIncome = factory(Category::class)->states('income')->create();
         $categoryExpense = factory(Category::class)->states('expense')->create();
