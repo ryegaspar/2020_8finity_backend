@@ -90,8 +90,8 @@ class TransactionTest extends TestCase
     public function are_ordered_by_date_in_descending_order()
     {
         $startOfMonth = Carbon::now()->startOfMonth()->format('Y-m-d');
-        $fifthOfMonth = Carbon::now()->subDays(5)->format('Y-m-d');
-        $tenthOfMonth = Carbon::now()->format('Y-m-d');
+        $fifthOfMonth = Carbon::now()->startOfMonth()->addDays(5)->format('Y-m-d');
+        $tenthOfMonth = Carbon::now()->startOfMonth()->addDays(10)->format('Y-m-d');
 
         factory(Transaction::class)->create(['date' => $startOfMonth, 'amount' => 10000]);
         factory(Transaction::class)->create(['date' => $fifthOfMonth, 'amount' => 20000]);

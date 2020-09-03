@@ -8,6 +8,11 @@ use App\Transaction;
 
 class TransactionSummaryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum');
+    }
+
     public function show()
     {
         $expenses = Transaction::sumByCategoryTypeBetween(Category::EXPENSE);

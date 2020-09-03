@@ -15,6 +15,24 @@ class getTransactionSummaryTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
+    public function only_authenticated_users_can_view_transactions()
+    {
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)
+            ->get('/transactions/summary')
+            ->assertStatus(200);
+    }
+
+    /** @test */
+    public function guests_cannot_view_categories()
+    {
+        $this->get('/transactions/summary')
+            ->assertStatus(302);
+    }
+
+
+    /** @test */
     public function can_view_transaction_summary()
     {
         $transactionDay1 = Carbon::now()->startOfMonth()->format("Y-m-d"); // first day of this month
@@ -47,7 +65,10 @@ class getTransactionSummaryTest extends TestCase
             'date'        => $transactionDay2
         ]);
 
-        $this->getJson('transactions/summary')
+        $user = factory(User::class)->create();
+
+        $this->actingAs($user)
+            ->getJson('transactions/summary')
             ->assertExactJson([
                 'data' => [
                     'income'  => [
