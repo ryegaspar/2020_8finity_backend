@@ -15,8 +15,11 @@ class TransactionSummaryController extends Controller
 
     public function show()
     {
-        $expenses = Transaction::sumByCategoryTypeBetween(Category::EXPENSE);
-        $income = Transaction::sumByCategoryTypeBetween(Category::INCOME);
+        $startDate = request('start_date');
+        $endDate = request('end_date');
+
+        $expenses = Transaction::sumByCategoryTypeBetween(Category::EXPENSE, $startDate, $endDate);
+        $income = Transaction::sumByCategoryTypeBetween(Category::INCOME, $startDate, $endDate);
 
         $total = $income - $expenses;
 
