@@ -2,8 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Category;
-use App\User;
+use App\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -14,9 +13,9 @@ class getCategoryTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_view_categories()
     {
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
             ->get('/categories')
             ->assertStatus(200);
     }
@@ -24,16 +23,18 @@ class getCategoryTest extends TestCase
     /** @test */
     public function guests_cannot_view_categories()
     {
-        $this->get('/categories')
-            ->assertStatus(302);
+        $this->withHeaders(['accept' => 'application/json'])
+            ->get('/categories')
+            ->assertStatus(401);
     }
 
     /** @test */
     public function can_get_categories()
     {
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
+            ->withHeaders(['accept' => 'application/json'])
             ->getJson('categories')
             ->assertStatus(200)
             ->assertExactJson([

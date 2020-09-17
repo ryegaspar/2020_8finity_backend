@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
+use App\Admin;
 use App\Category;
 use App\Transaction;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class getTransactionSummaryTest extends TestCase
@@ -17,9 +16,10 @@ class getTransactionSummaryTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_view_transactions()
     {
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
+            ->withHeaders(['accept' => 'application/json'])
             ->get('/transactions/summary')
             ->assertStatus(200);
     }
@@ -27,8 +27,9 @@ class getTransactionSummaryTest extends TestCase
     /** @test */
     public function guests_cannot_view_categories()
     {
-        $this->get('/transactions/summary')
-            ->assertStatus(302);
+        $this->withHeaders(['accept' => 'application/json'])
+            ->get('/transactions/summary')
+            ->assertStatus(401);
     }
 
 
@@ -65,9 +66,10 @@ class getTransactionSummaryTest extends TestCase
             'date'        => $transactionDay2
         ]);
 
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
+            ->withHeaders(['accept' => 'application/json'])
             ->getJson('transactions/summary')
             ->assertExactJson([
                 'data' => [

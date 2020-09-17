@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AdminLoginController extends Controller
@@ -42,6 +43,11 @@ class AdminLoginController extends Controller
     public function username()
     {
         return 'username';
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        return response('',401);
     }
 
     protected function guard()

@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
+use App\Admin;
 use App\Category;
 use App\Transaction;
-use App\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,9 +16,9 @@ class getTransactionTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_view_transactions()
     {
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
             ->get('/transactions')
             ->assertStatus(200);
     }
@@ -26,14 +26,15 @@ class getTransactionTest extends TestCase
     /** @test */
     public function guests_cannot_view_categories()
     {
-        $this->get('/transactions')
-            ->assertStatus(302);
+        $this->withHeaders(['accept' => 'application/json'])
+            ->get('/transactions')
+            ->assertStatus(401);
     }
 
     /** @test */
     public function can_view_transactions()
     {
-        $user = factory(User::class)->create();
+        $admin = factory(Admin::class)->create();
 
         $transactionDay = Carbon::parse("first day of this month")->format("Y-m-d");
         $categoryIncome = factory(Category::class)->states('income')->create();
@@ -51,7 +52,8 @@ class getTransactionTest extends TestCase
             'date'        => $transactionDay
         ]);
 
-        $this->actingAs($user)
+        $this->actingAs($admin, 'admin')
+            ->withHeaders(['accept' => 'application/json'])
             ->getJson('transactions')
             ->assertExactJson([
                 'data' => [
