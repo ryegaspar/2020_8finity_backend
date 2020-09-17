@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')
-    ->get('/user', function (Request $request) {
-        return $request->user();
+Route::middleware('auth:admin')
+    ->get('/admin', function (Request $request) {
+//        return $request->user();
+        return auth()->guard('admin')->user();
     });
 
 Route::get('/transactions/summary', 'TransactionSummaryController@show');
