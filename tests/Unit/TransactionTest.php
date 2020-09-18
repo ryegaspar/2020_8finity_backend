@@ -2,11 +2,11 @@
 
 namespace Tests\Unit;
 
-use App\Category;
-use App\Transaction;
+use App\Models\Category;
+use App\Models\Transaction;
 use Carbon\Carbon;
-use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
+use DMS\PHPUnitExtensions\ArraySubset\Assert;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -18,7 +18,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function can_get_formatted_date()
     {
-        $transaction = factory(Transaction::class)->make([
+        $transaction = Transaction::factory()->make([
             'date' => Carbon::parse("2020-01-01")
         ]);
 
@@ -28,7 +28,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function can_get_formatted_amount()
     {
-        $transaction = factory(Transaction::class)->make([
+        $transaction = Transaction::factory()->make([
             'amount' => 1000
         ]);
 
@@ -39,7 +39,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function a_transaction_has_categories()
     {
-        $transaction = factory(Transaction::class)->create();
+        $transaction = Transaction::factory()->create();
 
         $this->assertInstanceOf(Category::class, $transaction->category);
     }
@@ -47,7 +47,7 @@ class TransactionTest extends TestCase
     /** @test */
     public function eager_loads_categories_when_getting_transactions_between()
     {
-        factory(Transaction::class)->create();
+        Transaction::factory()->create();
 
         $transactions = Transaction::transactionsBetween();
 
@@ -60,9 +60,9 @@ class TransactionTest extends TestCase
         $thisMonth = Carbon::now()->startOfMonth()->addDays(3)->format('Y-m-d');
         $twoMonthsAgo = Carbon::now()->startOfMonth()->subMonths(2)->format('Y-m-d');
 
-        factory(Transaction::class)->create(['date' => $thisMonth, 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => $thisMonth, 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => $twoMonthsAgo, 'amount' => 5000]);
+        Transaction::factory()->create(['date' => $thisMonth, 'amount' => 20000]);
+        Transaction::factory()->create(['date' => $thisMonth, 'amount' => 10000]);
+        Transaction::factory()->create(['date' => $twoMonthsAgo, 'amount' => 5000]);
 
         $transactions = Transaction::transactionsBetween()->toArray();
 
@@ -93,9 +93,9 @@ class TransactionTest extends TestCase
         $fifthOfMonth = Carbon::now()->startOfMonth()->addDays(5)->format('Y-m-d');
         $tenthOfMonth = Carbon::now()->startOfMonth()->addDays(10)->format('Y-m-d');
 
-        factory(Transaction::class)->create(['date' => $startOfMonth, 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => $fifthOfMonth, 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => $tenthOfMonth, 'amount' => 5000]);
+        Transaction::factory()->create(['date' => $startOfMonth, 'amount' => 10000]);
+        Transaction::factory()->create(['date' => $fifthOfMonth, 'amount' => 20000]);
+        Transaction::factory()->create(['date' => $tenthOfMonth, 'amount' => 5000]);
 
         $transactions = Transaction::transactionsBetween()->toArray();
 
@@ -127,9 +127,9 @@ class TransactionTest extends TestCase
         $threeMonthsAgo = Carbon::now()->startOfMonth()->subMonths(3)->format('Y-m-d');
         $today = Carbon::now()->format('Y-m-d');
 
-        factory(Transaction::class)->create(['date' => $threeMonthsAgo, 'amount' => 20000]);
-        factory(Transaction::class)->create(['date' => $fiveMonthsAgo, 'amount' => 10000]);
-        factory(Transaction::class)->create(['date' => $today, 'amount' => 5000]);
+        Transaction::factory()->create(['date' => $threeMonthsAgo, 'amount' => 20000]);
+        Transaction::factory()->create(['date' => $fiveMonthsAgo, 'amount' => 10000]);
+        Transaction::factory()->create(['date' => $today, 'amount' => 5000]);
 
         $transactions = Transaction::transactionsBetween($fiveMonthsAgo, $threeMonthsAgo)->toArray();
 

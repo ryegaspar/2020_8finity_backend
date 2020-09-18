@@ -2,7 +2,7 @@
 
 namespace Tests\Feature;
 
-use App\Admin;
+use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -13,7 +13,9 @@ class getCategoryTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_view_categories()
     {
-        $admin = factory(Admin::class)->create();
+        $this->withoutExceptionHandling();
+
+        $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
             ->get('/categories')
@@ -31,7 +33,7 @@ class getCategoryTest extends TestCase
     /** @test */
     public function can_get_categories()
     {
-        $admin = factory(Admin::class)->create();
+        $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])

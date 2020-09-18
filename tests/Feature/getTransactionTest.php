@@ -2,9 +2,9 @@
 
 namespace Tests\Feature;
 
-use App\Admin;
-use App\Category;
-use App\Transaction;
+use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -16,7 +16,7 @@ class getTransactionTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_view_transactions()
     {
-        $admin = factory(Admin::class)->create();
+        $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
             ->get('/transactions')
@@ -34,11 +34,11 @@ class getTransactionTest extends TestCase
     /** @test */
     public function can_view_transactions()
     {
-        $admin = factory(Admin::class)->create();
+        $admin = Admin::factory()->create();
 
         $transactionDay = Carbon::parse("first day of this month")->format("Y-m-d");
-        $categoryIncome = factory(Category::class)->states('income')->create();
-        $categoryExpense = factory(Category::class)->states('expense')->create();
+        $categoryIncome = Category::factory()->income()->create();
+        $categoryExpense = Category::factory()->expense()->create();
 
         $transaction1 = Transaction::create([
             'category_id' => $categoryIncome->id,

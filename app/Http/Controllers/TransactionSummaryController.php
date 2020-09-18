@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Category;
+use App\Models\Category;
 use App\ExpenseTracker\Money;
-use App\Transaction;
+use App\Models\Transaction;
 
 class TransactionSummaryController extends Controller
 {

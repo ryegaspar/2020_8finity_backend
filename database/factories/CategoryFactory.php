@@ -1,29 +1,37 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Category;
-use Faker\Generator as Faker;
+use App\Models\Category;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Category::class, function (Faker $faker) {
-    return [
-        'description' => $faker->sentence,
-        'icon'        => 'fa fa-money-bill'
-    ];
-});
+class CategoryFactory extends Factory
+{
+    protected $model = Category::class;
 
-$factory->state(Category::class, 'income', function ($faker) {
-    return [
-        'type'        => 'in',
-        'description' => 'salary',
-        'icon'        => 'fa fa-money-bill'
-    ];
-});
+    public function definition()
+    {
+        return [
+            'description' => $this->faker->sentence,
+            'icon'        => 'fa fa-money-bill'
+        ];
+    }
 
-$factory->state(Category::class, 'expense', function ($faker) {
-    return [
-        'type'        => 'out',
-        'description' => 'shopping',
-        'icon'        => 'fa fa-shopping-cart'
-    ];
-});
+    public function income()
+    {
+        return $this->state([
+            'type'        => 'in',
+            'description' => 'salary',
+            'icon'        => 'fa fa-money-bill'
+        ]);
+    }
+
+    public function expense()
+    {
+        return $this->state([
+            'type'        => 'out',
+            'description' => 'shopping',
+            'icon'        => 'fa fa-shopping-cart'
+        ]);
+    }
+}

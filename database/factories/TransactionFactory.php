@@ -1,16 +1,22 @@
 <?php
 
-/** @var \Illuminate\Database\Eloquent\Factory $factory */
+namespace Database\Factories;
 
-use App\Category;
-use App\Transaction;
+use App\Models\Category;
+use App\Models\Transaction;
 use Carbon\Carbon;
-use Faker\Generator as Faker;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-$factory->define(Transaction::class, function (Faker $faker) {
-    return [
-        'category_id' => factory(Category::class),
-        'amount'      => 10000,
-        'date'        => Carbon::now(),
-    ];
-});
+class TransactionFactory extends Factory
+{
+    protected $model = Transaction::class;
+
+    public function definition()
+    {
+        return [
+            'category_id' => Category::factory(),
+            'amount'      => 10000,
+            'date'        => Carbon::now(),
+        ];
+    }
+}
