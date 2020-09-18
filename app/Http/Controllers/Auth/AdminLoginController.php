@@ -31,6 +31,13 @@ class AdminLoginController extends Controller
     protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
+     * Set decay minutes for login throttling
+     *
+     * @var int
+     */
+    public $decayMinutes = 20;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
