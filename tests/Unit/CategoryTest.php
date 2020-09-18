@@ -34,7 +34,16 @@ class CategoryTest extends TestCase
         ];
 
         $category3 = [
-            'id'          => '3',
+            'id' => '3',
+            'type' => 'out',
+            'description' => 'cash advance',
+            'icon' => 'cc-visa',
+            'created_at' => null,
+            'updated_at' => null
+        ];
+
+        $category4 = [
+            'id'          => '4',
             'type'        => 'out',
             'description' => 'employee salary',
             'icon'        => 'credit-card',
@@ -42,8 +51,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category4 = [
-            'id'          => '4',
+        $category5 = [
+            'id'          => '5',
             'type'        => 'out',
             'description' => 'electric bill',
             'icon'        => 'lightbulb',
@@ -51,8 +60,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category5 = [
-            'id'          => '5',
+        $category6 = [
+            'id'          => '6',
             'type'        => 'out',
             'description' => 'internet',
             'icon'        => 'wifi',
@@ -60,8 +69,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category6 = [
-            'id'          => '6',
+        $category7 = [
+            'id'          => '7',
             'type'        => 'out',
             'description' => 'water',
             'icon'        => 'water',
@@ -70,8 +79,8 @@ class CategoryTest extends TestCase
 
         ];
 
-        $category7 = [
-            'id'          => '7',
+        $category8 = [
+            'id'          => '8',
             'type'        => 'out',
             'description' => 'fuel',
             'icon'        => 'gas-pump',
@@ -79,8 +88,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category8 = [
-            'id'          => '8',
+        $category9 = [
+            'id'          => '9',
             'type'        => 'out',
             'description' => 'gas',
             'icon'        => 'fire',
@@ -88,8 +97,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category9 = [
-            'id'          => '9',
+        $category10 = [
+            'id'          => '10',
             'type'        => 'out',
             'description' => 'food',
             'icon'        => 'utensils',
@@ -97,8 +106,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category10 = [
-            'id'          => '10',
+        $category11 = [
+            'id'          => '11',
             'type'        => 'out',
             'description' => 'entertainment',
             'icon'        => 'tv',
@@ -106,8 +115,8 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
-        $category11 = [
-            'id'          => '11',
+        $category12 = [
+            'id'          => '12',
             'type'        => 'out',
             'description' => 'grocery',
             'icon'        => 'shopping-basket',
@@ -115,8 +124,17 @@ class CategoryTest extends TestCase
             'updated_at'  => null
         ];
 
+        $category13 = [
+            'id'          => '13',
+            'type'        => 'out',
+            'description' => 'equipment/tools',
+            'icon'        => 'tools',
+            'created_at'  => null,
+            'updated_at'  => null
+        ];
 
-        $this->assertEquals(count($categories), 11);
+
+        $this->assertEquals(count($categories), 13);
         $this->assertEquals($categories[0], $category1);
         $this->assertEquals($categories[1], $category2);
         $this->assertEquals($categories[2], $category3);
@@ -128,5 +146,7 @@ class CategoryTest extends TestCase
         $this->assertEquals($categories[8], $category9);
         $this->assertEquals($categories[9], $category10);
         $this->assertEquals($categories[10], $category11);
+        $this->assertEquals($categories[11], $category12);
+        $this->assertEquals($categories[12], $category13);
     }
 }

@@ -36,6 +36,11 @@ class CreateCategoriesTable extends Migration
                 ],
                 [
                     'type'        => 'out',
+                    'description' => 'cash advance',
+                    'icon'        => 'cc-visa',
+                ],
+                [
+                    'type'        => 'out',
                     'description' => 'employee salary',
                     'icon'        => 'credit-card'
                 ],
@@ -78,6 +83,11 @@ class CreateCategoriesTable extends Migration
                     'type'        => 'out',
                     'description' => 'grocery',
                     'icon'        => 'shopping-basket'
+                ],
+                [
+                    'type'        => 'out',
+                    'description' => 'equipment/tools',
+                    'icon'        => 'tools',
                 ]
             ]);
     }
