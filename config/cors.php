@@ -16,7 +16,9 @@ return [
     */
 
     'paths' => [
-        '*'
+        'admin',
+        'admin/*',
+        'sanctum/csrf-cookie'
     ],
 
     'allowed_methods' => ['*'],
@@ -29,8 +31,7 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 30,
+    'max_age' => 1200,
 
     'supports_credentials' => true,
-
 ];
