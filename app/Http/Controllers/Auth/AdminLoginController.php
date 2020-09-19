@@ -44,17 +44,24 @@ class AdminLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except('logout');
+        $this->middleware(['guest', 'guest:admin'])->except('logout');
+    }
+
+    /**
+     * The user has been authenticated
+     *
+     * @param Request $request
+     * @param $user
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function authenticated(Request $request, $user)
+    {
+            return response()->json('', 200);
     }
 
     public function username()
     {
         return 'username';
-    }
-
-    protected function authenticated(Request $request, $user)
-    {
-        return response('',401);
     }
 
     protected function guard()
