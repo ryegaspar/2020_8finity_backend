@@ -20,7 +20,7 @@ class getTransactionSummaryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->get('/transactions/summary')
+            ->get('admin/transactions/summary')
             ->assertStatus(200);
     }
 
@@ -28,7 +28,7 @@ class getTransactionSummaryTest extends TestCase
     public function guests_cannot_view_categories()
     {
         $this->withHeaders(['accept' => 'application/json'])
-            ->get('/transactions/summary')
+            ->get('admin/transactions/summary')
             ->assertStatus(401);
     }
 
@@ -69,7 +69,7 @@ class getTransactionSummaryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('transactions/summary')
+            ->getJson('admin/transactions/summary')
             ->assertExactJson([
                 'data' => [
                     'income'  => [

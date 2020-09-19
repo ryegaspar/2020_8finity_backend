@@ -19,7 +19,7 @@ class getTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->get('/transactions')
+            ->get('admin/transactions')
             ->assertStatus(200);
     }
 
@@ -27,7 +27,7 @@ class getTransactionTest extends TestCase
     public function guests_cannot_view_categories()
     {
         $this->withHeaders(['accept' => 'application/json'])
-            ->get('/transactions')
+            ->get('admin/transactions')
             ->assertStatus(401);
     }
 
@@ -54,7 +54,7 @@ class getTransactionTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('transactions')
+            ->getJson('admin/transactions')
             ->assertExactJson([
                 'data' => [
                     [

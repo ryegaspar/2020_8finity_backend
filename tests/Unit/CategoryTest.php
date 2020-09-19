@@ -34,12 +34,12 @@ class CategoryTest extends TestCase
         ];
 
         $category3 = [
-            'id' => '3',
-            'type' => 'out',
+            'id'          => '3',
+            'type'        => 'out',
             'description' => 'cash advance',
-            'icon' => 'cc-visa',
-            'created_at' => null,
-            'updated_at' => null
+            'icon'        => 'cc-visa',
+            'created_at'  => null,
+            'updated_at'  => null
         ];
 
         $category4 = [

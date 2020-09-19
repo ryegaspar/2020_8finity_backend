@@ -18,7 +18,7 @@ class getCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->get('/categories')
+            ->get('admin/categories')
             ->assertStatus(200);
     }
 
@@ -26,7 +26,7 @@ class getCategoryTest extends TestCase
     public function guests_cannot_view_categories()
     {
         $this->withHeaders(['accept' => 'application/json'])
-            ->get('/categories')
+            ->get('admin/categories')
             ->assertStatus(401);
     }
 
@@ -37,7 +37,7 @@ class getCategoryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('categories')
+            ->getJson('admin/categories')
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => [
@@ -56,57 +56,69 @@ class getCategoryTest extends TestCase
                     [
                         'id'          => 3,
                         'type'        => 'expense',
+                        'description' => 'cash advance',
+                        'icon'        => 'cc-visa',
+                    ],
+                    [
+                        'id'          => 4,
+                        'type'        => 'expense',
                         'description' => 'employee salary',
                         'icon'        => 'credit-card',
                     ],
                     [
-                        'id'          => 4,
+                        'id'          => 5,
                         'type'        => 'expense',
                         'description' => 'electric bill',
                         'icon'        => 'lightbulb',
                     ],
                     [
-                        'id'          => 5,
+                        'id'          => 6,
                         'type'        => 'expense',
                         'description' => 'internet',
                         'icon'        => 'wifi',
                     ],
                     [
-                        'id'          => 6,
+                        'id'          => 7,
                         'type'        => 'expense',
                         'description' => 'water',
                         'icon'        => 'water',
 
                     ],
                     [
-                        'id'          => 7,
+                        'id'          => 8,
                         'type'        => 'expense',
                         'description' => 'fuel',
                         'icon'        => 'gas-pump',
                     ],
                     [
-                        'id'          => 8,
+                        'id'          => 9,
                         'type'        => 'expense',
                         'description' => 'gas',
                         'icon'        => 'fire',
                     ],
                     [
-                        'id'          => 9,
+                        'id'          => 10,
                         'type'        => 'expense',
                         'description' => 'food',
                         'icon'        => 'utensils',
                     ],
                     [
-                        'id'          => 10,
+                        'id'          => 11,
                         'type'        => 'expense',
                         'description' => 'entertainment',
                         'icon'        => 'tv',
                     ],
                     [
-                        'id'          => 11,
+                        'id'          => 12,
                         'type'        => 'expense',
                         'description' => 'grocery',
                         'icon'        => 'shopping-basket',
+                    ],
+                    [
+                        'id'          => 13,
+                        'type'        => 'expense',
+                        'description' => 'equipment/tools',
+                        'icon'        => 'tools',
                     ]
                 ]
             ]);

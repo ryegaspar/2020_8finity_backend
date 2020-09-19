@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Resources\TransactionCollection;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
 
 class TransactionsController extends Controller
 {
