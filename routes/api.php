@@ -22,7 +22,7 @@ Route::middleware('auth:admin')
 Route::prefix('admin')
     ->namespace('Admin')
     ->group(function () {
-        Route::get('/transactions/summary', 'TransactionSummaryController@show');
-        Route::get('/transactions', 'TransactionsController@show');
+        Route::get('dashboard/transactions-summary', 'Dashboard\TransactionSummaryController@show');
+        Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
         Route::get('/categories', 'CategoriesController@show');
     });

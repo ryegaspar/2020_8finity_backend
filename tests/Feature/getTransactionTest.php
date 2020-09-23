@@ -42,12 +42,14 @@ class getTransactionTest extends TestCase
 
         $transaction1 = Transaction::create([
             'category_id' => $categoryIncome->id,
+            'admin_id'    => $admin->id,
             'amount'      => 12000,
             'date'        => $transactionDay
         ]);
 
         $transaction2 = Transaction::create([
             'category_id' => $categoryExpense->id,
+            'admin_id'    => $admin->id,
             'amount'      => 8000,
             'date'        => $transactionDay
         ]);
@@ -64,7 +66,10 @@ class getTransactionTest extends TestCase
                         'date'             => $transactionDay,
                         'category_type'    => 'income',
                         'category_name'    => $categoryIncome->description,
-                        'category_id'      => "{$categoryIncome->id}"
+                        'category_id'      => "{$categoryIncome->id}",
+                        'admin_id'         => $admin->id,
+                        'admin_first_name' => $admin->first_name,
+                        'admin_last_name'  => $admin->last_name
                     ],
                     [
                         'id'               => $transaction2->id,
@@ -73,7 +78,10 @@ class getTransactionTest extends TestCase
                         'date'             => $transactionDay,
                         'category_type'    => 'expense',
                         'category_name'    => $categoryExpense->description,
-                        'category_id'      => "{$categoryExpense->id}"
+                        'category_id'      => "{$categoryExpense->id}",
+                        'admin_id'         => $admin->id,
+                        'admin_first_name' => $admin->first_name,
+                        'admin_last_name'  => $admin->last_name
                     ]
                 ]
             ]);

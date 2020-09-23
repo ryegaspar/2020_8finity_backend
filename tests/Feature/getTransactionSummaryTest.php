@@ -41,31 +41,35 @@ class getTransactionSummaryTest extends TestCase
         $categoryIncome = Category::factory()->income()->create();
         $categoryExpense = Category::factory()->expense()->create();
 
+        $admin = Admin::factory()->create();
+
         $transaction1 = Transaction::create([
             'category_id' => $categoryIncome->id,
+            'admin_id'    => $admin->id,
             'amount'      => 12000,
             'date'        => $transactionDay1
         ]);
 
         $transaction2 = Transaction::create([
             'category_id' => $categoryExpense->id,
+            'admin_id'    => $admin->id,
             'amount'      => 8000,
             'date'        => $transactionDay1
         ]);
 
         $transaction3 = Transaction::create([
             'category_id' => $categoryIncome->id,
+            'admin_id'    => $admin->id,
             'amount'      => 13000,
             'date'        => $transactionDay2
         ]);
 
         $transaction4 = Transaction::create([
             'category_id' => $categoryExpense->id,
+            'admin_id'    => $admin->id,
             'amount'      => 2000,
             'date'        => $transactionDay2
         ]);
-
-        $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])

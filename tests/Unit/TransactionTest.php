@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -37,11 +38,19 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
-    public function a_transaction_has_categories()
+    public function a_transaction_belongs_to_a_category()
     {
         $transaction = Transaction::factory()->create();
 
         $this->assertInstanceOf(Category::class, $transaction->category);
+    }
+
+    /** @test */
+    public function a_transaction_belongs_to_admin()
+    {
+        $transaction = Transaction::factory()->create();
+
+        $this->assertInstanceOf(Admin::class, $transaction->admin);
     }
 
     /** @test */
@@ -52,6 +61,16 @@ class TransactionTest extends TestCase
         $transactions = Transaction::transactionsBetween();
 
         $this->assertTrue($transactions[0]->relationLoaded('category'));
+    }
+
+    /** @test */
+    public function eager_loads_admins_when_getting_transactions_between()
+    {
+        Transaction::factory()->create();
+
+        $transactions = Transaction::transactionsBetween();
+
+        $this->assertTrue($transactions[0]->relationLoaded('admin'));
     }
 
     /** @test */

@@ -28,6 +28,11 @@ class Transaction extends Model
         return $this->belongsTo(Category::class);
     }
 
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
     public static function sumByCategoryTypeBetween($type = 'in', $startDate = null, $endDate = null)
     {
         [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
@@ -48,7 +53,7 @@ class Transaction extends Model
     {
         [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
 
-        return self::with(['category'])
+        return self::with(['category', 'admin'])
             ->whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
             ->get();

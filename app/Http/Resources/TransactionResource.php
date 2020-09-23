@@ -21,7 +21,10 @@ class TransactionResource extends JsonResource
             'date'             => $this->formatted_date,
             'category_type'    => $this->category->type == 'in' ? 'income' : 'expense',
             'category_name'    => $this->category->description,
-            'category_id'      => $this->category_id
+            'category_id'      => $this->category_id,
+            'admin_id'         => $this->admin->id,
+            'admin_first_name' => $this->admin->first_name,
+            'admin_last_name'  => $this->admin->last_name,
         ];
     }
 }

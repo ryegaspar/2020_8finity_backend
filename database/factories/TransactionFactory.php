@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -15,6 +16,7 @@ class TransactionFactory extends Factory
     {
         return [
             'category_id' => Category::factory(),
+            'admin_id'    => Admin::factory(),
             'amount'      => 10000,
             'date'        => Carbon::now(),
         ];
