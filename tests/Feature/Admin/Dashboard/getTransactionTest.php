@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Admin\Dashboard;
 
 use App\Models\Admin;
 use App\Models\Category;
@@ -19,7 +19,7 @@ class getTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->get('admin/transactions')
+            ->get('admin/dashboard/transactions')
             ->assertStatus(200);
     }
 
@@ -27,7 +27,7 @@ class getTransactionTest extends TestCase
     public function guests_cannot_view_categories()
     {
         $this->withHeaders(['accept' => 'application/json'])
-            ->get('admin/transactions')
+            ->get('admin/dashboard/transactions')
             ->assertStatus(401);
     }
 
@@ -56,7 +56,7 @@ class getTransactionTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/transactions')
+            ->getJson('admin/dashboard/transactions')
             ->assertExactJson([
                 'data' => [
                     [
