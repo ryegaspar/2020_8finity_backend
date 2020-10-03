@@ -12,26 +12,26 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
-            'description' => $this->faker->sentence,
-            'icon'        => 'fa fa-money-bill'
+            'name' => $this->faker->sentence,
+            'icon' => 'fa fa-money-bill'
         ];
     }
 
     public function income()
     {
         return $this->state([
-            'type'        => 'in',
-            'description' => 'salary',
-            'icon'        => 'fa fa-money-bill'
+            'type' => 'in',
+            'name' => 'salary',
+            'icon' => 'fa fa-money-bill'
         ]);
     }
 
     public function expense()
     {
         return $this->state([
-            'type'        => 'out',
-            'description' => 'shopping',
-            'icon'        => 'fa fa-shopping-cart'
+            'type' => 'out',
+            'name' => 'shopping',
+            'icon' => 'fa fa-shopping-cart'
         ]);
     }
 }

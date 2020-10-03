@@ -20,7 +20,7 @@ class TransactionResource extends JsonResource
             'amount_formatted' => $this->amountFormatted,
             'date'             => $this->formatted_date,
             'category_type'    => $this->category->type == 'in' ? 'income' : 'expense',
-            'category_name'    => $this->category->description,
+            'category_name'    => $this->category->name,
             'category_id'      => $this->category_id,
             'admin_id'         => $this->admin->id,
             'admin_first_name' => $this->admin->first_name,

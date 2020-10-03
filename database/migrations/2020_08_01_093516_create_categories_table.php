@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->enum('type', ['in', 'out'])->default('in');
-            $table->string('description');
+            $table->string('name');
             $table->string('icon');
             $table->timestamps();
         });
@@ -25,69 +25,69 @@ class CreateCategoriesTable extends Migration
         DB::table('categories')
             ->insert([
                 [
-                    'type'        => 'in',
-                    'description' => 'sales',
-                    'icon'        => 'piggy-bank'
+                    'type' => 'in',
+                    'name' => 'sales',
+                    'icon' => 'piggy-bank'
                 ],
                 [
-                    'type'        => 'in',
-                    'description' => 'carry over',
-                    'icon'        => 'money-bill-wave'
+                    'type' => 'in',
+                    'name' => 'carry over',
+                    'icon' => 'money-bill-wave'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'cash advance',
-                    'icon'        => 'cc-visa',
+                    'type' => 'out',
+                    'name' => 'cash advance',
+                    'icon' => 'cc-visa',
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'employee salary',
-                    'icon'        => 'credit-card'
+                    'type' => 'out',
+                    'name' => 'employee salary',
+                    'icon' => 'credit-card'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'electric bill',
-                    'icon'        => 'lightbulb'
+                    'type' => 'out',
+                    'name' => 'electric bill',
+                    'icon' => 'lightbulb'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'internet',
-                    'icon'        => 'wifi'
+                    'type' => 'out',
+                    'name' => 'internet',
+                    'icon' => 'wifi'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'water',
-                    'icon'        => 'water'
+                    'type' => 'out',
+                    'name' => 'water',
+                    'icon' => 'water'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'fuel',
-                    'icon'        => 'gas-pump'
+                    'type' => 'out',
+                    'name' => 'fuel',
+                    'icon' => 'gas-pump'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'gas',
-                    'icon'        => 'fire'
+                    'type' => 'out',
+                    'name' => 'gas',
+                    'icon' => 'fire'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'food',
-                    'icon'        => 'utensils'
+                    'type' => 'out',
+                    'name' => 'food',
+                    'icon' => 'utensils'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'entertainment',
-                    'icon'        => 'tv'
+                    'type' => 'out',
+                    'name' => 'entertainment',
+                    'icon' => 'tv'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'grocery',
-                    'icon'        => 'shopping-basket'
+                    'type' => 'out',
+                    'name' => 'grocery',
+                    'icon' => 'shopping-basket'
                 ],
                 [
-                    'type'        => 'out',
-                    'description' => 'equipment/tools',
-                    'icon'        => 'tools',
+                    'type' => 'out',
+                    'name' => 'equipment/tools',
+                    'icon' => 'tools',
                 ]
             ]);
     }
