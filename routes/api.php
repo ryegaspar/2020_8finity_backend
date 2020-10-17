@@ -24,6 +24,6 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('dashboard/transactions-summary', 'Dashboard\TransactionSummaryController@show');
         Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
-        Route::get('transactions', 'Transactions\TransactionsController@show');
+        Route::get('transactions', 'Transactions\TransactionsController@index');
         Route::get('/categories', 'CategoriesController@show');
     });
