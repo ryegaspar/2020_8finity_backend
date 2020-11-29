@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Admin\Transactions;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TransactionCollection;
-use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
@@ -13,7 +11,6 @@ class TransactionsController extends Controller
 {
     public function index(Request $request)
     {
-
         $length = $request->input('length');
         $sortBy = $request->input('column');
         $orderBy = $request->input('dir');
@@ -30,14 +27,6 @@ class TransactionsController extends Controller
 
         $data = $query->paginate($length);
 
-//        return new TransactionResource($data);
         return new DataTableCollectionResource($data);
-
-//        $startDate = request('start_date') ?: null;
-//        $endDate = request('end_date') ?: null;
-//
-//        $transactions = Transaction::transactionsBetween($startDate, $endDate);
-//
-//        return response()->json(new TransactionCollection($transactions));
     }
 }

@@ -16,9 +16,11 @@ class Transaction extends Model
 
     protected $dataTableColumns = [
         'id'          => [
+            'orderable' => true,
             'searchable' => false,
         ],
         'description' => [
+            'orderable' => false,
             'searchable' => true,
         ],
         'amount'      => [
@@ -37,6 +39,10 @@ class Transaction extends Model
                 "model"       => \App\Models\Category::class,
                 "foreign_key" => 'category_id',
                 "columns"     => [
+                    "id" => [
+                        "searchable" => true, //must have searchable for searchable to work properly
+                        "orderable" => true
+                    ],
                     "type" => [
                         "searchable" => false,
                         "orderable"  => true
@@ -44,6 +50,10 @@ class Transaction extends Model
                     "name" => [
                         "searchable" => false,
                         "orderable"  => true
+                    ],
+                    "icon" => [
+                        "searchable" => false,
+                        "orderable" => false
                     ]
                 ]
             ]
