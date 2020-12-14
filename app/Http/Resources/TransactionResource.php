@@ -16,10 +16,13 @@ class TransactionResource extends JsonResource
     {
         return [
             'id'               => $this->id,
+            'description'      => $this->description,
+            'notes'            => $this->notes,
             'amount'           => $this->amount,
             'amount_formatted' => $this->amountFormatted,
             'date'             => $this->formatted_date,
             'category_type'    => $this->category->type == 'in' ? 'income' : 'expense',
+            'category_icon'    => $this->category->icon,
             'category_name'    => $this->category->name,
             'category_id'      => $this->category_id,
             'admin_id'         => $this->admin->id,
