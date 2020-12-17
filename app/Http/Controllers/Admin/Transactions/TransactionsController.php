@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Transactions;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedTransactionCollection;
 use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use JamesDordoy\LaravelVueDatatable\Http\Resources\DataTableCollectionResource;
 
@@ -12,8 +13,16 @@ class TransactionsController extends Controller
 {
     public function index(Request $request)
     {
+        $transactions = new Transaction;
 
-        $transactions = Transaction::paginate($request->per_page);
+        if ($request->filter && $request->filter !== 'all') {
+            $filter = $request->filter === 'income' ? 'in' : 'out';
+            $transactions = Transaction::whereHas('category', function ($q) use ($filter) {
+                $q->where('type', $filter);
+            });
+        }
+
+        $transactions = $transactions->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
 //        $length = $request->input('length');
