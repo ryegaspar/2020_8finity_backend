@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6888cd3a-3007-4f60-b69c-409eb0345043" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,7 +193,11 @@
       <workItem from="1608085478027" duration="2161000" />
       <workItem from="1608134342096" duration="599000" />
       <workItem from="1608172640248" duration="86000" />
-      <workItem from="1608172738017" duration="2501000" />
+      <workItem from="1608172738017" duration="2765000" />
+      <workItem from="1608226561324" duration="599000" />
+      <workItem from="1608254873470" duration="918000" />
+      <workItem from="1608261455411" duration="156000" />
+      <workItem from="1608262338071" duration="2133000" />
     </task>
     <servers />
   </component>

@@ -15,9 +15,13 @@ class TransactionsController extends Controller
     {
         $transactions = new Transaction;
 
+        if ($request->search) {
+            $transactions = $transactions->where('description', 'LIKE', "%{$request->search}%");
+        }
+
         if ($request->filter && $request->filter !== 'all') {
             $filter = $request->filter === 'income' ? 'in' : 'out';
-            $transactions = Transaction::whereHas('category', function ($q) use ($filter) {
+            $transactions = $transactions->whereHas('category', function ($q) use ($filter) {
                 $q->where('type', $filter);
             });
         }
