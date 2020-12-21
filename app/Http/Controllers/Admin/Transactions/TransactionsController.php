@@ -15,6 +15,11 @@ class TransactionsController extends Controller
     {
         $transactions = new Transaction;
 
+        if ($request->sort) {
+            list ($sortCol, $sortDir) = explode('|', $request->sort);
+            $transactions = $transactions->orderBy($sortCol, $sortDir);
+        }
+
         if ($request->search) {
             $transactions = $transactions->where('description', 'LIKE', "%{$request->search}%");
         }
