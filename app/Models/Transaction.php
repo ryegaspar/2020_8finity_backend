@@ -6,59 +6,12 @@ use App\ExpenseTracker\Money;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use JamesDordoy\LaravelVueDatatable\Traits\LaravelVueDatatableTrait;
 
 class Transaction extends Model
 {
-    use HasFactory, LaravelVueDatatableTrait;
+    use HasFactory;
 
     protected $guarded = [];
-
-    protected $dataTableColumns = [
-        'id'          => [
-            'orderable' => true,
-            'searchable' => false,
-        ],
-        'description' => [
-            'orderable' => false,
-            'searchable' => true,
-        ],
-        'amount'      => [
-            'orderable'  => true,
-            'searchable' => false,
-        ],
-        'date'        => [
-            'orderable'  => true,
-            'searchable' => false,
-        ],
-    ];
-
-    protected $dataTableRelationships = [
-        "belongsTo" => [
-            "category" => [
-                "model"       => \App\Models\Category::class,
-                "foreign_key" => 'category_id',
-                "columns"     => [
-                    "id" => [
-                        "searchable" => true, //must have searchable for searchable to work properly
-                        "orderable" => true
-                    ],
-                    "type" => [
-                        "searchable" => false,
-                        "orderable"  => true
-                    ],
-                    "name" => [
-                        "searchable" => false,
-                        "orderable"  => true
-                    ],
-                    "icon" => [
-                        "searchable" => false,
-                        "orderable" => false
-                    ]
-                ]
-            ]
-        ]
-    ];
 
     public function getFormattedDateAttribute()
     {

@@ -48,27 +48,18 @@ class getTransactionsTest extends TestCase
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
             ->getJson('admin/transactions')
-            ->assertExactJson([
-                'data' => [
-                    [
-                        'id'               => $transaction3->id,
-                        'amount'           => "7000",
-                        'amount_formatted' => "₱70.00",
-                        'date'             => $transactionDay2,
-                        'category_type'    => 'income',
-                        'category_name'    => $categoryIncome->description,
-                        'category_id'      => "{$categoryIncome->id}",
-                        'admin_id'         => $admin->id,
-                        'admin_first_name' => $admin->first_name,
-                        'admin_last_name'  => $admin->last_name
-                    ],
+            ->assertJson([
+                'data'         => [
                     [
                         'id'               => $transaction1->id,
+                        'description'      => $transaction1->description,
+                        'notes'            => $transaction1->notes,
                         'amount'           => "12000",
                         'amount_formatted' => "₱120.00",
                         'date'             => $transactionDay1,
                         'category_type'    => 'income',
-                        'category_name'    => $categoryIncome->description,
+                        'category_icon'    => $categoryIncome->icon,
+                        'category_name'    => $categoryIncome->name,
                         'category_id'      => "{$categoryIncome->id}",
                         'admin_id'         => $admin->id,
                         'admin_first_name' => $admin->first_name,
@@ -76,16 +67,34 @@ class getTransactionsTest extends TestCase
                     ],
                     [
                         'id'               => $transaction2->id,
+                        'description'      => $transaction2->description,
+                        'notes'            => $transaction2->notes,
                         'amount'           => "8000",
                         'amount_formatted' => "₱80.00",
                         'date'             => $transactionDay1,
                         'category_type'    => 'expense',
-                        'category_name'    => $categoryExpense->description,
+                        'category_icon'    => $categoryExpense->icon,
+                        'category_name'    => $categoryExpense->name,
                         'category_id'      => "{$categoryExpense->id}",
                         'admin_id'         => $admin->id,
                         'admin_first_name' => $admin->first_name,
                         'admin_last_name'  => $admin->last_name
-                    ]
+                    ],
+                    [
+                        'id'               => $transaction3->id,
+                        'description'      => $transaction3->description,
+                        'notes'            => $transaction3->notes,
+                        'amount'           => "7000",
+                        'amount_formatted' => "₱70.00",
+                        'date'             => $transactionDay2,
+                        'category_type'    => 'income',
+                        'category_icon'    => $categoryIncome->icon,
+                        'category_name'    => $categoryIncome->name,
+                        'category_id'      => "{$categoryIncome->id}",
+                        'admin_id'         => $admin->id,
+                        'admin_first_name' => $admin->first_name,
+                        'admin_last_name'  => $admin->last_name
+                    ],
                 ]
             ]);
     }
