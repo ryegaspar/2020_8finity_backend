@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6888cd3a-3007-4f60-b69c-409eb0345043" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/backend.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/backend.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Resources/CategoryResource.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Resources/CategoryResource.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Transaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Transaction.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/app.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/app.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/laravel-vue-datatables.php" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/phpunit.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/getCategoryTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/getCategoryTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -173,28 +161,39 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.PHP" />
+    <property name="settings.editor.selected.configurable" value="editing.templates" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager" selected="PHPUnit.getTransactionTest">
-    <configuration name="getCategoryTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\getCategoryTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/getCategoryTest.php" scope="Class" />
-      <method v="2" />
-    </configuration>
-    <configuration name="getCategoryTest.can_get_categories" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\getCategoryTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/getCategoryTest.php" method="can_get_categories" scope="Method" />
-      <method v="2" />
-    </configuration>
-    <configuration name="getTransactionTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Dashboard\getTransactionTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Dashboard/getTransactionTest.php" scope="Class" />
-      <method v="2" />
+  <component name="RunManager" selected="PHPUnit.getTransactionsTest.can_search_through_description">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
     </configuration>
     <configuration name="getTransactionsTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" scope="Class" />
       <method v="2" />
     </configuration>
-    <configuration name="getTransactionsTest.can_view_transactions" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_view_transactions" scope="Method" />
+    <configuration name="getTransactionsTest.can_filter_expenses_only" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_filter_expenses_only" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getTransactionsTest.can_filter_income_only" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_filter_income_only" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getTransactionsTest.can_search_through_description" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_search_through_description" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="getTransactionsTest.can_sort_by_date" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_sort_by_date" scope="Method" />
       <method v="2" />
     </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -203,11 +202,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="PHPUnit.getTransactionTest" />
-        <item itemvalue="PHPUnit.getTransactionsTest.can_view_transactions" />
+        <item itemvalue="PHPUnit.getTransactionsTest.can_search_through_description" />
         <item itemvalue="PHPUnit.getTransactionsTest" />
-        <item itemvalue="PHPUnit.getCategoryTest.can_get_categories" />
-        <item itemvalue="PHPUnit.getCategoryTest" />
+        <item itemvalue="PHPUnit.getTransactionsTest.can_filter_expenses_only" />
+        <item itemvalue="PHPUnit.getTransactionsTest.can_filter_income_only" />
+        <item itemvalue="PHPUnit.getTransactionsTest.can_sort_by_date" />
       </list>
     </recent_temporary>
   </component>
@@ -268,6 +267,13 @@
       <workItem from="1611114518464" duration="17000" />
       <workItem from="1611115615431" duration="129000" />
       <workItem from="1611192404979" duration="599000" />
+      <workItem from="1611197029142" duration="2559000" />
+      <workItem from="1612145634942" duration="155000" />
+      <workItem from="1612145847219" duration="716000" />
+      <workItem from="1612711820356" duration="595000" />
+      <workItem from="1612713477088" duration="598000" />
+      <workItem from="1612738031198" duration="242000" />
+      <workItem from="1612834282737" duration="3981000" />
     </task>
     <servers />
   </component>
