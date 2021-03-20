@@ -14,7 +14,7 @@ class getTransactionSummaryTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_view_transactions()
+    public function only_authenticated_users_can_view_dashboard_transaction_summary()
     {
         $admin = Admin::factory()->create();
 
@@ -25,7 +25,7 @@ class getTransactionSummaryTest extends TestCase
     }
 
     /** @test */
-    public function guests_cannot_view_categories()
+    public function guests_cannot_view_dashboard_transaction_summary()
     {
         $this->withHeaders(['accept' => 'application/json'])
             ->get('admin/dashboard/transactions-summary')

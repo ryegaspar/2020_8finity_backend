@@ -24,6 +24,24 @@ class getTransactionsTest extends TestCase
     protected $admin;
 
     /** @test */
+    public function only_authenticated_users_can_view_transactions_page()
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->get('admin/transactions')
+            ->assertStatus(200);
+    }
+
+    /** @test */
+    public function guests_cannot_view_transactions_page()
+    {
+        $this->withHeaders(['accept' => 'application/json'])
+            ->get('admin/transactions')
+            ->assertStatus(401);
+    }
+
+    /** @test */
     public function can_view_transactions_and_is_ordered_by_date_by_default()
     {
         $this->create_transactions();
