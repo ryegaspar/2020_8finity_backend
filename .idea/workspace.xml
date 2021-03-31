@@ -2,13 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6888cd3a-3007-4f60-b69c-409eb0345043" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/Dashboard/getTransactionSummaryTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Dashboard/getTransactionSummaryTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/Dashboard/getTransactionTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Dashboard/getTransactionTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/getCategoryTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Category/getCategoryTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Admin.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Admin.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Transaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Transaction.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/auth.php" beforeDir="false" afterPath="$PROJECT_DIR$/config/auth.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -169,7 +169,12 @@
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
-  <component name="RunManager" selected="PHPUnit.getCategoryTest">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/tests/Feature/Admin/Category" />
+    </key>
+  </component>
+  <component name="RunManager" selected="PHPUnit.addTransactionsTest">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -181,29 +186,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="getCategoryTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Category\getCategoryTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Category/getCategoryTest.php" scope="Class" />
+    <configuration name="addTransactionsTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" scope="Class" />
       <method v="2" />
     </configuration>
-    <configuration name="getTransactionsTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <CommandLine>
-        <PhpTestInterpreterSettings>
-          <option name="interpreterName" value="PHP" />
-        </PhpTestInterpreterSettings>
-      </CommandLine>
-      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" scope="Class" />
+    <configuration name="addTransactionsTest.category_is_required" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="category_is_required" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="getTransactionsTest.can_sort_by_date" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="can_sort_by_date" scope="Method" />
+    <configuration name="addTransactionsTest.date_is_required" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="date_is_required" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="getTransactionsTest.guests_cannot_view_transactions_page" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="guests_cannot_view_transactions_page" scope="Method" />
+    <configuration name="addTransactionsTest.date_must_be_valid_date" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="date_must_be_valid_date" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="getTransactionsTest.only_authenticated_users_can_view_transactions_page" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\getTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/getTransactionsTest.php" method="only_authenticated_users_can_view_transactions_page" scope="Method" />
+    <configuration name="addTransactionsTest.must_be_a_valid_category" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="must_be_a_valid_category" scope="Method" />
       <method v="2" />
     </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -212,11 +212,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="PHPUnit.getCategoryTest" />
-        <item itemvalue="PHPUnit.getTransactionsTest.guests_cannot_view_transactions_page" />
-        <item itemvalue="PHPUnit.getTransactionsTest.only_authenticated_users_can_view_transactions_page" />
-        <item itemvalue="PHPUnit.getTransactionsTest" />
-        <item itemvalue="PHPUnit.getTransactionsTest.can_sort_by_date" />
+        <item itemvalue="PHPUnit.addTransactionsTest" />
+        <item itemvalue="PHPUnit.addTransactionsTest.date_must_be_valid_date" />
+        <item itemvalue="PHPUnit.addTransactionsTest.date_is_required" />
+        <item itemvalue="PHPUnit.addTransactionsTest.must_be_a_valid_category" />
+        <item itemvalue="PHPUnit.addTransactionsTest.category_is_required" />
       </list>
     </recent_temporary>
   </component>
@@ -303,7 +303,18 @@
       <workItem from="1616032561299" duration="808000" />
       <workItem from="1616041528424" duration="630000" />
       <workItem from="1616117185888" duration="638000" />
-      <workItem from="1616206583705" duration="1750000" />
+      <workItem from="1616206583705" duration="2681000" />
+      <workItem from="1616248564729" duration="1978000" />
+      <workItem from="1616294726604" duration="5827000" />
+      <workItem from="1616376511865" duration="1619000" />
+      <workItem from="1616464815248" duration="602000" />
+      <workItem from="1616547875632" duration="633000" />
+      <workItem from="1616635251218" duration="1144000" />
+      <workItem from="1616898637906" duration="428000" />
+      <workItem from="1616963496838" duration="1399000" />
+      <workItem from="1617037812683" duration="4323000" />
+      <workItem from="1617129897712" duration="491000" />
+      <workItem from="1617147184601" duration="3539000" />
     </task>
     <servers />
   </component>

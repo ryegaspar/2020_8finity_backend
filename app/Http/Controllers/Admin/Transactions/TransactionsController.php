@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedTransactionCollection;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionsController extends Controller
 {
@@ -37,5 +38,27 @@ class TransactionsController extends Controller
         $transactions = $transactions->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
+    }
+
+    public function store()
+    {
+        request()->validate([
+            'description' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'date'        => 'required|date',
+            'notes'       => 'nullable'
+        ]);
+
+        request()->user('admin')
+            ->transactions()
+            ->create([
+                'description' => request('description'),
+                'category_id' => request('category_id'),
+                'amount'      => request('amount') * 100,
+                'date'        => request('date'),
+                'notes'       => request('notes')
+            ]);
+
+        return response()->json([], 201);
     }
 }

@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::namespace('Auth')->group(function() {
+    Route::post('admin/login', 'AdminLoginController@login');
+    Route::post('admin/logout', 'AdminLoginController@logout');
+});
 
 Route::middleware('auth:admin')
     ->get('/admin', function (Request $request) {
@@ -25,5 +29,6 @@ Route::prefix('admin')
         Route::get('dashboard/transactions-summary', 'Dashboard\TransactionSummaryController@show');
         Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
         Route::get('transactions', 'Transactions\TransactionsController@index');
+        Route::post('transactions', 'Transactions\TransactionsController@store');
         Route::get('/categories', 'CategoriesController@show');
     });
