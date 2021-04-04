@@ -22,7 +22,7 @@ class TransactionsController extends Controller
         if ($request->sort) {
             $sort = explode(',', $request->sort);
 
-            foreach($sort as $item) {
+            foreach ($sort as $item) {
                 list ($sortCol, $sortDir) = explode('|', $item);
                 $transactions = $transactions->orderBy($sortCol, $sortDir);
             }
@@ -50,6 +50,7 @@ class TransactionsController extends Controller
         request()->validate([
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'date'        => 'required|date',
             'notes'       => 'nullable'
         ]);
@@ -59,7 +60,7 @@ class TransactionsController extends Controller
             ->create([
                 'description' => request('description'),
                 'category_id' => request('category_id'),
-                'amount'      => (int) (request('amount') * 100),
+                'amount'      => (int)(request('amount') * 100),
                 'date'        => request('date'),
                 'notes'       => request('notes')
             ]);

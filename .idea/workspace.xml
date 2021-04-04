@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="6888cd3a-3007-4f60-b69c-409eb0345043" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/Transactions/TransactionsController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -168,7 +170,7 @@
       <recent name="$PROJECT_DIR$/tests/Feature/Admin/Category" />
     </key>
   </component>
-  <component name="RunManager" selected="PHPUnit.TransactionTest.default_start_date_is_start_of_the_month_until_current_date">
+  <component name="RunManager" selected="PHPUnit.addTransactionsTest.amount_must_be_a_valid_decimal">
     <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -184,20 +186,20 @@
       <TestRunner class="Tests\Unit\TransactionTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/TransactionTest.php" scope="Class" />
       <method v="2" />
     </configuration>
+    <configuration name="TransactionTest.are_ordered_by_date_in_descending_order" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Unit\TransactionTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/TransactionTest.php" method="are_ordered_by_date_in_descending_order" scope="Method" />
+      <method v="2" />
+    </configuration>
     <configuration name="TransactionTest.default_start_date_is_start_of_the_month_until_current_date" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Unit\TransactionTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Unit/TransactionTest.php" method="default_start_date_is_start_of_the_month_until_current_date" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="addTransactionsTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" scope="Class" />
+    <configuration name="addTransactionsTest.amount_is_required" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="amount_is_required" scope="Method" />
       <method v="2" />
     </configuration>
-    <configuration name="addTransactionsTest.adding_a_transaction" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="adding_a_transaction" scope="Method" />
-      <method v="2" />
-    </configuration>
-    <configuration name="addTransactionsTest.date_must_be_valid_date" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="date_must_be_valid_date" scope="Method" />
+    <configuration name="addTransactionsTest.amount_must_be_a_valid_decimal" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Feature\Admin\Transactions\addTransactionsTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Feature/Admin/Transactions/addTransactionsTest.php" method="amount_must_be_a_valid_decimal" scope="Method" />
       <method v="2" />
     </configuration>
     <configuration name="phpunit.xml" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
@@ -206,11 +208,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="PHPUnit.addTransactionsTest.amount_must_be_a_valid_decimal" />
+        <item itemvalue="PHPUnit.addTransactionsTest.amount_is_required" />
+        <item itemvalue="PHPUnit.TransactionTest.are_ordered_by_date_in_descending_order" />
         <item itemvalue="PHPUnit.TransactionTest.default_start_date_is_start_of_the_month_until_current_date" />
         <item itemvalue="PHPUnit.TransactionTest" />
-        <item itemvalue="PHPUnit.addTransactionsTest.adding_a_transaction" />
-        <item itemvalue="PHPUnit.addTransactionsTest" />
-        <item itemvalue="PHPUnit.addTransactionsTest.date_must_be_valid_date" />
       </list>
     </recent_temporary>
   </component>
@@ -313,7 +315,7 @@
       <workItem from="1617305357885" duration="1835000" />
       <workItem from="1617376728058" duration="2783000" />
       <workItem from="1617414637575" duration="532000" />
-      <workItem from="1617505650240" duration="792000" />
+      <workItem from="1617505650240" duration="2666000" />
     </task>
     <servers />
   </component>

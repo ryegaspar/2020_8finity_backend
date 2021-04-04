@@ -104,6 +104,48 @@ class addTransactionsTest extends TestCase
     }
 
     /** @test */
+    public function amount_is_required()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/transactions', $this->validParams([
+                'amount' => ''
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('amount');
+    }
+
+    /** @test */
+    public function amount_must_be_a_valid_decimal()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/transactions', $this->validParams([
+                'amount' => 'abc'
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('amount');
+    }
+
+    /** @test */
+    public function amount_must_be_greater_than_zero()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/transactions', $this->validParams([
+                'amount' => '-1'
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('amount');
+    }
+
+    /** @test */
     public function date_is_required()
     {
         $admin = Admin::factory()->create();
