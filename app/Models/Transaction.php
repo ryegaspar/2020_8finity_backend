@@ -14,7 +14,7 @@ class Transaction extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'date' => 'date',
+        'date' => 'date:Y-m-d',
     ];
 
     public function getFormattedDateAttribute()
