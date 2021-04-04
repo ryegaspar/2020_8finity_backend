@@ -18,7 +18,7 @@ class addTransactionsTest extends TestCase
         return array_merge([
             'description' => 'new transaction',
             'category_id' => 1,
-            'amount'      => 100,
+            'amount'      => "100.25",
             'date'        => '2021-01-01',
             'notes'       => 'note'
         ], $overrides);
@@ -55,7 +55,7 @@ class addTransactionsTest extends TestCase
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals(1, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
-            $this->assertEquals(10000, $transaction->amount);
+            $this->assertEquals(10025, $transaction->amount);
             $this->assertEquals(Carbon::parse('2021-01-01'), $transaction->date);
             $this->assertEquals('note', $transaction->notes);
         });

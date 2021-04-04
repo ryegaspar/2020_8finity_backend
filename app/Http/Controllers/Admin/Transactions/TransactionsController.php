@@ -20,8 +20,13 @@ class TransactionsController extends Controller
         $transactions = new Transaction;
 
         if ($request->sort) {
-            list ($sortCol, $sortDir) = explode('|', $request->sort);
-            $transactions = $transactions->orderBy($sortCol, $sortDir);
+            $sort = explode(',', $request->sort);
+
+            foreach($sort as $item) {
+                list ($sortCol, $sortDir) = explode('|', $item);
+                $transactions = $transactions->orderBy($sortCol, $sortDir);
+            }
+
         }
 
         if ($request->search) {
@@ -54,7 +59,7 @@ class TransactionsController extends Controller
             ->create([
                 'description' => request('description'),
                 'category_id' => request('category_id'),
-                'amount'      => request('amount') * 100,
+                'amount'      => (int) (request('amount') * 100),
                 'date'        => request('date'),
                 'notes'       => request('notes')
             ]);
