@@ -67,4 +67,27 @@ class TransactionsController extends Controller
 
         return response()->json([], 201);
     }
+
+    public function update($id)
+    {
+        $transaction = request()->user('admin')->transactions()->findOrFail($id);
+
+        request()->validate([
+            'description' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'date'        => 'required|date',
+            'notes'       => 'nullable'
+        ]);
+
+        $transaction->update([
+            'description' => request('description'),
+            'category_id' => request('category_id'),
+            'amount'      => (int)(request('amount') * 100),
+            'date'        => request('date'),
+            'notes'       => request('notes'),
+        ]);
+
+        return response()->json('', 204);
+    }
 }

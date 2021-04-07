@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('Auth')->group(function() {
+Route::namespace('Auth')->group(function () {
     Route::post('admin/login', 'AdminLoginController@login');
     Route::post('admin/logout', 'AdminLoginController@logout');
 });
@@ -30,5 +30,6 @@ Route::prefix('admin')
         Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
         Route::get('transactions', 'Transactions\TransactionsController@index');
         Route::post('transactions', 'Transactions\TransactionsController@store');
+        Route::patch('transactions/{id}', 'Transactions\TransactionsController@update');
         Route::get('/categories', 'CategoriesController@show');
     });
