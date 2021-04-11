@@ -71,8 +71,7 @@ class getTransactionTest extends TestCase
                         'category_name'    => $categoryIncome->name,
                         'category_id'      => "{$categoryIncome->id}",
                         'admin_id'         => $admin->id,
-                        'admin_first_name' => $admin->first_name,
-                        'admin_last_name'  => $admin->last_name
+                        'admin_username'   => $admin->username,
                     ],
                     [
                         'id'               => $transaction2->id,
@@ -86,8 +85,7 @@ class getTransactionTest extends TestCase
                         'category_name'    => $categoryExpense->name,
                         'category_id'      => "{$categoryExpense->id}",
                         'admin_id'         => $admin->id,
-                        'admin_first_name' => $admin->first_name,
-                        'admin_last_name'  => $admin->last_name
+                        'admin_username'   => $admin->username,
                     ]
                 ]
             ]);
