@@ -90,4 +90,13 @@ class TransactionsController extends Controller
 
         return response()->json('', 204);
     }
+
+    public function destroy($id)
+    {
+        $transaction = request()->user('admin')->transactions()->findOrFail($id);
+
+        $transaction->delete();
+
+        return response()->json('', 204);
+    }
 }
