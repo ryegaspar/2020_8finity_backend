@@ -7,6 +7,7 @@ use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\PaginatedCategoryCollection;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class CategoriesController extends Controller
 {
@@ -35,5 +36,22 @@ class CategoriesController extends Controller
         $categories = $categories->paginate($request->per_page);
 
         return response()->json(new PaginatedCategoryCollection($categories));
+    }
+
+    public function store()
+    {
+        request()->validate([
+            'type' => ['required', Rule::in('in', 'out')],
+            'name' => 'required',
+            'icon' => 'required'
+        ]);
+
+        Category::create([
+            'type' => request('type'),
+            'name' => request('name'),
+            'icon' => request('icon'),
+        ]);
+
+        return response()->json([], 201);
     }
 }
