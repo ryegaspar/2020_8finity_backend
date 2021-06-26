@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\PaginatedCategoryCollection;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
@@ -13,8 +15,25 @@ class CategoriesController extends Controller
         $this->middleware('auth:admin');
     }
 
-    public function show()
+    public function index(Request $request)
     {
-        return response()->json(new CategoryCollection(Category::all()));
+        $categories = new Category;
+
+        if ($request->exists('all')) {
+            return response()->json(new CategoryCollection(Category::all()));
+        }
+
+        if ($request->sort) {
+            $sort = explode(',', $request->sort);
+
+            foreach ($sort as $item) {
+                list ($sortCol, $sortDir) = explode('|', $item);
+                $categories = $categories->orderBy($sortCol, $sortDir);
+            }
+        }
+
+        $categories = $categories->paginate($request->per_page);
+
+        return response()->json(new PaginatedCategoryCollection($categories));
     }
 }

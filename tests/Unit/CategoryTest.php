@@ -37,7 +37,7 @@ class CategoryTest extends TestCase
             'id'         => '3',
             'type'       => 'out',
             'name'       => 'cash advance',
-            'icon'       => 'cc-visa',
+            'icon'       => 'coins',
             'created_at' => null,
             'updated_at' => null
         ];

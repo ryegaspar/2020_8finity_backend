@@ -23,6 +23,40 @@ class getTransactionsTest extends TestCase
     protected $transaction3;
     protected $admin;
 
+    private function create_transactions()
+    {
+        $this->admin = Admin::factory()->create();
+
+        $this->transactionDay1 = Carbon::parse("first day of this month")->format("Y-m-d");
+        $this->transactionDay2 = Carbon::parse("first day of this month")->addDay()->format("Y-m-d");
+        $this->categoryIncome = Category::factory()->income()->create();
+        $this->categoryExpense = Category::factory()->expense()->create();
+
+        $this->transaction1 = Transaction::create([
+            'category_id' => $this->categoryIncome->id,
+            'description' => 'transaction1',
+            'admin_id'    => $this->admin->id,
+            'amount'      => 12000,
+            'date'        => $this->transactionDay1
+        ]);
+
+        $this->transaction2 = Transaction::create([
+            'category_id' => $this->categoryExpense->id,
+            'description' => 'transaction2',
+            'admin_id'    => $this->admin->id,
+            'amount'      => 8000,
+            'date'        => $this->transactionDay1
+        ]);
+
+        $this->transaction3 = Transaction::create([
+            'category_id' => $this->categoryIncome->id,
+            'description' => 'transaction3',
+            'admin_id'    => $this->admin->id,
+            'amount'      => 7000,
+            'date'        => $this->transactionDay2
+        ]);
+    }
+
     /** @test */
     public function only_authenticated_users_can_view_transactions_page()
     {
@@ -222,39 +256,4 @@ class getTransactionsTest extends TestCase
                 ]
             ]);
     }
-
-    protected function create_transactions()
-    {
-        $this->admin = Admin::factory()->create();
-
-        $this->transactionDay1 = Carbon::parse("first day of this month")->format("Y-m-d");
-        $this->transactionDay2 = Carbon::parse("first day of this month")->addDay()->format("Y-m-d");
-        $this->categoryIncome = Category::factory()->income()->create();
-        $this->categoryExpense = Category::factory()->expense()->create();
-
-        $this->transaction1 = Transaction::create([
-            'category_id' => $this->categoryIncome->id,
-            'description' => 'transaction1',
-            'admin_id'    => $this->admin->id,
-            'amount'      => 12000,
-            'date'        => $this->transactionDay1
-        ]);
-
-        $this->transaction2 = Transaction::create([
-            'category_id' => $this->categoryExpense->id,
-            'description' => 'transaction2',
-            'admin_id'    => $this->admin->id,
-            'amount'      => 8000,
-            'date'        => $this->transactionDay1
-        ]);
-
-        $this->transaction3 = Transaction::create([
-            'category_id' => $this->categoryIncome->id,
-            'description' => 'transaction3',
-            'admin_id'    => $this->admin->id,
-            'amount'      => 7000,
-            'date'        => $this->transactionDay2
-        ]);
-    }
-
 }

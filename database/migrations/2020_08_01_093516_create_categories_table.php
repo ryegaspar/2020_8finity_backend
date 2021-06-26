@@ -37,7 +37,7 @@ class CreateCategoriesTable extends Migration
                 [
                     'type' => 'out',
                     'name' => 'cash advance',
-                    'icon' => 'cc-visa',
+                    'icon' => 'coins',
                 ],
                 [
                     'type' => 'out',
