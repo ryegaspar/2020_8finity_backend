@@ -97,6 +97,25 @@ class addCategoryTest extends TestCase
     }
 
     /** @test */
+    public function name_must_be_unique()
+    {
+        $admin = Admin::factory()->create();
+
+        Category::factory()->create([
+            'name' => 'new category'
+        ]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/categories', $this->validParams([
+                'name' => 'new category'
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('name');
+
+    }
+
+    /** @test */
     public function icon_is_required()
     {
         $admin = Admin::factory()->create();

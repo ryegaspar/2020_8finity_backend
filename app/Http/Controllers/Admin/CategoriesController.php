@@ -42,7 +42,7 @@ class CategoriesController extends Controller
     {
         request()->validate([
             'type' => ['required', Rule::in('in', 'out')],
-            'name' => 'required',
+            'name' => 'required|unique:categories',
             'icon' => 'required'
         ]);
 
