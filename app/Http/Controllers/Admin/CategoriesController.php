@@ -42,7 +42,7 @@ class CategoriesController extends Controller
     {
         request()->validate([
             'type' => ['required', Rule::in('in', 'out')],
-            'name' => 'required|unique:categories',
+            'name' => 'required|unique:categories,name',
             'icon' => 'required'
         ]);
 
@@ -53,5 +53,26 @@ class CategoriesController extends Controller
         ]);
 
         return response()->json([], 201);
+    }
+
+    public function update($id)
+    {
+        if ((int) request('id') <= 13) {
+            return response()->json([], 422);
+        }
+
+        request()->validate([
+            'type' => ['required', Rule::in('in', 'out')],
+            'name' => Rule::unique('categories','name')->ignore($id),
+            'icon' => 'required'
+        ]);
+
+        Category::find($id)->update([
+            'type' => request('type'),
+            'name' => request('name'),
+            'icon' => request('icon')
+        ]);
+
+        return response()->json([], 204);
     }
 }

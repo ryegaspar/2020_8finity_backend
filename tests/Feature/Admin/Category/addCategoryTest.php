@@ -112,7 +112,6 @@ class addCategoryTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('name');
-
     }
 
     /** @test */

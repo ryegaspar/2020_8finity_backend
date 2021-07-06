@@ -28,10 +28,13 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('dashboard/transactions-summary', 'Dashboard\TransactionSummaryController@show');
         Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
+
         Route::get('transactions', 'Transactions\TransactionsController@index');
         Route::post('transactions', 'Transactions\TransactionsController@store');
         Route::patch('transactions/{id}', 'Transactions\TransactionsController@update');
         Route::delete('transactions/{id}', 'Transactions\TransactionsController@destroy');
+
         Route::get('categories', 'CategoriesController@index');
         Route::post('categories', 'CategoriesController@store');
+        Route::patch('categories/{id}', 'CategoriesController@update');
     });
