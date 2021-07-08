@@ -32,8 +32,6 @@ class editCategoryTest extends TestCase
     /** @test */
     public function only_authenticated_users_can_update_categories()
     {
-        $this->withoutExceptionHandling();
-
         $admin = Admin::factory()->create();
 
         $category = Category::factory()->create($this->oldCategory());

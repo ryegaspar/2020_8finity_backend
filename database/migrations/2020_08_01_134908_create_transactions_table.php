@@ -25,13 +25,13 @@ class CreateTransactionsTable extends Migration
 
             $table->foreign('category_id')
                 ->references('id')
-                ->on('categories')
-                ->cascadeOnDelete();
+                ->on('categories');
+//                ->cascadeOnDelete();
 
             $table->foreign('admin_id')
                 ->references('id')
-                ->on('admins')
-                ->cascadeOnDelete();
+                ->on('admins');
+//                ->cascadeOnDelete();
         });
     }
 

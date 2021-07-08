@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\PaginatedCategoryCollection;
 use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -57,13 +58,13 @@ class CategoriesController extends Controller
 
     public function update($id)
     {
-        if ((int) request('id') <= 13) {
+        if ((int)request('id') <= 13) {
             return response()->json([], 422);
         }
 
         request()->validate([
             'type' => ['required', Rule::in('in', 'out')],
-            'name' => Rule::unique('categories','name')->ignore($id),
+            'name' => ['required', Rule::unique('categories', 'name')->ignore($id)],
             'icon' => 'required'
         ]);
 
@@ -72,6 +73,22 @@ class CategoriesController extends Controller
             'name' => request('name'),
             'icon' => request('icon')
         ]);
+
+        return response()->json([], 204);
+    }
+
+    public function destroy($id)
+    {
+        if ((int)request('id') <= 13) {
+            return response()->json([], 422);
+        }
+
+
+        if (Transaction::where('category_id', $id)) {
+            return response()->json([], 409);
+        }
+
+        Category::find($id)->delete();
 
         return response()->json([], 204);
     }
