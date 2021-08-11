@@ -83,8 +83,7 @@ class CategoriesController extends Controller
             return response()->json([], 422);
         }
 
-
-        if (Transaction::where('category_id', $id)) {
+        if (Transaction::where('category_id', $id)->count()) {
             return response()->json([], 409);
         }
 

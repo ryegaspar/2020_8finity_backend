@@ -27,6 +27,29 @@ class Transaction extends Model
         return (new Money($this->amount))->formatted();
     }
 
+    public function scopeView($query)
+    {
+        return $query
+            ->when(request('sort') ?? null, function ($query) {
+                $sort = explode(',', request('sort'));
+
+                foreach ($sort as $item) {
+                    list ($sortCol, $sortDir) = explode('|', $item);
+                    $query->orderBy($sortCol, $sortDir);
+                }
+            })
+            ->when(request('search') ?? null, function ($query) {
+                $search = request('search');
+                $query->where('description', 'LIKE', "%{$search}%");
+            })
+            ->when(request('filter') && request('filter') !== 'all', function ($query) {
+                $filter = request('filter') === 'income' ? 'in' : 'out';
+                $query->whereHas('category', function ($q) use ($filter) {
+                    $q->where('type', $filter);
+                });
+            });
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);
