@@ -17,6 +17,14 @@ class Transaction extends Model
         'date' => 'date:Y-m-d',
     ];
 
+    private function getValidDate($startDate = null, $endDate = null)
+    {
+        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth())->format('Y-m-d');
+        $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today()->endOfMonth())->format('Y-m-d');
+
+        return [$startDate, $endDate];
+    }
+
     public function getFormattedDateAttribute()
     {
         return Carbon::parse($this->date)->format('Y-m-d');
@@ -27,7 +35,7 @@ class Transaction extends Model
         return (new Money($this->amount))->formatted();
     }
 
-    public function scopeView($query)
+    public function scopeTableView($query)
     {
         return $query
             ->when(request('sort') ?? null, function ($query) {
@@ -50,23 +58,14 @@ class Transaction extends Model
             });
     }
 
-    public function category()
+    public function scopeSumByCategoryTypeBetween($query, $type = 'in', $startDate = null, $endDate = null)
     {
-        return $this->belongsTo(Category::class);
-    }
+        [$startDate, $endDate] = $this->getValidDate($startDate, $endDate);
 
-    public function admin()
-    {
-        return $this->belongsTo(Admin::class);
-    }
-
-    public static function sumByCategoryTypeBetween($type = 'in', $startDate = null, $endDate = null)
-    {
-        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
-
-        return self::whereHas('category', function ($query) use ($type) {
-            $query->where('categories.type', $type);
-        })
+        return $query
+            ->whereHas('category', function ($query) use ($type) {
+                $query->where('categories.type', $type);
+            })
             ->with([
                 'category' => function ($query) use ($type) {
                     $query->where('categories.type', $type);
@@ -76,21 +75,24 @@ class Transaction extends Model
             ->sum('amount');
     }
 
-    public static function transactionsBetween($startDate = null, $endDate = null)
+    public function scopeTransactionsBetween($query, $startDate = null, $endDate = null)
     {
-        [$startDate, $endDate] = self::getValidDate($startDate, $endDate);
+        [$startDate, $endDate] = $this->getValidDate($startDate, $endDate);
 
-        return self::with(['category', 'admin'])
+        return $query
+            ->with(['category', 'admin'])
             ->whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
             ->get();
     }
 
-    protected static function getValidDate($startDate = null, $endDate = null)
+    public function category()
     {
-        $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth())->format('Y-m-d');
-        $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today()->endOfMonth())->format('Y-m-d');
+        return $this->belongsTo(Category::class);
+    }
 
-        return [$startDate, $endDate];
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
     }
 }

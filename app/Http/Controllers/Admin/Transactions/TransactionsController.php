@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedTransactionCollection;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TransactionsController extends Controller
 {
@@ -17,7 +16,7 @@ class TransactionsController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::view()->paginate($request->per_page);
+        $transactions = Transaction::tableView()->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
     }
