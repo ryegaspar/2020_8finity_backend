@@ -67,9 +67,9 @@ class TransactionsController extends Controller
         return response()->json('', 204);
     }
 
-    public function destroy($id)
+    public function destroy(Transaction $transaction)
     {
-        $transaction = request()->user('admin')->transactions()->findOrFail($id);
+        $this->authorize('delete', $transaction);
 
         $transaction->delete();
 

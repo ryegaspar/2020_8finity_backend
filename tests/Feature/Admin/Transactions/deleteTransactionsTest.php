@@ -4,9 +4,7 @@ namespace Tests\Feature\Admin\Transactions;
 
 use App\Models\Admin;
 use App\Models\Transaction;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class deleteTransactionsTest extends TestCase
@@ -43,7 +41,7 @@ class deleteTransactionsTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->json('delete', "admin/transactions/{$transaction->id}")
-            ->assertStatus(404);
+            ->assertStatus(403);
     }
 
     /** @test */
