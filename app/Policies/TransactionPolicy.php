@@ -48,13 +48,13 @@ class TransactionPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Transaction  $transaction
+     * @param Admin $admin
+     * @param \App\Models\Transaction $transaction
      * @return mixed
      */
-    public function update(User $user, Transaction $transaction)
+    public function update(Admin $admin, Transaction $transaction)
     {
-        //
+        return $admin->id == $transaction->admin_id;
     }
 
     /**

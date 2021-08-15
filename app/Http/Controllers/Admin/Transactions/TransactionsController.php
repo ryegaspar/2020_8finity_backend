@@ -44,9 +44,9 @@ class TransactionsController extends Controller
         return response()->json([], 201);
     }
 
-    public function update($id)
+    public function update(Transaction $transaction)
     {
-        $transaction = request()->user('admin')->transactions()->findOrFail($id);
+        $this->authorize('update', $transaction);
 
         request()->validate([
             'description' => 'required',

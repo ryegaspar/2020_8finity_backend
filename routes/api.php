@@ -31,7 +31,7 @@ Route::prefix('admin')
 
         Route::get('transactions', 'Transactions\TransactionsController@index');
         Route::post('transactions', 'Transactions\TransactionsController@store');
-        Route::patch('transactions/{id}', 'Transactions\TransactionsController@update');
+        Route::patch('transactions/{transaction}', 'Transactions\TransactionsController@update');
         Route::delete('transactions/{transaction}', 'Transactions\TransactionsController@destroy');
 
         Route::get('categories', 'CategoriesController@index');

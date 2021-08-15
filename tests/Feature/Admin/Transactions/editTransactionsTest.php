@@ -65,7 +65,7 @@ class editTransactionsTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction())
-            ->assertStatus(404);
+            ->assertStatus(403);
     }
 
     /** @test */
