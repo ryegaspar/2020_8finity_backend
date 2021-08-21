@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Transactions;
+namespace Tests\Feature\Admin\Accounting\Transactions;
 
 use App\Models\Admin;
 use App\Models\Transaction;
@@ -9,7 +9,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class addTransactionsTest extends TestCase
+class addTransactionTest extends TestCase
 {
     use RefreshDatabase;
 

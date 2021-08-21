@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Feature\Admin\Transactions;
+namespace Tests\Feature\Admin\Accounting\Transactions;
 
 use App\Models\Admin;
 use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class deleteTransactionsTest extends TestCase
+class deleteTransactionTest extends TestCase
 {
     use RefreshDatabase;
 
