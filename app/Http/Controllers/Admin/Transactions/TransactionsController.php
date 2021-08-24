@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin\Transactions;
 
+use App\Filters\Transaction\SearchFilter;
+use App\Filters\Transaction\TypeFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedTransactionCollection;
 use App\Models\Transaction;
@@ -16,9 +18,15 @@ class TransactionsController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::tableView()->paginate($request->per_page);
+//        $transactions = Transaction::tableView()->paginate($request->per_page);
+        $transactions = Transaction::filter($request)->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
+    }
+
+    protected function getFilters()
+    {
+        return [];
     }
 
     public function store()

@@ -185,7 +185,7 @@ class getTransactionTest extends TestCase
 
         $this->actingAs($this->admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/transactions?filter=income')
+            ->getJson('admin/transactions?type=income')
             ->assertJson([
                 'data' => [
                     [
@@ -210,7 +210,7 @@ class getTransactionTest extends TestCase
 
         $this->actingAs($this->admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/transactions?filter=expense')
+            ->getJson('admin/transactions?type=expense')
             ->assertJson([
                 'data' => [
                     [

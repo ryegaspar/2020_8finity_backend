@@ -3,7 +3,9 @@
 namespace App\Models;
 
 use App\ExpenseTracker\Money;
+use App\Filters\Transaction\TransactionFilters;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,28 +37,33 @@ class Transaction extends Model
         return (new Money($this->amount))->formatted();
     }
 
-    public function scopeTableView($query)
+    public function scopeFilter(Builder $builder, $request, array $filters = [])
     {
-        return $query
-            ->when(request('sort') ?? null, function ($query) {
-                $sort = explode(',', request('sort'));
-
-                foreach ($sort as $item) {
-                    list ($sortCol, $sortDir) = explode('|', $item);
-                    $query->orderBy($sortCol, $sortDir);
-                }
-            })
-            ->when(request('search') ?? null, function ($query) {
-                $search = request('search');
-                $query->where('description', 'LIKE', "%{$search}%");
-            })
-            ->when(request('filter') && request('filter') !== 'all', function ($query) {
-                $filter = request('filter') === 'income' ? 'in' : 'out';
-                $query->whereHas('category', function ($q) use ($filter) {
-                    $q->where('type', $filter);
-                });
-            });
+        return (new TransactionFilters($request))->filter($builder);
     }
+
+//    public function scopeTableView($query, array $filters = [])
+//    {
+//        return $query
+//            ->when(request('sort') ?? null, function ($query) {
+//                $sort = explode(',', request('sort'));
+//
+//                foreach ($sort as $item) {
+//                    list ($sortCol, $sortDir) = explode('|', $item);
+//                    $query->orderBy($sortCol, $sortDir);
+//                }
+//            })
+//            ->when(request('search') ?? null, function ($query) {
+//                $search = request('search');
+//                $query->where('description', 'LIKE', "%{$search}%");
+//            })
+//            ->when(request('type') && request('type') !== 'all', function ($query) {
+//                $type = request('type') === 'income' ? 'in' : 'out';
+//                $query->whereHas('category', function ($q) use ($type) {
+//                    $q->where('type', $type);
+//                });
+//            });
+//    }
 
     public function scopeSumByCategoryTypeBetween($query, $type = 'in', $startDate = null, $endDate = null)
     {
