@@ -1,10 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Transactions;
+namespace App\Http\Controllers\Admin\Accounting;
 
-use App\Filters\Transaction\SearchFilter;
-use App\Filters\Transaction\SortFilter;
-use App\Filters\Transaction\TypeFilter;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedTransactionCollection;
 use App\Models\Transaction;

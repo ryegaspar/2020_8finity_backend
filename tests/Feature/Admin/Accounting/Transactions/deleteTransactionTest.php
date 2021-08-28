@@ -19,7 +19,7 @@ class deleteTransactionTest extends TestCase
         $transaction = Transaction::factory()->create(['admin_id' => $admin->id]);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/transactions/{$transaction->id}")
+            ->json('delete', "admin/accounting/transactions/{$transaction->id}")
             ->assertStatus(204);
     }
 
@@ -28,7 +28,7 @@ class deleteTransactionTest extends TestCase
     {
         $transaction = Transaction::factory()->create();
 
-        $this->json('delete', "admin/transactions/{$transaction->id}")
+        $this->json('delete', "admin/accounting/transactions/{$transaction->id}")
             ->assertStatus(401);
     }
 
@@ -40,7 +40,7 @@ class deleteTransactionTest extends TestCase
         $transaction = Transaction::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/transactions/{$transaction->id}")
+            ->json('delete', "admin/accounting/transactions/{$transaction->id}")
             ->assertStatus(403);
     }
 
@@ -52,7 +52,7 @@ class deleteTransactionTest extends TestCase
         $transaction = Transaction::factory()->create(['admin_id' => $admin->id]);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/transactions/{$transaction->id}")
+            ->json('delete', "admin/accounting/transactions/{$transaction->id}")
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('transactions', ['id' => $transaction->id]);

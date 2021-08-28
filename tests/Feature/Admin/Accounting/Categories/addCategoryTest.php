@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Categories;
+namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
 use App\Models\Category;
@@ -26,14 +26,14 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams())
+            ->json('post', 'admin/accounting/categories', $this->validParams())
             ->assertStatus(201);
     }
 
     /** @test */
     public function guests_cannot_add_categories()
     {
-        $this->json('post', 'admin/categories', $this->validParams())
+        $this->json('post', 'admin/accounting/categories', $this->validParams())
             ->assertStatus(401);
     }
 
@@ -43,7 +43,7 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams());
+            ->json('post', 'admin/accounting/categories', $this->validParams());
 
         tap(Category::find(14), function ($category) use ($response, $admin) {
             $response->assertStatus(201);
@@ -60,7 +60,7 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams([
+            ->json('post', 'admin/accounting/categories', $this->validParams([
                 'type' => ''
             ]));
 
@@ -74,7 +74,7 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams([
+            ->json('post', 'admin/accounting/categories', $this->validParams([
                 'type' => 'not a valid type'
             ]));
 
@@ -88,7 +88,7 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams([
+            ->json('post', 'admin/accounting/categories', $this->validParams([
                 'name' => ''
             ]));
 
@@ -106,7 +106,7 @@ class addCategoryTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams([
+            ->json('post', 'admin/accounting/categories', $this->validParams([
                 'name' => 'new category'
             ]));
 
@@ -120,7 +120,7 @@ class addCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/categories', $this->validParams([
+            ->json('post', 'admin/accounting/categories', $this->validParams([
                 'icon' => ''
             ]));
 

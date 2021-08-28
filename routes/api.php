@@ -26,16 +26,25 @@ Route::middleware('auth:admin')
 Route::prefix('admin')
     ->namespace('Admin')
     ->group(function () {
-        Route::get('dashboard/transactions-summary', 'Dashboard\TransactionSummaryController@show');
-        Route::get('dashboard/transactions', 'Dashboard\TransactionsController@show');
 
-        Route::get('transactions', 'Transactions\TransactionsController@index');
-        Route::post('transactions', 'Transactions\TransactionsController@store');
-        Route::patch('transactions/{transaction}', 'Transactions\TransactionsController@update');
-        Route::delete('transactions/{transaction}', 'Transactions\TransactionsController@destroy');
+        Route::prefix('dashboard')
+            ->namespace('Dashboard')
+            ->group(function() {
+                Route::get('transactions-summary', 'TransactionSummaryController@show');
+                Route::get('transactions', 'TransactionsController@show');
+            });
 
-        Route::get('categories', 'CategoriesController@index');
-        Route::post('categories', 'CategoriesController@store');
-        Route::patch('categories/{id}', 'CategoriesController@update');
-        Route::delete('categories/{id}', 'CategoriesController@destroy');
+        Route::prefix('accounting')
+            ->namespace('Accounting')
+            ->group(function () {
+                Route::get('transactions', 'TransactionsController@index');
+                Route::post('transactions', 'TransactionsController@store');
+                Route::patch('transactions/{transaction}', 'TransactionsController@update');
+                Route::delete('transactions/{transaction}', 'TransactionsController@destroy');
+
+                Route::get('categories', 'CategoriesController@index');
+                Route::post('categories', 'CategoriesController@store');
+                Route::patch('categories/{id}', 'CategoriesController@update');
+                Route::delete('categories/{id}', 'CategoriesController@destroy');
+            });
     });

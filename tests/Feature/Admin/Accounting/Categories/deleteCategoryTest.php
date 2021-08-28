@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Categories;
+namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
 use App\Models\Category;
@@ -21,7 +21,7 @@ class deleteCategoryTest extends TestCase
         $category = Category::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/categories/{$category->id}")
+            ->json('delete', "admin/accounting/categories/{$category->id}")
             ->assertStatus(204);
     }
 
@@ -30,7 +30,7 @@ class deleteCategoryTest extends TestCase
     {
         $category = Category::factory()->create();
 
-        $this->json('delete', "admin/categories/{$category->id}")
+        $this->json('delete', "admin/accounting/categories/{$category->id}")
             ->assertStatus(401);
     }
 
@@ -42,7 +42,7 @@ class deleteCategoryTest extends TestCase
         $category = Category::find(1);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/categories/{$category->id}")
+            ->json('delete', "admin/accounting/categories/{$category->id}")
             ->assertStatus(422);
     }
 
@@ -54,7 +54,7 @@ class deleteCategoryTest extends TestCase
         $category = Category::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/categories/{$category->id}")
+            ->json('delete', "admin/accounting/categories/{$category->id}")
             ->assertStatus(204);
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
@@ -75,7 +75,7 @@ class deleteCategoryTest extends TestCase
         ]);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/categories/{$category->id}")
+            ->json('delete', "admin/accounting/categories/{$category->id}")
             ->assertStatus(409);
 
         $this->assertDatabaseHas('categories', ['id' => $category->id]);

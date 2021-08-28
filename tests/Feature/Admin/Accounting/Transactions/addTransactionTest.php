@@ -30,14 +30,14 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams())
+            ->json('post', 'admin/accounting/transactions', $this->validParams())
             ->assertStatus(201);
     }
 
     /** @test */
     public function guests_cannot_add_transactions()
     {
-        $this->json('post', 'admin/transactions', $this->validParams())
+        $this->json('post', 'admin/accounting/transactions', $this->validParams())
             ->assertStatus(401);
     }
 
@@ -47,7 +47,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams());
+            ->json('post', 'admin/accounting/transactions', $this->validParams());
 
         tap(Transaction::first(), function ($transaction) use ($response, $admin) {
             $response->assertStatus(201);
@@ -67,7 +67,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'description' => ''
             ]));
 
@@ -81,7 +81,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'category_id' => ''
             ]));
 
@@ -95,7 +95,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'category_id' => 999
             ]));
 
@@ -109,7 +109,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'amount' => ''
             ]));
 
@@ -123,7 +123,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'amount' => 'abc'
             ]));
 
@@ -137,7 +137,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'amount' => '-1'
             ]));
 
@@ -151,7 +151,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'date' => ''
             ]));
 
@@ -165,7 +165,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'date' => 'abc'
             ]));
 
@@ -179,7 +179,7 @@ class addTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/transactions', $this->validParams([
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
                 'notes' => ''
             ]));
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Categories;
+namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
 use App\Models\Category;
@@ -37,7 +37,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory())
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory())
             ->assertStatus(204);
     }
 
@@ -46,7 +46,7 @@ class editCategoryTest extends TestCase
     {
         $category = Category::factory()->create($this->oldCategory());
 
-        $this->json('patch', "admin/categories/{$category->id}", $this->newCategory())
+        $this->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory())
             ->assertStatus(401);
     }
 
@@ -57,7 +57,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory());
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory());
 
         tap(Category::latest()->first(), function ($category) use ($response, $admin) {
             $response->assertStatus(204);
@@ -76,7 +76,7 @@ class editCategoryTest extends TestCase
         $category = Category::find(1);
 
         $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory())
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory())
             ->assertStatus(422);
     }
 
@@ -87,7 +87,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory([
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
                 'type' => ''
             ]));
 
@@ -102,7 +102,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory([
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
                 'name' => ''
             ]));
 
@@ -118,7 +118,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory([
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
                 'name' => 'sales'
             ]));
 
@@ -138,7 +138,7 @@ class editCategoryTest extends TestCase
         ]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", [
+            ->json('patch', "admin/accounting/categories/{$category->id}", [
                 'type' => 'out',
                 'name' => 'new category',
                 'icon' => 'money-bill-wave'
@@ -160,7 +160,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory([
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
                 'icon' => ''
             ]));
 
@@ -175,7 +175,7 @@ class editCategoryTest extends TestCase
         $category = Category::factory()->create($this->oldCategory());
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/categories/{$category->id}", $this->newCategory([
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
                 'type' => 'other'
             ]));
 

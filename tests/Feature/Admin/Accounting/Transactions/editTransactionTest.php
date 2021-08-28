@@ -43,7 +43,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction())
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction())
             ->assertStatus(204);
     }
 
@@ -52,7 +52,7 @@ class editTransactionTest extends TestCase
     {
         $transaction = Transaction::factory()->create($this->oldTransaction());
 
-        $this->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction())
+        $this->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction())
             ->assertStatus(401);
     }
 
@@ -64,7 +64,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => Admin::factory()->create()]));
 
         $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction())
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction())
             ->assertStatus(403);
     }
 
@@ -75,7 +75,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction());
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction());
 
         tap(Transaction::first(), function ($transaction) use ($response, $admin) {
             $response->assertStatus(204);
@@ -96,7 +96,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'description' => ''
             ]));
 
@@ -111,7 +111,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'category_id' => ''
             ]));
 
@@ -126,7 +126,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'category_id' => 999
             ]));
 
@@ -141,7 +141,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'amount' => ''
             ]));
 
@@ -156,7 +156,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'amount' => 'abc'
             ]));
 
@@ -171,7 +171,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'amount' => '-1'
             ]));
 
@@ -186,7 +186,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'date' => ''
             ]));
 
@@ -201,7 +201,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'date' => 'abc'
             ]));
 
@@ -216,7 +216,7 @@ class editTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/transactions/{$transaction->id}", $this->newTransaction([
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
                 'notes' => ''
             ]));
 

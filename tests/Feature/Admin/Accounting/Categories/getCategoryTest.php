@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Categories;
+namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -100,7 +100,7 @@ class getCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->get('admin/categories')
+            ->get('admin/accounting/categories')
             ->assertStatus(200);
     }
 
@@ -108,7 +108,7 @@ class getCategoryTest extends TestCase
     public function guests_cannot_view_categories()
     {
         $this->withHeaders(['accept' => 'application/json'])
-            ->get('admin/categories')
+            ->get('admin/accounting/categories')
             ->assertStatus(401);
     }
 
@@ -119,7 +119,7 @@ class getCategoryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/categories/?all')
+            ->getJson('admin/accounting/categories/?all')
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => $this->defaultValues
@@ -133,7 +133,7 @@ class getCategoryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/categories')
+            ->getJson('admin/accounting/categories')
             ->assertJson([
                 'data' => $this->defaultValues
             ]);
@@ -146,7 +146,7 @@ class getCategoryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/categories')
+            ->getJson('admin/accounting/categories')
             ->assertJsonStructure([
                 'total',
                 'per_page',
@@ -167,7 +167,7 @@ class getCategoryTest extends TestCase
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/categories?sort=name|asc')
+            ->getJson('admin/accounting/categories?sort=name|asc')
             ->assertJson([
                 'data' => [
                     [
