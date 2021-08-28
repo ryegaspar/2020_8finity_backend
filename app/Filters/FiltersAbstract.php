@@ -42,8 +42,15 @@ abstract class FiltersAbstract
         return new $this->filters[$filter];
     }
 
+    /**
+     * get the keys on the filters and their values from the request
+     * that are defined specifically for the instantiated object
+     * @param $filters
+     * @return array
+     */
     protected function filterFilters($filters)
     {
+        // array filter to remove empty values
         return array_filter($this->request->only(array_keys($this->filters)));
     }
 }

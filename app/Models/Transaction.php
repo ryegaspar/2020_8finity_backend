@@ -37,9 +37,10 @@ class Transaction extends Model
         return (new Money($this->amount))->formatted();
     }
 
-    public function scopeFilter(Builder $builder, $request, array $filters = [])
+    public function scopeFilter(Builder $builder, $request)
     {
-        return (new TransactionFilters($request))->filter($builder);
+        return (new TransactionFilters($request))
+            ->filter($builder);
     }
 
 //    public function scopeTableView($query, array $filters = [])
