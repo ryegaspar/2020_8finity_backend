@@ -16,7 +16,9 @@ class TransactionsController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::filter($request)->paginate($request->per_page);
+        $transactions = Transaction::with('admin', 'category')
+            ->filter($request)
+            ->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
     }
