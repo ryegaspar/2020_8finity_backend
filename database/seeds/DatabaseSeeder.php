@@ -21,8 +21,6 @@ class DatabaseSeeder extends Seeder
             'password'   => bcrypt('password123')
         ]);
 
-        Account::factory()->create();
-
         $this->call(TransactionSeeder::class);
         // $this->call(UserSeeder::class);
     }
