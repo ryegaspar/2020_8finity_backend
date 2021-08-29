@@ -1,0 +1,57 @@
+<?php
+
+namespace Tests\Feature\Admin\Accounting\Accounts;
+
+use App\Models\Account;
+use App\Models\Admin;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class addAccountTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /** @test */
+    public function only_authenticated_users_can_add_account()
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/accounts', ['name' => 'new'])
+            ->assertStatus(201);
+    }
+
+    /** @test */
+    public function guests_cannot_add_account()
+    {
+        $this->json('post', 'admin/accounting/accounts', ['name' => 'new'])
+            ->assertStatus(401);
+    }
+
+    /** @test */
+    public function adding_a_account()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/accounts', ['name' => 'new']);
+
+        tap(Account::find(2), function ($account) use ($response, $admin) {
+            $response->assertStatus(201);
+
+            $this->assertEquals('new', $account->name);
+        });
+    }
+
+    /** @test */
+    public function name_is_required()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/accounts', ['name' => '']);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('name');
+    }
+}

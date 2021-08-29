@@ -9,6 +9,8 @@ class Account extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     public function scopeTableView($query)
     {
         return $query->when(request('sort') ?? null, function ($query) {

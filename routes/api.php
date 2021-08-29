@@ -38,6 +38,7 @@ Route::prefix('admin')
             ->namespace('Accounting')
             ->group(function () {
                 Route::get('accounts', 'AccountsController@index');
+                Route::post('accounts', 'AccountsController@store');
 
                 Route::get('transactions', 'TransactionsController@index');
                 Route::post('transactions', 'TransactionsController@store');

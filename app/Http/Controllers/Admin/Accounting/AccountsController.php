@@ -19,10 +19,18 @@ class AccountsController extends Controller
         $accounts = Account::tableView()->get();
 
         return response()->json(new DatatableAccountCollection($accounts));
-//        $transactions = Transaction::with('admin', 'category')
-//            ->filter($request)
-//            ->paginate($request->per_page);
-//
-//        return response()->json(new PaginatedTransactionCollection($transactions));
+    }
+
+    public function store()
+    {
+        request()->validate([
+            'name' => 'required',
+        ]);
+
+        Account::create([
+            'name' => request('name'),
+        ]);
+
+        return response()->json([], 201);
     }
 }
