@@ -7,37 +7,42 @@ use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class addAccountTest extends TestCase
+class editAccountTest extends TestCase
 {
     use RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_add_accounts()
+    public function only_authenticated_users_can_update_accounts()
     {
         $admin = Admin::factory()->create();
 
+        $account = Account::factory()->create(['name' => 'old']);
+
         $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/accounts', ['name' => 'new'])
-            ->assertStatus(201);
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new'])
+            ->assertStatus(204);
     }
 
     /** @test */
-    public function guests_cannot_add_accounts()
+    public function guests_cannot_update_accounts()
     {
-        $this->json('post', 'admin/accounting/accounts', ['name' => 'new'])
+        $account = Account::factory()->create(['name' => 'old']);
+
+        $this->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new'])
             ->assertStatus(401);
     }
 
     /** @test */
-    public function adding_a_accounts()
+    public function updating_an_account()
     {
         $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'old']);
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/accounts', ['name' => 'new']);
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new']);
 
         tap(Account::latest()->first(), function ($account) use ($response, $admin) {
-            $response->assertStatus(201);
+            $response->assertStatus(204);
 
             $this->assertEquals('new', $account->name);
         });
@@ -47,9 +52,10 @@ class addAccountTest extends TestCase
     public function name_is_required()
     {
         $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'old']);
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/accounts', ['name' => '']);
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => '']);
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('name');

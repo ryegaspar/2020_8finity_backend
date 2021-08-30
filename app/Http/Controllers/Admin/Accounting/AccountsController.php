@@ -33,4 +33,17 @@ class AccountsController extends Controller
 
         return response()->json([], 201);
     }
+
+    public function update(Account $account)
+    {
+        request()->validate([
+            'name' => ['required'],
+        ]);
+
+        $account->update([
+            'name' => request('name'),
+        ]);
+
+        return response()->json([], 204);
+    }
 }

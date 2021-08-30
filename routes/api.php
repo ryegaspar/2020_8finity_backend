@@ -29,7 +29,7 @@ Route::prefix('admin')
 
         Route::prefix('dashboard')
             ->namespace('Dashboard')
-            ->group(function() {
+            ->group(function () {
                 Route::get('transactions-summary', 'TransactionSummaryController@show');
                 Route::get('transactions', 'TransactionsController@show');
             });
@@ -39,6 +39,7 @@ Route::prefix('admin')
             ->group(function () {
                 Route::get('accounts', 'AccountsController@index');
                 Route::post('accounts', 'AccountsController@store');
+                Route::patch('accounts/{account}', 'AccountsController@update');
 
                 Route::get('transactions', 'TransactionsController@index');
                 Route::post('transactions', 'TransactionsController@store');
