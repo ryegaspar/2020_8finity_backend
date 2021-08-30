@@ -22,7 +22,7 @@ class AccountFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'default'
+            'name' => $this->faker->name
         ];
     }
 }

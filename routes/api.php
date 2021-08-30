@@ -40,6 +40,7 @@ Route::prefix('admin')
                 Route::get('accounts', 'AccountsController@index');
                 Route::post('accounts', 'AccountsController@store');
                 Route::patch('accounts/{account}', 'AccountsController@update');
+                Route::delete('accounts/{account}', 'AccountsController@destroy');
 
                 Route::get('transactions', 'TransactionsController@index');
                 Route::post('transactions', 'TransactionsController@store');

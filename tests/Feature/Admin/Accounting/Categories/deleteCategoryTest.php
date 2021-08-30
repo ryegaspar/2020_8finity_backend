@@ -26,7 +26,7 @@ class deleteCategoryTest extends TestCase
     }
 
     /** @test */
-    public function guests_cannot_delete_transaction()
+    public function guests_cannot_delete_category()
     {
         $category = Category::factory()->create();
 
@@ -47,7 +47,7 @@ class deleteCategoryTest extends TestCase
     }
 
     /** @test */
-    public function deleting_a_transaction()
+    public function deleting_a_category()
     {
         $admin = Admin::factory()->create();
 
