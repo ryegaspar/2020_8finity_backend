@@ -18,6 +18,7 @@ class addTransactionTest extends TestCase
         return array_merge([
             'description' => 'new transaction',
             'category_id' => 1,
+            'account_id'  => 1,
             'amount'      => "100.25",
             'date'        => '2021-01-01',
             'notes'       => 'note'
@@ -55,6 +56,7 @@ class addTransactionTest extends TestCase
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals(1, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
+            $this->assertEquals(1, $transaction->account_id);
             $this->assertEquals(10025, $transaction->amount);
             $this->assertEquals(Carbon::parse('2021-01-01'), $transaction->date);
             $this->assertEquals('note', $transaction->notes);
@@ -101,6 +103,34 @@ class addTransactionTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('category_id');
+    }
+
+    /** @test */
+    public function account_is_required()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
+                'account_id' => ''
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
+    }
+
+    /** @test */
+    public function must_be_a_valid_account()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
+                'account_id' => 999
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
     }
 
     /** @test */

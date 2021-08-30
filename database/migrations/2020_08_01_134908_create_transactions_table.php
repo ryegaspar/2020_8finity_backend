@@ -16,6 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('admin_id');
             $table->unsignedBigInteger('amount');
             $table->string('description', 255)->nullable();
@@ -32,6 +33,10 @@ class CreateTransactionsTable extends Migration
                 ->references('id')
                 ->on('admins');
 //                ->cascadeOnDelete();
+
+            $table->foreign('account_id')
+                ->references('id')
+                ->on('accounts');
         });
     }
 

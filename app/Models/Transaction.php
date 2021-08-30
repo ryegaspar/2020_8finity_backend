@@ -103,4 +103,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }

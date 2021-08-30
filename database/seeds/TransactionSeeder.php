@@ -21,6 +21,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1, //sales
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $today,
             'amount'      => 20000
         ]);
@@ -28,6 +29,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $today,
             'amount'      => 15000
         ]);
@@ -35,6 +37,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 4, //electric bill
             'admin_id'    => 1,
+            'account_id' => 1,
             'description' => 'inec',
             'date'        => $today,
             'amount'      => 17500
@@ -43,6 +46,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 5, // internet
             'admin_id'    => 1,
+            'account_id' => 1,
             'description' => 'pldc',
             'date'        => $today,
             'amount'      => 12000
@@ -51,6 +55,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 6, // water
             'admin_id'    => 1,
+            'account_id' => 1,
             'description' => 'inwad',
             'date'        => $today,
             'amount'      => 10000
@@ -59,6 +64,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 7, // fuel
             'admin_id'    => 1,
+            'account_id' => 1,
             'description' => 'van gas',
             'date'        => $today,
             'amount'      => 5000
@@ -67,6 +73,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $twoDaysAgo,
             'amount'      => 90000
         ]);
@@ -74,6 +81,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 7, // fuel
             'admin_id'    => 1,
+            'account_id' => 1,
             'description' => 'ryan gas',
             'date'        => $twoDaysAgo,
             'amount'      => 30000
@@ -83,6 +91,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $sevenDaysAgo,
             'amount'      => 10000
         ]);
@@ -90,6 +99,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $sevenDaysAgo,
             'amount'      => 20000
         ]);
@@ -97,6 +107,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 1,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $lastMonth,
             'amount'      => 35000
         ]);
@@ -104,6 +115,7 @@ class TransactionSeeder extends Seeder
         Transaction::factory()->create([
             'category_id' => 7,
             'admin_id'    => 1,
+            'account_id' => 1,
             'date'        => $lastMonth,
             'amount'      => 55000
         ]);

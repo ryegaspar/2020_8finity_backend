@@ -17,6 +17,7 @@ class TransactionFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'admin_id'    => Admin::factory(),
+            'account_id'  => 1,
             'amount'      => 10000,
             'date'        => Carbon::now(),
         ];
