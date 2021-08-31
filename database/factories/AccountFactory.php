@@ -24,6 +24,7 @@ class AccountFactory extends Factory
         return [
             'name'      => $this->faker->name,
             'is_active' => true,
+            'balance'   => 0
         ];
     }
 }

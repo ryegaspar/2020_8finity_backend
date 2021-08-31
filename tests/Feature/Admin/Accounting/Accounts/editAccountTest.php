@@ -16,10 +16,12 @@ class editAccountTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $account = Account::factory()->create(['name' => 'old']);
+        $this->withExceptionHandling();
+
+        $account = Account::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new'])
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new', 'is_active' => true])
             ->assertStatus(204);
     }
 
@@ -39,12 +41,13 @@ class editAccountTest extends TestCase
         $account = Account::factory()->create(['name' => 'old']);
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new']);
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new', 'is_active' => false]);
 
         tap(Account::latest()->first(), function ($account) use ($response, $admin) {
             $response->assertStatus(204);
 
             $this->assertEquals('new', $account->name);
+            $this->assertFalse($account->is_active);
         });
     }
 
@@ -59,5 +62,44 @@ class editAccountTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('name');
+    }
+
+    /** @test */
+    public function status_must_be_boolean()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'old']);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new', 'is_active' => 'hello']);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('is_active');
+    }
+
+    /** @test */
+    public function deactivating_account()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'my account']);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'my account', 'is_active' => false]);
+
+        $response->assertStatus(204);
+        $this->assertFalse($account->fresh()->is_active);
+    }
+
+    /** @test */
+    public function deactivating_account_requires_zero_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'my account', 'balance' => 100]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'my account', 'is_active' => false]);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('is_active');
     }
 }

@@ -37,11 +37,21 @@ class AccountsController extends Controller
     public function update(Account $account)
     {
         request()->validate([
-            'name' => ['required'],
+            'name'      => ['required'],
+            'is_active' => ['boolean']
         ]);
 
+        if (request('is_active') === false && $account->balance > 0) {
+            return response()
+                ->json([
+                    'errors' =>
+                        ['is_active' => ['cannot deactivate account with non-zero balance']]
+                ], 422);
+        }
+
         $account->update([
-            'name' => request('name'),
+            'name'      => request('name'),
+            'is_active' => request('is_active')
         ]);
 
         return response()->json([], 204);
