@@ -15,7 +15,7 @@ class getAccountTest extends TestCase
         [
             'id'        => 1,
             'name'      => 'default',
-            'amount'    => '0',
+            'balance'   => '0',
             'is_active' => true,
         ],
     ];
