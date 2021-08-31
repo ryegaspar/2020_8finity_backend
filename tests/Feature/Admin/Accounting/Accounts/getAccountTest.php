@@ -13,9 +13,10 @@ class getAccountTest extends TestCase
 
     private $defaultValue = [
         [
-            'id'     => 1,
-            'name'   => 'default',
-            'amount' => '0',
+            'id'        => 1,
+            'name'      => 'default',
+            'amount'    => '0',
+            'is_active' => true,
         ],
     ];
 
@@ -66,11 +67,11 @@ class getAccountTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'     => 2,
+                        'id'   => 2,
                         'name' => "a_first",
                     ],
                     [
-                        'id'     => 1,
+                        'id'   => 1,
                         'name' => "default",
                     ],
                 ]

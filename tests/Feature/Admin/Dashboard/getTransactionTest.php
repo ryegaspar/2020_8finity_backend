@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Dashboard;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -40,9 +41,12 @@ class getTransactionTest extends TestCase
         $categoryIncome = Category::factory()->income()->create();
         $categoryExpense = Category::factory()->expense()->create();
 
+        $account = Account::factory()->create();
+
         $transaction1 = Transaction::create([
             'category_id' => $categoryIncome->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 12000,
             'date'        => $transactionDay
         ]);
@@ -50,6 +54,7 @@ class getTransactionTest extends TestCase
         $transaction2 = Transaction::create([
             'category_id' => $categoryExpense->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 8000,
             'date'        => $transactionDay
         ]);
@@ -72,6 +77,9 @@ class getTransactionTest extends TestCase
                         'category_id'      => "{$categoryIncome->id}",
                         'admin_id'         => $admin->id,
                         'admin_username'   => $admin->username,
+                        'account_id'       => $account->id,
+                        'account_name'     => $account->name,
+                        'account_status'   => $account->is_active
                     ],
                     [
                         'id'               => $transaction2->id,
@@ -86,6 +94,9 @@ class getTransactionTest extends TestCase
                         'category_id'      => "{$categoryExpense->id}",
                         'admin_id'         => $admin->id,
                         'admin_username'   => $admin->username,
+                        'account_id'       => $account->id,
+                        'account_name'     => $account->name,
+                        'account_status'   => $account->is_active
                     ]
                 ]
             ]);

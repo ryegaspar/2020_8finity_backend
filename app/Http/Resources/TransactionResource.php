@@ -29,6 +29,7 @@ class TransactionResource extends JsonResource
             'admin_username'   => $this->admin->username,
             'account_id'       => $this->account->id,
             'account_name'     => $this->account->name,
+            'account_status'   => $this->account->is_active
         ];
     }
 }

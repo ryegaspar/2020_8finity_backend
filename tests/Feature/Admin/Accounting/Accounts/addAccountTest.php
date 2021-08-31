@@ -40,6 +40,7 @@ class addAccountTest extends TestCase
             $response->assertStatus(201);
 
             $this->assertEquals('new', $account->name);
+            $this->assertTrue($account->is_active);
         });
     }
 

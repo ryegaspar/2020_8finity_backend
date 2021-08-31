@@ -22,7 +22,7 @@ class Transaction extends Model
     private function getValidDate($startDate = null, $endDate = null)
     {
         $startDate = ($startDate ? Carbon::parse($startDate) : Carbon::now()->startOfMonth())->format('Y-m-d');
-        $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today()->endOfMonth())->format('Y-m-d');
+        $endDate = ($endDate ? Carbon::parse($endDate) : Carbon::today()->endOfMonth()->addDay())->format('Y-m-d');
 
         return [$startDate, $endDate];
     }

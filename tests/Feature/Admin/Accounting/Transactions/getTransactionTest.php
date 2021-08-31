@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -22,6 +23,7 @@ class getTransactionTest extends TestCase
     protected $transaction2;
     protected $transaction3;
     protected $admin;
+    protected $account;
 
     private function create_transactions()
     {
@@ -32,10 +34,13 @@ class getTransactionTest extends TestCase
         $this->categoryIncome = Category::factory()->income()->create();
         $this->categoryExpense = Category::factory()->expense()->create();
 
+        $this->account = Account::factory()->create();
+
         $this->transaction1 = Transaction::create([
             'category_id' => $this->categoryIncome->id,
             'description' => 'transaction1',
             'admin_id'    => $this->admin->id,
+            'account_id'  => $this->account->id,
             'amount'      => 12000,
             'date'        => $this->transactionDay1
         ]);
@@ -44,6 +49,7 @@ class getTransactionTest extends TestCase
             'category_id' => $this->categoryExpense->id,
             'description' => 'transaction2',
             'admin_id'    => $this->admin->id,
+            'account_id'  => $this->account->id,
             'amount'      => 8000,
             'date'        => $this->transactionDay1
         ]);
@@ -51,6 +57,7 @@ class getTransactionTest extends TestCase
         $this->transaction3 = Transaction::create([
             'category_id' => $this->categoryIncome->id,
             'description' => 'transaction3',
+            'account_id'  => $this->account->id,
             'admin_id'    => $this->admin->id,
             'amount'      => 7000,
             'date'        => $this->transactionDay2

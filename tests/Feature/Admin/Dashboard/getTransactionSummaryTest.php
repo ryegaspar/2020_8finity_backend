@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Dashboard;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -43,9 +44,12 @@ class getTransactionSummaryTest extends TestCase
 
         $admin = Admin::factory()->create();
 
+        $account = Account::factory()->create();
+
         $transaction1 = Transaction::create([
             'category_id' => $categoryIncome->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 12000,
             'date'        => $transactionDay1
         ]);
@@ -53,6 +57,7 @@ class getTransactionSummaryTest extends TestCase
         $transaction2 = Transaction::create([
             'category_id' => $categoryExpense->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 8000,
             'date'        => $transactionDay1
         ]);
@@ -60,6 +65,7 @@ class getTransactionSummaryTest extends TestCase
         $transaction3 = Transaction::create([
             'category_id' => $categoryIncome->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 13000,
             'date'        => $transactionDay2
         ]);
@@ -67,6 +73,7 @@ class getTransactionSummaryTest extends TestCase
         $transaction4 = Transaction::create([
             'category_id' => $categoryExpense->id,
             'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
             'amount'      => 2000,
             'date'        => $transactionDay2
         ]);
