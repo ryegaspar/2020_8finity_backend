@@ -27,6 +27,8 @@ class TransactionResource extends JsonResource
             'category_id'      => $this->category_id,
             'admin_id'         => $this->admin->id,
             'admin_username'   => $this->admin->username,
+            'account_id'       => $this->account->id,
+            'account_name'     => $this->account->name,
         ];
     }
 }

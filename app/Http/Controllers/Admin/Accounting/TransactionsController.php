@@ -16,16 +16,11 @@ class TransactionsController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::with('admin', 'category')
+        $transactions = Transaction::with('admin', 'category', 'account')
             ->filter($request)
             ->paginate($request->per_page);
 
         return response()->json(new PaginatedTransactionCollection($transactions));
-    }
-
-    protected function getFilters()
-    {
-        return [];
     }
 
     public function store()
@@ -60,6 +55,7 @@ class TransactionsController extends Controller
         request()->validate([
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
+            'account_id'  => 'required|exists:accounts,id',
             'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'date'        => 'required|date',
             'notes'       => 'nullable'
@@ -68,6 +64,7 @@ class TransactionsController extends Controller
         $transaction->update([
             'description' => request('description'),
             'category_id' => request('category_id'),
+            'account_id'  => request('account_id'),
             'amount'      => (int)(request('amount') * 100),
             'date'        => request('date'),
             'notes'       => request('notes'),

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Transaction;
 use Carbon\Carbon;
@@ -18,6 +19,7 @@ class editTransactionTest extends TestCase
         return array_merge([
             'description' => 'old transaction',
             'category_id' => 1,
+            'account_id'  => 1,
             'amount'      => "100.25",
             'date'        => '2020-01-01',
             'notes'       => 'old note',
@@ -29,6 +31,7 @@ class editTransactionTest extends TestCase
         return array_merge([
             'description' => 'new transaction',
             'category_id' => 2,
+            'account_id'  => Account::factory()->create(['name' => 'new account'])->id,
             'amount'      => "200.25",
             'date'        => '2021-01-01',
             'notes'       => 'new note'
@@ -83,6 +86,7 @@ class editTransactionTest extends TestCase
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals(2, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
+            $this->assertEquals(2, $transaction->account_id);
             $this->assertEquals(20025, $transaction->amount);
             $this->assertEquals(Carbon::parse('2021-01-01'), $transaction->date);
             $this->assertEquals('new note', $transaction->notes);
@@ -132,6 +136,36 @@ class editTransactionTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('category_id');
+    }
+
+    /** @test */
+    public function account_is_required()
+    {
+        $admin = Admin::factory()->create();
+        $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
+                'account_id' => ''
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
+    }
+
+    /** @test */
+    public function must_be_a_valid_account()
+    {
+        $admin = Admin::factory()->create();
+        $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
+                'account_id' => 999
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
     }
 
     /** @test */
