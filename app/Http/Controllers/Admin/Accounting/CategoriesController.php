@@ -19,22 +19,11 @@ class CategoriesController extends Controller
 
     public function index(Request $request)
     {
-        $categories = new Category;
-
         if ($request->exists('all')) {
             return response()->json(new CategoryCollection(Category::all()));
         }
 
-        if ($request->sort) {
-            $sort = explode(',', $request->sort);
-
-            foreach ($sort as $item) {
-                list ($sortCol, $sortDir) = explode('|', $item);
-                $categories = $categories->orderBy($sortCol, $sortDir);
-            }
-        }
-
-        $categories = $categories->paginate($request->per_page);
+        $categories = Category::tableFilter()->paginate($request->per_page);
 
         return response()->json(new PaginatedCategoryCollection($categories));
     }

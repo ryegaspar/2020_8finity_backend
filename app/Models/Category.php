@@ -14,4 +14,16 @@ class Category extends Model
     public const INCOME = 'in';
 
     protected $guarded = [];
+
+    public function scopeTableFilter($query)
+    {
+        return $query->when(request('sort') ?? null, function ($query) {
+            $sort = explode(',', request('sort'));
+
+            foreach ($sort as $item) {
+                list ($sortCol, $sortDir) = explode('|', $item);
+                $query->orderBy($sortCol, $sortDir);
+            }
+        });
+    }
 }

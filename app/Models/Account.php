@@ -15,7 +15,7 @@ class Account extends Model
         'is_active' => 'boolean',
     ];
 
-    public function scopeTableView($query)
+    public function scopeTableFilter($query)
     {
         return $query->when(request('sort') ?? null, function ($query) {
             $sort = explode(',', request('sort'));

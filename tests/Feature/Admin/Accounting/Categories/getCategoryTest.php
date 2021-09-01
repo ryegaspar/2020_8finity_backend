@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
+use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -127,7 +128,7 @@ class getCategoryTest extends TestCase
     }
 
     /** @test */
-    public function can_view_categories_and_is_ordered_by_id()
+    public function can_view_categories_and_is_ordered_by_id_by_default()
     {
         $admin = Admin::factory()->create();
 

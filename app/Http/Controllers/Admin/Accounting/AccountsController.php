@@ -21,7 +21,7 @@ class AccountsController extends Controller
             return response()->json(new AccountCollection(Account::active()->get()));
         }
 
-        $accounts = Account::tableView()->get();
+        $accounts = Account::tableFilter()->get();
 
         return response()->json(new PaginatedAccountCollection($accounts));
     }

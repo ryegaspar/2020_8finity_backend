@@ -31,7 +31,7 @@ class Transaction extends Model
         return Carbon::parse($this->date)->format('Y-m-d');
     }
 
-    public function scopeFilter(Builder $builder, $request)
+    public function scopeTableFilter(Builder $builder, $request)
     {
         return (new TransactionFilters($request))
             ->filter($builder);
