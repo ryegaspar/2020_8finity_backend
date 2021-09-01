@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\DatatableAccountCollection;
+use App\Http\Resources\AccountCollection;
+use App\Http\Resources\PaginatedAccountCollection;
 use App\Models\Account;
 use Illuminate\Http\Request;
 
@@ -16,9 +17,13 @@ class AccountsController extends Controller
 
     public function index(Request $request)
     {
+        if ($request->exists('active')) {
+            return response()->json(new AccountCollection(Account::active()->get()));
+        }
+
         $accounts = Account::tableView()->get();
 
-        return response()->json(new DatatableAccountCollection($accounts));
+        return response()->json(new PaginatedAccountCollection($accounts));
     }
 
     public function store()

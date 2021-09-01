@@ -55,6 +55,23 @@ class getAccountTest extends TestCase
     }
 
     /** @test */
+    public function can_get_active_accounts()
+    {
+        $admin = Admin::factory()->create();
+
+        Account::factory()->create(['is_active' => false]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->withHeaders(['accept' => 'application/json'])
+            ->getJson('admin/accounting/accounts/?active')
+            ->assertStatus(200)
+            ->assertExactJson([
+                'data' => $this->defaultValue
+            ]);
+
+    }
+
+    /** @test */
     public function can_sorted_by_name()
     {
         $admin = Admin::factory()->create();

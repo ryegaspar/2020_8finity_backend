@@ -26,6 +26,11 @@ class Account extends Model
             }
         });
     }
+
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
     //    public function scopeTableView($query, array $filters = [])
 //    {
 //        return $query
