@@ -144,12 +144,12 @@ class getTransactionTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'     => $this->transaction3->id,
-                        'amount' => "7000",
+                        'id'     => $this->transaction2->id,
+                        'amount' => "-8000",
                     ],
                     [
-                        'id'     => $this->transaction2->id,
-                        'amount' => "8000",
+                        'id'     => $this->transaction3->id,
+                        'amount' => "7000",
                     ],
                     [
                         'id'     => $this->transaction1->id,

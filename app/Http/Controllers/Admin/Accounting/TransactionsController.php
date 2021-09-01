@@ -26,12 +26,12 @@ class TransactionsController extends Controller
     public function store()
     {
         request()->validate([
-            'description' => 'required',
-            'category_id' => 'required|exists:categories,id',
-            'account_id'  => 'required|exists:accounts,id',
-            'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'date'        => 'required|date',
-            'notes'       => 'nullable'
+            'description'   => 'required',
+            'category_id'   => 'required|exists:categories,id',
+            'account_id'    => 'required|exists:accounts,id',
+            'amount'        => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'date'          => 'required|date',
+            'notes'         => 'nullable'
         ]);
 
         request()->user('admin')
@@ -50,15 +50,16 @@ class TransactionsController extends Controller
 
     public function update(Transaction $transaction)
     {
+
         $this->authorize('update', $transaction);
 
         request()->validate([
-            'description' => 'required',
-            'category_id' => 'required|exists:categories,id',
-            'account_id'  => 'required|exists:accounts,id',
-            'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'date'        => 'required|date',
-            'notes'       => 'nullable'
+            'description'   => 'required',
+            'category_id'   => 'required|exists:categories,id',
+            'account_id'    => 'required|exists:accounts,id',
+            'amount'        => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'date'          => 'required|date',
+            'notes'         => 'nullable'
         ]);
 
         $transaction->update([

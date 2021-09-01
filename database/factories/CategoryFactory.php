@@ -12,6 +12,7 @@ class CategoryFactory extends Factory
     public function definition()
     {
         return [
+            'type' => 'in',
             'name' => $this->faker->sentence,
             'icon' => 'fa fa-money-bill'
         ];

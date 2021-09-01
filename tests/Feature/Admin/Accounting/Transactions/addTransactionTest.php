@@ -3,6 +3,7 @@
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -16,12 +17,12 @@ class addTransactionTest extends TestCase
     private function validParams($overrides = [])
     {
         return array_merge([
-            'description' => 'new transaction',
-            'category_id' => 1,
-            'account_id'  => 1,
-            'amount'      => "100.25",
-            'date'        => '2021-01-01',
-            'notes'       => 'note'
+            'description'   => 'new transaction',
+            'category_id'   => 1,
+            'account_id'    => 1,
+            'amount'        => "100.25",
+            'date'          => '2021-01-01',
+            'notes'         => 'note'
         ], $overrides);
     }
 
@@ -89,6 +90,50 @@ class addTransactionTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('category_id');
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_an_income_category_has_positive_amount()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions',
+                $this->validParams([
+                    'category_id'   => Category::factory()->income()->create()->id,
+                    'category_type' => 'income',
+                    'amount'        => 100
+                ])
+            );
+
+        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
+            $response->assertStatus(201);
+
+            $this->assertGreaterThan(0, $transaction->amount);
+            $this->assertEquals(10000, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_an_expense_category_has_negative_amount()
+    {
+        $admin = Admin::factory()->create();
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions',
+                $this->validParams([
+                    'category_id'   => Category::factory()->expense()->create()->id,
+                    'category_type' => 'expense',
+                    'amount'        => 100
+                ])
+            );
+
+        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
+            $response->assertStatus(201);
+
+            $this->assertLessThan(0, $transaction->amount);
+            $this->assertEquals(-10000, $transaction->amount);
+        });
     }
 
     /** @test */

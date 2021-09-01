@@ -15,11 +15,13 @@ class TransactionFactory extends Factory
 
     public function definition()
     {
+        $category = Category::factory()->create();
+
         return [
-            'category_id' => Category::factory(),
+            'category_id' => $category->id,
             'admin_id'    => Admin::factory(),
             'account_id'  => Account::factory(),
-            'amount'      => 10000,
+            'amount'      => 10000 * ($category->type === 'in' ? 1 : -1),
             'date'        => Carbon::now(),
         ];
     }

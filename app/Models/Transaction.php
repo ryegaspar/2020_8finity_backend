@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\ExpenseTracker\Money;
 use App\Filters\Transaction\TransactionFilters;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,11 +29,6 @@ class Transaction extends Model
     public function getFormattedDateAttribute()
     {
         return Carbon::parse($this->date)->format('Y-m-d');
-    }
-
-    public function getAmountFormattedAttribute()
-    {
-        return (new Money($this->amount))->formatted();
     }
 
     public function scopeFilter(Builder $builder, $request)

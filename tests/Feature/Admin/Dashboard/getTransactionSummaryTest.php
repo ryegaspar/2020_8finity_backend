@@ -85,15 +85,12 @@ class getTransactionSummaryTest extends TestCase
                 'data' => [
                     'income'  => [
                         'amount'           => '25000',
-                        'amount_formatted' => '₱250.00'
                     ],
                     'expense' => [
-                        'amount'           => '10000',
-                        'amount_formatted' => '₱100.00'
+                        'amount'           => '-10000',
                     ],
                     'total'   => [
                         'amount'           => '15000',
-                        'amount_formatted' => '₱150.00'
                     ]
                 ]
             ]);

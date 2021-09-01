@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('account_id');
             $table->unsignedBigInteger('admin_id');
-            $table->unsignedBigInteger('amount');
+            $table->BigInteger('amount');
             $table->string('description', 255)->nullable();
             $table->text('notes')->nullable();
             $table->date('date');

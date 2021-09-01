@@ -16,8 +16,7 @@
         "laravel/sanctum": "^2.4",
         "laravel/telescope": "^4.6",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0",
-        "moneyphp/money": "^3.3"
+        "laravel/ui": "^3.0"
     },
     "require-dev": {
         "dms/phpunit-arraysubset-asserts": "^0.2.0",
