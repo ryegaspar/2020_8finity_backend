@@ -45,19 +45,19 @@ class CategoriesController extends Controller
         return response()->json([], 201);
     }
 
-    public function update($id)
+    public function update(Category $category)
     {
-        if ((int)request('id') <= 13) {
+        if ($category->id <= 13) {
             return response()->json([], 422);
         }
 
         request()->validate([
             'type' => ['required', Rule::in('in', 'out')],
-            'name' => ['required', Rule::unique('categories', 'name')->ignore($id)],
+            'name' => ['required', Rule::unique('categories', 'name')->ignore($category->id)],
             'icon' => 'required'
         ]);
 
-        Category::find($id)->update([
+        $category->update([
             'type' => request('type'),
             'name' => request('name'),
             'icon' => request('icon')
@@ -66,17 +66,17 @@ class CategoriesController extends Controller
         return response()->json([], 204);
     }
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        if ((int)request('id') <= 13) {
+        if ($category->id <= 13) {
             return response()->json([], 422);
         }
 
-        if (Transaction::where('category_id', $id)->count()) {
+        if ($category->transaction->count()) {
             return response()->json([], 409);
         }
 
-        Category::find($id)->delete();
+        $category->delete();
 
         return response()->json([], 204);
     }

@@ -49,7 +49,7 @@ Route::prefix('admin')
 
                 Route::get('categories', 'CategoriesController@index');
                 Route::post('categories', 'CategoriesController@store');
-                Route::patch('categories/{id}', 'CategoriesController@update');
-                Route::delete('categories/{id}', 'CategoriesController@destroy');
+                Route::patch('categories/{category}', 'CategoriesController@update');
+                Route::delete('categories/{category}', 'CategoriesController@destroy');
             });
     });

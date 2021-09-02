@@ -26,4 +26,9 @@ class Category extends Model
             }
         });
     }
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }
