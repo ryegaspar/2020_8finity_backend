@@ -57,6 +57,14 @@ class CategoriesController extends Controller
             'icon' => 'required'
         ]);
 
+        if (($category->getOriginal('type') !== request('type')) && $category->transaction->count()) {
+            return response()
+                ->json([
+                    'errors' =>
+                        ['type' => ['cannot change type when category has transactions']]
+                ], 422);
+        }
+
         $category->update([
             'type' => request('type'),
             'name' => request('name'),

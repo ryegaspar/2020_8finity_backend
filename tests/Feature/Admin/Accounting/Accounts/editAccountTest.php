@@ -107,6 +107,8 @@ class editAccountTest extends TestCase
      * this test shows only that when is_active is changed, the error
      * 422 is shown when the account has balance.  if is_active is not changed
      * there will be no error.
+     *
+     * - only tracks the is_active value if it changed.
      */
     public function can_update_name_even_if_account_is_deactivated_with_a_non_zero_balance()
     {

@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -181,6 +182,21 @@ class editCategoryTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('type');
+    }
 
+    /** @test */
+    public function cannot_update_type_if_there_are_transaction_defined_in_that_category()
+    {
+        $admin = Admin::factory()->create();
+        $category = Category::factory()->create(['type' => 'in']);
+        Transaction::factory()->create(['category_id' => $category->id]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory([
+                'type' => 'out'
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('type');
     }
 }
