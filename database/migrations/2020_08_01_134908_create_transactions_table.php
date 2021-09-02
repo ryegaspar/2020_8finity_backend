@@ -15,28 +15,14 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('account_id');
-            $table->unsignedBigInteger('admin_id');
+            $table->foreignId('category_id')->constrained();
+            $table->foreignId('account_id')->constrained();
+            $table->foreignId('admin_id')->constrained();
             $table->BigInteger('amount');
             $table->string('description', 255)->nullable();
             $table->text('notes')->nullable();
             $table->date('date');
             $table->timestamps();
-
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('categories');
-//                ->cascadeOnDelete();
-
-            $table->foreign('admin_id')
-                ->references('id')
-                ->on('admins');
-//                ->cascadeOnDelete();
-
-            $table->foreign('account_id')
-                ->references('id')
-                ->on('accounts');
         });
     }
 
