@@ -102,4 +102,22 @@ class editAccountTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('is_active');
     }
+
+    /** @test
+     * this test shows only that when is_active is changed, the error
+     * 422 is shown when the account has balance.  if is_active is not changed
+     * there will be no error.
+     */
+    public function can_update_name_even_if_account_is_deactivated_with_a_non_zero_balance()
+    {
+        $this->withoutExceptionHandling();
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['name' => 'my account', 'balance' => 100, 'is_active' => false]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new account', 'is_active' => false]);
+
+        $response->assertStatus(204);
+        $this->assertEquals('new account', $account->fresh()->name);
+    }
 }

@@ -46,7 +46,7 @@ class AccountsController extends Controller
             'is_active' => ['boolean']
         ]);
 
-        if (request('is_active') === false && $account->balance > 0) {
+        if ($account->getOriginal('is_active') && !request('is_active') && $account->balance > 0) {
             return response()
                 ->json([
                     'errors' =>
