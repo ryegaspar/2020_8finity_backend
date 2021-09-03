@@ -277,6 +277,17 @@ class AddTransactionTest extends TestCase
             );
 
         $this->assertEquals(10000, $account->fresh()->balance);
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions',
+                $this->validParams([
+                    'account_id'  => $account->id,
+                    'category_id' => $category->id,
+                    'amount'      => 50
+                ])
+            );
+
+        $this->assertEquals(15000, $account->fresh()->balance);
     }
 
     /** @test */

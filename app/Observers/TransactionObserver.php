@@ -33,8 +33,8 @@ class TransactionObserver
 
     public function created(Transaction $transaction)
     {
-        $balance = Account::sumOfBalanceByAccount($transaction->account_id);
-        $transaction->account()->update(['balance' => $balance + $transaction->amount]);
+        $total = Transaction::sumByAccount($transaction->account_id);
+        $transaction->account()->update(['balance' => $total]);
     }
 
     public function updated(Transaction $transaction)
