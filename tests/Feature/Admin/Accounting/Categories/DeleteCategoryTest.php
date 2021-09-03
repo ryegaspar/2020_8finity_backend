@@ -8,7 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class deleteCategoryTest extends TestCase
+class DeleteCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

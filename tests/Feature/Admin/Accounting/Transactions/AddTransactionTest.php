@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
-class addTransactionTest extends TestCase
+class AddTransactionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -90,50 +90,6 @@ class addTransactionTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('category_id');
-    }
-
-    /** @test */
-    public function adding_a_transaction_with_an_income_category_has_positive_amount()
-    {
-        $admin = Admin::factory()->create();
-
-        $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/transactions',
-                $this->validParams([
-                    'category_id'   => Category::factory()->income()->create()->id,
-                    'category_type' => 'income',
-                    'amount'        => 100
-                ])
-            );
-
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(201);
-
-            $this->assertGreaterThan(0, $transaction->amount);
-            $this->assertEquals(10000, $transaction->amount);
-        });
-    }
-
-    /** @test */
-    public function adding_a_transaction_with_an_expense_category_has_negative_amount()
-    {
-        $admin = Admin::factory()->create();
-
-        $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/transactions',
-                $this->validParams([
-                    'category_id'   => Category::factory()->expense()->create()->id,
-                    'category_type' => 'expense',
-                    'amount'        => 100
-                ])
-            );
-
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(201);
-
-            $this->assertLessThan(0, $transaction->amount);
-            $this->assertEquals(-10000, $transaction->amount);
-        });
     }
 
     /** @test */

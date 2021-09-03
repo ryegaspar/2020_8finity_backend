@@ -8,7 +8,7 @@ use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class editCategoryTest extends TestCase
+class EditCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

@@ -7,7 +7,7 @@ use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class addCategoryTest extends TestCase
+class AddCategoryTest extends TestCase
 {
     use RefreshDatabase;
 

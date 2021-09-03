@@ -7,7 +7,7 @@ use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class deleteAccountTest extends TestCase
+class DeleteAccountTest extends TestCase
 {
     use RefreshDatabase;
 
