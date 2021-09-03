@@ -85,17 +85,17 @@ class TransactionTest extends TestCase
         $transactions = Transaction::transactionsBetween()->toArray();
 
         $expectedTransaction1 = [
-            'amount' => "20000",
+            'amount' => 20000,
             'date'   => $thisMonth
         ];
 
         $expectedTransaction2 = [
-            'amount' => "10000",
+            'amount' => 10000,
             'date'   => $thisMonth
         ];
 
         $oldTransaction = [
-            'amount' => '5000',
+            'amount' => 5000,
             'date'   => $twoMonthsAgo
         ];
 
@@ -118,17 +118,17 @@ class TransactionTest extends TestCase
         $transactions = Transaction::transactionsBetween()->toArray();
 
         $expectedTransaction1 = [
-            'amount' => "5000",
+            'amount' => 5000,
             'date'   => $tenthOfMonth
         ];
 
         $expectedTransaction2 = [
-            'amount' => "20000",
+            'amount' => 20000,
             'date'   => $fifthOfMonth
         ];
 
         $expectedTransaction3 = [
-            'amount' => '10000',
+            'amount' => 10000,
             'date'   => $startOfMonth
         ];
 
@@ -152,17 +152,17 @@ class TransactionTest extends TestCase
         $transactions = Transaction::transactionsBetween($fiveMonthsAgo, $threeMonthsAgo)->toArray();
 
         $expectedTransaction1 = [
-            'amount' => "20000",
+            'amount' => 20000,
             'date'   => $threeMonthsAgo
         ];
 
         $expectedTransaction2 = [
-            'amount' => "10000",
+            'amount' => 10000,
             'date'   => $fiveMonthsAgo
         ];
 
         $oldTransaction = [
-            'amount' => '5000',
+            'amount' => 5000,
             'date'   => $today
         ];
 

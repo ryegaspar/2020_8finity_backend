@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class getTransactionTest extends TestCase
+class GetTransactionTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -68,12 +68,12 @@ class getTransactionTest extends TestCase
                         'id'               => $transaction1->id,
                         'description'      => $transaction1->description,
                         'notes'            => $transaction1->notes,
-                        'amount'           => "12000",
+                        'amount'           => 12000,
                         'date'             => $transactionDay,
                         'category_type'    => 'income',
                         'category_icon'    => $categoryIncome->icon,
                         'category_name'    => $categoryIncome->name,
-                        'category_id'      => "{$categoryIncome->id}",
+                        'category_id'      => $categoryIncome->id,
                         'admin_id'         => $admin->id,
                         'admin_username'   => $admin->username,
                         'account_id'       => $account->id,
@@ -84,12 +84,12 @@ class getTransactionTest extends TestCase
                         'id'               => $transaction2->id,
                         'description'      => $transaction2->description,
                         'notes'            => $transaction2->notes,
-                        'amount'           => "-8000",
+                        'amount'           => -8000,
                         'date'             => $transactionDay,
                         'category_type'    => 'expense',
                         'category_icon'    => $categoryExpense->icon,
                         'category_name'    => $categoryExpense->name,
-                        'category_id'      => "{$categoryExpense->id}",
+                        'category_id'      => $categoryExpense->id,
                         'admin_id'         => $admin->id,
                         'admin_username'   => $admin->username,
                         'account_id'       => $account->id,

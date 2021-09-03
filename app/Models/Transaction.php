@@ -65,6 +65,15 @@ class Transaction extends Model
             ->get();
     }
 
+    public function scopeSumByAccount($query, $accountId)
+    {
+        return $query->with(['account'])
+            ->whereHas('account', function($q) use ($accountId) {
+                $q->where('accounts.id', $accountId);
+            })
+            ->sum('amount');
+    }
+
     public function category()
     {
         return $this->belongsTo(Category::class);

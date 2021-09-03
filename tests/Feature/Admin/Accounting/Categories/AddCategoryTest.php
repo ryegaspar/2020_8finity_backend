@@ -45,7 +45,7 @@ class AddCategoryTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/categories', $this->validParams());
 
-        tap(Category::find(14), function ($category) use ($response, $admin) {
+        tap(Category::latest()->first(), function ($category) use ($response, $admin) {
             $response->assertStatus(201);
 
             $this->assertEquals('in', $category->type);

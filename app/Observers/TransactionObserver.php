@@ -8,7 +8,7 @@ use App\Models\Transaction;
 
 class TransactionObserver
 {
-    public $afterCommit = true;
+//    public $afterCommit = true;
     /**
      * Handle the Transaction "creating" event.
      *
@@ -35,6 +35,13 @@ class TransactionObserver
     {
         $balance = Account::sumOfBalanceByAccount($transaction->account_id);
         $transaction->account()->update(['balance' => $balance + $transaction->amount]);
+    }
+
+    public function updated(Transaction $transaction)
+    {
+        $total = Transaction::sumByAccount($transaction->account_id);
+        $transaction->account()->update(['balance' => $total]);
+//        dd($transaction->getOriginal('amount'), $transaction->amount);
     }
 
     /**

@@ -15,7 +15,7 @@ class GetAccountTest extends TestCase
         [
             'id'        => 1,
             'name'      => 'default',
-            'balance'   => '0',
+            'balance'   => 0,
             'is_active' => true,
         ],
     ];
@@ -76,7 +76,7 @@ class GetAccountTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        Account::factory()->create(['name' => 'a_first']);
+        $account = Account::factory()->create(['name' => 'a_first']);
 
         $this->actingAs($admin, 'admin')
             ->withHeaders(['accept' => 'application/json'])
@@ -84,7 +84,7 @@ class GetAccountTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'   => 2,
+                        'id'   => $account->id,
                         'name' => "a_first",
                     ],
                     [

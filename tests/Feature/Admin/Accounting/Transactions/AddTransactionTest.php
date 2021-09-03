@@ -261,7 +261,7 @@ class AddTransactionTest extends TestCase
     }
 
     /** @test */
-    public function adding_a_transaction_with_income_type_category_adds_to_its_account_balance()
+    public function adding_a_transaction_with_income_category_adds_to_its_account_balance()
     {
         $admin = Admin::factory()->create();
         $account = Account::factory()->create();
@@ -280,7 +280,7 @@ class AddTransactionTest extends TestCase
     }
 
     /** @test */
-    public function adding_a_transaction_with_expense_type_category_lessens_to_its_account_balance()
+    public function adding_a_transaction_with_expense_category_lessens_to_its_account_balance()
     {
         $admin = Admin::factory()->create();
         $account = Account::factory()->create();

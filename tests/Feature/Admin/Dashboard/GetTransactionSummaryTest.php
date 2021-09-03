@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class getTransactionSummaryTest extends TestCase
+class GetTransactionSummaryTest extends TestCase
 {
     use RefreshDatabase;
 

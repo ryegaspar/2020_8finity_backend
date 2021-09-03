@@ -35,7 +35,7 @@ class EditTransactionTest extends TestCase
         return array_merge([
             'description' => 'new transaction',
             'category_id' => ($this->newCategory = Category::factory()->expense()->create())->id,
-            'account_id'  => Account::factory()->create(['name' => 'new account'])->id,
+            'account_id'  => 1,
             'amount'      => "200.25",
             'date'        => '2021-01-01',
             'notes'       => 'new note'
@@ -80,19 +80,22 @@ class EditTransactionTest extends TestCase
     {
         $admin = Admin::factory()->create();
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+        $account = Account::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
-                $this->newTransaction()
+                $this->newTransaction([
+                    'account_id' => $account->id,
+                ])
             );
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
+        tap(Transaction::first(), function ($transaction) use ($response, $admin, $account) {
             $response->assertStatus(204);
 
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals($this->newCategory->id, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
-            $this->assertEquals(2, $transaction->account_id);
+            $this->assertEquals($account->id, $transaction->account_id);
             $this->assertEquals(-20025, $transaction->amount);
             $this->assertEquals(Carbon::parse('2021-01-01'), $transaction->date);
             $this->assertEquals('new note', $transaction->notes);
@@ -306,5 +309,90 @@ class EditTransactionTest extends TestCase
             $this->assertLessThan(0, $transaction->amount);
             $this->assertEquals(-10000, $transaction->amount);
         });
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_the_same_income_category_updates_its_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(10000, $account->fresh()->balance);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'admin_id'    => $admin->id,
+                    'account_id'  => $account->id,
+                    'category_id' => $category->id,
+                    'amount'      => 50
+                ])
+            );
+
+        $this->assertEquals(5000, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_the_same_expense_category_updates_its_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category = Category::factory()->expense()->create();
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(-10000, $account->fresh()->balance);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'admin_id'    => $admin->id,
+                    'account_id'  => $account->id,
+                    'category_id' => $category->id,
+                    'amount'      => 50
+                ])
+            );
+
+        $this->assertEquals(-5000, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_different_category_types_updates_its_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category_expense = Category::factory()->expense()->create();
+        $category_income = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
+            'category_id' => $category_income->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(10000, $account->fresh()->balance);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'admin_id'    => $admin->id,
+                    'account_id'  => $account->id,
+                    'category_id' => $category_expense->id,
+                    'amount'      => 25
+                ])
+            );
+
+        $this->assertEquals(-2500, $account->fresh()->balance);
     }
 }

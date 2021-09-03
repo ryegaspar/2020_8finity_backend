@@ -22,7 +22,7 @@ class CategoryFactory extends Factory
     {
         return $this->state([
             'type' => 'in',
-            'name' => 'salary',
+            'name' => $this->faker->name,
             'icon' => 'fa fa-money-bill'
         ]);
     }
@@ -31,7 +31,7 @@ class CategoryFactory extends Factory
     {
         return $this->state([
             'type' => 'out',
-            'name' => 'shopping',
+            'name' => $this->faker->name,
             'icon' => 'fa fa-shopping-cart'
         ]);
     }
