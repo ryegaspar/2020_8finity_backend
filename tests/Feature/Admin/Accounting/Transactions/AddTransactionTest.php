@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
@@ -17,12 +18,12 @@ class AddTransactionTest extends TestCase
     private function validParams($overrides = [])
     {
         return array_merge([
-            'description'   => 'new transaction',
-            'category_id'   => 1,
-            'account_id'    => 1,
-            'amount'        => "100.25",
-            'date'          => '2021-01-01',
-            'notes'         => 'note'
+            'description' => 'new transaction',
+            'category_id' => 1,
+            'account_id'  => 1,
+            'amount'      => "100.25",
+            'date'        => '2021-01-01',
+            'notes'       => 'note'
         ], $overrides);
     }
 
@@ -225,9 +226,8 @@ class AddTransactionTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/transactions',
                 $this->validParams([
-                    'category_id'   => Category::factory()->income()->create()->id,
-                    'category_type' => 'income',
-                    'amount'        => 100
+                    'category_id' => Category::factory()->income()->create()->id,
+                    'amount'      => 100
                 ])
             );
 
@@ -247,9 +247,8 @@ class AddTransactionTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/transactions',
                 $this->validParams([
-                    'category_id'   => Category::factory()->expense()->create()->id,
-                    'category_type' => 'expense',
-                    'amount'        => 100
+                    'category_id' => Category::factory()->expense()->create()->id,
+                    'amount'      => 100
                 ])
             );
 
@@ -259,5 +258,43 @@ class AddTransactionTest extends TestCase
             $this->assertLessThan(0, $transaction->amount);
             $this->assertEquals(-10000, $transaction->amount);
         });
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_income_type_category_adds_to_its_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions',
+                $this->validParams([
+                    'account_id'  => $account->id,
+                    'category_id' => $category->id,
+                    'amount'      => 100
+                ])
+            );
+
+        $this->assertEquals(10000, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_expense_type_category_lessens_to_its_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category = Category::factory()->expense()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions',
+                $this->validParams([
+                    'account_id'  => $account->id,
+                    'category_id' => $category->id,
+                    'amount'      => 100
+                ])
+            );
+
+        $this->assertEquals(-10000, $account->fresh()->balance);
     }
 }

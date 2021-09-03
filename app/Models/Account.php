@@ -31,6 +31,11 @@ class Account extends Model
     {
         return $query->where('is_active', true);
     }
+
+    public function scopeSumOfBalanceByAccount($query, $accountId)
+    {
+        return $query->where('id', $accountId)->sum('balance');
+    }
     //    public function scopeTableView($query, array $filters = [])
 //    {
 //        return $query

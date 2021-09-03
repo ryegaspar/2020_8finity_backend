@@ -2,12 +2,13 @@
 
 namespace App\Observers;
 
+use App\Models\Account;
 use App\Models\Category;
 use App\Models\Transaction;
 
 class TransactionObserver
 {
-//    public $afterCommit = true;
+    public $afterCommit = true;
     /**
      * Handle the Transaction "creating" event.
      *
@@ -28,6 +29,12 @@ class TransactionObserver
     public function updating(Transaction $transaction)
     {
         $transaction->amount = $transaction->amount * ($transaction->category->type === 'in' ? 1 : -1);
+    }
+
+    public function created(Transaction $transaction)
+    {
+        $balance = Account::sumOfBalanceByAccount($transaction->account_id);
+        $transaction->account()->update(['balance' => $balance + $transaction->amount]);
     }
 
     /**
