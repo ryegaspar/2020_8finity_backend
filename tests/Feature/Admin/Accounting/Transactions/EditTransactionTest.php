@@ -262,4 +262,49 @@ class EditTransactionTest extends TestCase
 
         $response->assertStatus(204);
     }
+
+    /** @test */
+    public function updating_a_transaction_with_an_income_category_has_positive_amount()
+    {
+        $admin = Admin::factory()->create();
+        $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'category_id' => Category::factory()->income()->create(['name' => 'income'])->id,
+                    'amount'      => 100
+                ])
+            );
+
+        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
+            $response->assertStatus(204);
+
+            $this->assertGreaterThan(0, $transaction->amount);
+            $this->assertEquals(10000, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function updating_a_transaction_with_an_expense_category_has_negative_amount()
+    {
+        $admin = Admin::factory()->create();
+        $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'category_id'   => Category::factory()->expense()->create(['name' => 'expense'])->id,
+                    'category_type' => 'expense',
+                    'amount'        => 100
+                ])
+            );
+
+        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
+            $response->assertStatus(204);
+
+            $this->assertLessThan(0, $transaction->amount);
+            $this->assertEquals(-10000, $transaction->amount);
+        });
+    }
 }
