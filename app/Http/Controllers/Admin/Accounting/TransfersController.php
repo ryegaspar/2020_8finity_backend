@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Accounting;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Rules\EnoughAccountBalance;
+use App\Rules\NotDisabledAccount;
 use Illuminate\Http\Request;
 
 class TransfersController extends Controller
@@ -27,8 +28,8 @@ class TransfersController extends Controller
     {
         request()->validate([
             'description'  => 'required',
-            'from_account' => 'required|exists:accounts,id',
-            'to_account'   => 'required|exists:accounts,id',
+            'from_account' => ['required','exists:accounts,id', new NotDisabledAccount()],
+            'to_account'   => ['required','exists:accounts,id','different:from_account', new NotDisabledAccount()],
             'amount'       => ['required','regex:/^\d+(\.\d{1,2})?$/', new EnoughAccountBalance(request('from_account'))],
             'date'         => 'required|date',
             'notes'        => 'nullable'

@@ -144,6 +144,57 @@ class AddTransferTest extends TestCase
     }
 
     /** @test */
+    public function transfers_cannot_be_on_the_same_account()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['balance' => 10000]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transfers', $this->validParams([
+                'from_account' => $account->id,
+                'to_account'   => $account->id,
+                'amount'       => 25
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('to_account');
+    }
+
+    /** @test */
+    public function cannot_transfer_from_a_disabled_account()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['balance' => 10000, 'is_active' => false]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transfers', $this->validParams([
+                'from_account' => $account->id,
+                'amount'       => 25
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('from_account');
+    }
+
+    /** @test */
+    public function cannot_transfer_to_a_disabled_account()
+    {
+        $admin = Admin::factory()->create();
+        $account1 = Account::factory()->create(['balance' => 10000]);
+        $account2 = Account::factory()->create(['balance' => 10000, 'is_active' => false]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transfers', $this->validParams([
+                'from_account' => $account1->id,
+                'to_account'   => $account2->id,
+                'amount'       => 25
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('to_account');
+    }
+
+    /** @test */
     public function amount_is_required()
     {
         $admin = Admin::factory()->create();
@@ -230,7 +281,6 @@ class AddTransferTest extends TestCase
     public function account_from_must_have_sufficient_balance_to_transfer_to()
     {
         $admin = Admin::factory()->create();
-
         $account1 = Account::factory()->create(['balance' => 10000]);
 
         $response = $this->actingAs($admin, 'admin')
@@ -242,6 +292,24 @@ class AddTransferTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('amount');
     }
+
+//    /** @test */
+//    public function adding_transfers_updates_both_account_balances()
+//    {
+//        $admin = Admin::factory()->create();
+//        $account1 = Account::factory()->create(['balance' => 10000]);
+//        $account2 = Account::factory()->create(['balance' => 10000]);
+//
+//        $this->actingAs($admin, 'admin')
+//            ->json('post', 'admin/accounting/transfers', $this->validParams([
+//                'from_account' => $account1->id,
+//                'to_account'   => $account2->id,
+//                'amount'       => 25
+//            ]));
+//
+//        $this->assertEquals(7500, $account1->fresh()->balance);
+//        $this->assertEquals(12500, $account2->fresh()->balance);
+//    }
 
 //    /** @test */
 //    public function adding_a_transaction_with_an_income_category_has_positive_amount()
