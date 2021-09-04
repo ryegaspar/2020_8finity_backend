@@ -9,7 +9,7 @@ class Account extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'is_active'];
+    protected $guarded = [];
 
     protected $casts = [
         'is_active' => 'boolean',

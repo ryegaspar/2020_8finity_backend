@@ -354,7 +354,7 @@ class EditTransactionTest extends TestCase
 
         $this->assertEquals(-10000, $account->fresh()->balance);
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
                 $this->newTransaction([
                     'admin_id'    => $admin->id,
@@ -383,7 +383,7 @@ class EditTransactionTest extends TestCase
 
         $this->assertEquals(10000, $account->fresh()->balance);
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
                 $this->newTransaction([
                     'admin_id'    => $admin->id,
@@ -394,5 +394,37 @@ class EditTransactionTest extends TestCase
             );
 
         $this->assertEquals(-2500, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_with_different_account_updates_both_accounts()
+    {
+        $this->withExceptionHandling();
+        $admin = Admin::factory()->create();
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(10000, $account1->fresh()->balance);
+        $this->assertEquals(0, $account2->fresh()->balance);
+
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'admin_id'    => $admin->id,
+                    'account_id'  => $account2->id,
+                    'category_id' => $category->id,
+                    'amount'      => 100
+                ])
+            );
+
+        $this->assertEquals(0, $account1->fresh()->balance);
+        $this->assertEquals(10000, $account2->fresh()->balance);
     }
 }

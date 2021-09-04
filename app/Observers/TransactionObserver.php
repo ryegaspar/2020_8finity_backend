@@ -3,75 +3,55 @@
 namespace App\Observers;
 
 use App\Models\Account;
-use App\Models\Category;
 use App\Models\Transaction;
 
 class TransactionObserver
 {
-//    public $afterCommit = true;
-    /**
-     * Handle the Transaction "creating" event.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return void
-     */
-    public function creating(Transaction $transaction)
+    private function updateAmountSign(Transaction $transaction)
     {
-        $transaction->amount = $transaction->amount * ($transaction->category->type === 'in' ? 1 : -1);
+        $transaction->amount =  $transaction->amount * ($transaction->category->type === 'in' ? 1 : -1);
     }
 
-    /**
-     * Handle the Transaction "updating" event.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return void
-     */
+    private function updateAccountBalance($accountId)
+    {
+        $transactionTotal = Transaction::sumByAccount($accountId);
+        Account::find($accountId)->update(['balance' => $transactionTotal]);
+    }
+
+    public function creating(Transaction $transaction)
+    {
+        $this->updateAmountSign($transaction);
+    }
+
     public function updating(Transaction $transaction)
     {
-        $transaction->amount = $transaction->amount * ($transaction->category->type === 'in' ? 1 : -1);
+        $this->updateAmountSign($transaction);
     }
 
     public function created(Transaction $transaction)
     {
-        $total = Transaction::sumByAccount($transaction->account_id);
-        $transaction->account()->update(['balance' => $total]);
+        $this->updateAccountBalance($transaction->account_id);
     }
 
     public function updated(Transaction $transaction)
     {
-        $total = Transaction::sumByAccount($transaction->account_id);
-        $transaction->account()->update(['balance' => $total]);
-//        dd($transaction->getOriginal('amount'), $transaction->amount);
+        $this->updateAccountBalance($transaction->account_id);
+
+        if ($transaction->wasChanged('account_id')) {
+            $this->updateAccountBalance($transaction->getOriginal('account_id'));
+        }
     }
 
-    /**
-     * Handle the Transaction "deleted" event.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return void
-     */
     public function deleted(Transaction $transaction)
     {
         //
     }
 
-    /**
-     * Handle the Transaction "restored" event.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return void
-     */
     public function restored(Transaction $transaction)
     {
         //
     }
 
-    /**
-     * Handle the Transaction "force deleted" event.
-     *
-     * @param  \App\Models\Transaction  $transaction
-     * @return void
-     */
     public function forceDeleted(Transaction $transaction)
     {
         //
