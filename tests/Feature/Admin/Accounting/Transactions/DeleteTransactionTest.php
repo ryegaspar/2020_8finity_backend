@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
+use App\Models\Account;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Transaction;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -58,5 +60,28 @@ class DeleteTransactionTest extends TestCase
         $this->assertDatabaseMissing('transactions', ['id' => $transaction->id]);
 
         $this->assertEquals(0, Transaction::count());
+    }
+
+    /** @test */
+    public function deleting_a_transaction_updates_account_balance()
+    {
+        $admin = Admin::factory()->create();
+
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(10000, $account->fresh()->balance);
+
+        $this->actingAs($admin, 'admin')
+            ->json('delete', "admin/accounting/transactions/{$transaction->id}");
+
+        $this->assertEquals(0, $account->fresh()->balance);
     }
 }

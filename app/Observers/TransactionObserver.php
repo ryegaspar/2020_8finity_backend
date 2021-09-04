@@ -44,7 +44,7 @@ class TransactionObserver
 
     public function deleted(Transaction $transaction)
     {
-        //
+        $this->updateAccountBalance($transaction->account_id);
     }
 
     public function restored(Transaction $transaction)
