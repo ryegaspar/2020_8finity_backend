@@ -13,16 +13,16 @@ class CreateTransfersTable extends Migration
      */
     public function up()
     {
-//        Schema::create('transfers', function (Blueprint $table) {
-//            $table->id();
-//            $table->foreignId('from_account')->constrained('accounts', 'account_id');
-//            $table->foreignId('to_account')->constrained('accounts', 'account_id');
-//            $table->foreignId('admin_id')->constrained();
-//            $table->BigInteger('amount');
-//            $table->string('description', 255)->nullable();
-//            $table->text('notes')->nullable();
-//            $table->date('date');
-//        });
+        Schema::create('transfers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('from_account')->constrained('accounts' );
+            $table->foreignId('to_account')->constrained('accounts');
+            $table->foreignId('admin_id')->constrained();
+            $table->BigInteger('amount');
+            $table->string('description', 255)->nullable();
+            $table->text('notes')->nullable();
+            $table->date('date');
+        });
     }
 
     /**
@@ -32,6 +32,6 @@ class CreateTransfersTable extends Migration
      */
     public function down()
     {
-//        Schema::dropIfExists('transfers');
+        Schema::dropIfExists('transfers');
     }
 }
