@@ -15,7 +15,8 @@ class Transaction extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'date' => 'date:Y-m-d',
+        'date'   => 'date:Y-m-d',
+        'amount' => 'integer'
     ];
 
     private function getValidDate($startDate = null, $endDate = null)
@@ -68,7 +69,7 @@ class Transaction extends Model
     public function scopeSumByAccount($query, $accountId)
     {
         return $query->with(['account'])
-            ->whereHas('account', function($q) use ($accountId) {
+            ->whereHas('account', function ($q) use ($accountId) {
                 $q->where('accounts.id', $accountId);
             })
             ->sum('amount');

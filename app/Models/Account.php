@@ -13,6 +13,7 @@ class Account extends Model
 
     protected $casts = [
         'is_active' => 'boolean',
+        'balance'   => 'integer'
     ];
 
     public function scopeTableFilter($query)
