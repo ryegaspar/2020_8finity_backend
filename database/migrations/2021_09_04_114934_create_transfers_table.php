@@ -22,6 +22,7 @@ class CreateTransfersTable extends Migration
             $table->string('description', 255)->nullable();
             $table->text('notes')->nullable();
             $table->date('date');
+            $table->timestamps();
         });
     }
 

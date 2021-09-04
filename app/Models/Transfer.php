@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Transfer extends Model
 {
     use HasFactory;
+
+    protected $guarded = [];
+
+    protected $casts = [
+        'date'   => 'date:Y-m-d',
+        'amount' => 'integer'
+    ];
 }
