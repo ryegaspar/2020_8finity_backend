@@ -7,6 +7,7 @@ use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\PaginatedCategoryCollection;
 use App\Models\Category;
 use App\Models\Transaction;
+use App\Rules\CategoryHasTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -52,18 +53,15 @@ class CategoriesController extends Controller
         }
 
         request()->validate([
-            'type' => ['required', Rule::in('in', 'out')],
+            'type' => [
+                'required',
+                Rule::in('in', 'out'),
+                new CategoryHasTransactions($category->getOriginal('type') !== request('type'),
+                    $category->transaction()->count())
+            ],
             'name' => ['required', Rule::unique('categories', 'name')->ignore($category->id)],
             'icon' => 'required'
         ]);
-
-        if (($category->getOriginal('type') !== request('type')) && $category->transaction->count()) {
-            return response()
-                ->json([
-                    'errors' =>
-                        ['type' => ['cannot change type when category has transactions']]
-                ], 422);
-        }
 
         $category->update([
             'type' => request('type'),

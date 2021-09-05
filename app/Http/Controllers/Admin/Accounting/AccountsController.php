@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\AccountCollection;
 use App\Http\Resources\PaginatedAccountCollection;
 use App\Models\Account;
+use App\Rules\ActiveAccountHasBalance;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -44,16 +45,8 @@ class AccountsController extends Controller
     {
         request()->validate([
             'name'      => ['required', Rule::unique('accounts', 'name')->ignore($account->id)],
-            'is_active' => 'boolean'
+            'is_active' => ['boolean', new ActiveAccountHasBalance($account->getOriginal('is_active'), $account->balance)]
         ]);
-
-        if ($account->getOriginal('is_active') && !request('is_active') && $account->balance > 0) {
-            return response()
-                ->json([
-                    'errors' =>
-                        ['is_active' => ['cannot deactivate account with non-zero balance']]
-                ], 422);
-        }
 
         $account->update([
             'name'      => request('name'),
