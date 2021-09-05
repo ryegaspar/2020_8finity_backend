@@ -62,9 +62,12 @@ class AccountsController extends Controller
             return response()->json([], 422);
         }
 
-//        if (Account::where('category_id', $id)->count()) {
-//            return response()->json([], 409);
-//        }
+        if ($account->transactions()->count() ||
+            $account->toTransfers()->count() ||
+            $account->fromTransfers()->count())
+        {
+            return response()->json([], 409);
+        }
 
         $account->delete();
 
