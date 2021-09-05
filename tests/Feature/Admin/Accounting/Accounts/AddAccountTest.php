@@ -55,4 +55,20 @@ class AddAccountTest extends TestCase
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('name');
     }
+
+    /** @test */
+    public function name_must_be_unique()
+    {
+        $admin = Admin::factory()->create();
+        Account::factory()->create([
+            'name' => 'new account'
+        ]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/accounts', ['name' => 'new account']);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('name');
+
+    }
 }

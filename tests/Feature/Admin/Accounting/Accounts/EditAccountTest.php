@@ -65,6 +65,24 @@ class EditAccountTest extends TestCase
     }
 
     /** @test */
+    public function name_must_be_unique()
+    {
+        $admin = Admin::factory()->create();
+        Account::factory()->create([
+            'name' => 'old account'
+        ]);
+
+        $account = Account::factory()->create(['name' => 'new account']);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'old account']);
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('name');
+
+    }
+
+    /** @test */
     public function status_must_be_boolean()
     {
         $admin = Admin::factory()->create();

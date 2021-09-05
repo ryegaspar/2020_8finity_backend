@@ -7,6 +7,7 @@ use App\Http\Resources\AccountCollection;
 use App\Http\Resources\PaginatedAccountCollection;
 use App\Models\Account;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class AccountsController extends Controller
 {
@@ -29,7 +30,7 @@ class AccountsController extends Controller
     public function store()
     {
         request()->validate([
-            'name' => 'required',
+            'name' => 'required|unique:accounts,name',
         ]);
 
         Account::create([
@@ -42,8 +43,8 @@ class AccountsController extends Controller
     public function update(Account $account)
     {
         request()->validate([
-            'name'      => ['required'],
-            'is_active' => ['boolean']
+            'name'      => ['required', Rule::unique('accounts', 'name')->ignore($account->id)],
+            'is_active' => 'boolean'
         ]);
 
         if ($account->getOriginal('is_active') && !request('is_active') && $account->balance > 0) {
