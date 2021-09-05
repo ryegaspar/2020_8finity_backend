@@ -12,12 +12,6 @@ class TransactionObserver
         $transaction->amount =  $transaction->amount * ($transaction->category->type === 'in' ? 1 : -1);
     }
 
-    private function updateAccountBalance($accountId)
-    {
-        $transactionTotal = Transaction::sumByAccount($accountId);
-        Account::find($accountId)->update(['balance' => $transactionTotal]);
-    }
-
     public function creating(Transaction $transaction)
     {
         $this->updateAmountSign($transaction);
@@ -30,21 +24,21 @@ class TransactionObserver
 
     public function created(Transaction $transaction)
     {
-        $this->updateAccountBalance($transaction->account_id);
+        Account::find($transaction->account_id)->recalculateBalance();
     }
 
     public function updated(Transaction $transaction)
     {
-        $this->updateAccountBalance($transaction->account_id);
+        Account::find($transaction->account_id)->recalculateBalance();
 
         if ($transaction->wasChanged('account_id')) {
-            $this->updateAccountBalance($transaction->getOriginal('account_id'));
+            Account::find($transaction->getOriginal('account_id'))->recalculateBalance();
         }
     }
 
     public function deleted(Transaction $transaction)
     {
-        $this->updateAccountBalance($transaction->account_id);
+        Account::find($transaction->account_id)->recalculateBalance();
     }
 
     public function restored(Transaction $transaction)

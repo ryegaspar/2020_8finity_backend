@@ -18,16 +18,6 @@ class TransferObserver
     {
         Account::find($transfer->from_account)->recalculateBalance();
         Account::find($transfer->to_account)->recalculateBalance();
-//        Account::recalculateBalance_temp($transfer->from_account);
-//        Account::recalculateBalance_temp($transfer->to_account);
-//        $transactionsFromSum = Transaction::sumByAccount($transfer->from_account);
-//        $transactionsToSum = Transaction::sumByAccount($transfer->to_account);
-//
-//        $accountFromSum = Transfer::sumTo($transfer->from_account) - Transfer::sumFrom($transfer->from_account) + $transactionsFromSum;
-//        $accountToSum = Transfer::sumTo($transfer->to_account) - Transfer::sumFrom($transfer->to_account) + $transactionsToSum;
-//
-//        Account::find($transfer->from_account)->update(['balance' => $accountFromSum]);
-//        Account::find($transfer->to_account)->update(['balance' => $accountToSum]);
     }
 
     /**
