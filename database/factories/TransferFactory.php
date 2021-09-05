@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Account;
+use App\Models\Admin;
 use App\Models\Transfer;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class TransferFactory extends Factory
@@ -22,7 +25,12 @@ class TransferFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'from_account' => Account::factory(),
+            'to_account'   => Account::factory(),
+            'admin_id'     => Admin::factory(),
+            'amount'       => 1000,
+            'description'  => $this->faker->sentence,
+            'date'         => Carbon::now(),
         ];
     }
 }

@@ -50,7 +50,6 @@ class TransactionsController extends Controller
 
     public function update(Transaction $transaction)
     {
-
         $this->authorize('update', $transaction);
 
         request()->validate([

@@ -91,7 +91,7 @@ class EditAccountTest extends TestCase
     }
 
     /** @test */
-    public function deactivating_account_requires_zero_balance()
+    public function deactivating_account_requires_zero_balance_or_less()
     {
         $admin = Admin::factory()->create();
         $account = Account::factory()->create(['name' => 'my account', 'balance' => 100]);

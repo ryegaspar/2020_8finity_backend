@@ -6,6 +6,7 @@ use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Transaction;
+use App\Models\Transfer;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -82,16 +83,15 @@ class EditTransactionTest extends TestCase
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
         $account = Account::factory()->create();
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
                 $this->newTransaction([
                     'account_id' => $account->id,
                 ])
-            );
+            )
+            ->assertStatus(204);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin, $account) {
-            $response->assertStatus(204);
-
+        tap(Transaction::first(), function ($transaction) use ($admin, $account) {
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals($this->newCategory->id, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
@@ -399,7 +399,6 @@ class EditTransactionTest extends TestCase
     /** @test */
     public function updating_a_transaction_with_different_account_updates_both_accounts()
     {
-        $this->withExceptionHandling();
         $admin = Admin::factory()->create();
         $account1 = Account::factory()->create();
         $account2 = Account::factory()->create();
@@ -426,5 +425,45 @@ class EditTransactionTest extends TestCase
 
         $this->assertEquals(0, $account1->fresh()->balance);
         $this->assertEquals(10000, $account2->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_to_an_account_that_has_transfers_have_correct_account_balance()
+    {
+        $admin = Admin::factory()->create();
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'admin_id'    => $admin->id,
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 10000
+        ]);
+
+        $this->assertEquals(10000, $account1->fresh()->balance);
+
+        Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'admin_id'     => $admin->id,
+            'amount'       => 1000,
+        ]);
+
+        $this->assertEquals(9000, $account1->fresh()->balance);
+        $this->assertEquals(1000, $account2->fresh()->balance);
+
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}",
+                $this->newTransaction([
+                    'account_id'  => $account1->id,
+                    'category_id' => $category->id,
+                    'amount'      => 120
+                ])
+            );
+
+        $this->assertEquals(11000, $account1->fresh()->balance);
+        $this->assertEquals(1000, $account2->fresh()->balance);
     }
 }
