@@ -4,19 +4,17 @@ namespace App\Rules;
 
 use App\Models\Account;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Http\Request;
 
-class EnoughAccountBalance implements Rule
+class ActiveAccount implements Rule
 {
-    private $accountId;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct($id)
+    public function __construct()
     {
-        $this->accountId = $id;
+        //
     }
 
     /**
@@ -28,11 +26,7 @@ class EnoughAccountBalance implements Rule
      */
     public function passes($attribute, $value)
     {
-        $amount = (int)($value) * 100;
-
-        $accountBalance = Account::find($this->accountId)?->balance;
-
-        return $accountBalance >= $amount;
+        return Account::find($value)?->is_active;
     }
 
     /**
@@ -42,6 +36,6 @@ class EnoughAccountBalance implements Rule
      */
     public function message()
     {
-        return 'The account does not have enough balance';
+        return 'account is not active';
     }
 }

@@ -4,17 +4,19 @@ namespace App\Rules;
 
 use App\Models\Account;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Http\Request;
 
-class NotDisabledAccount implements Rule
+class AccountEnoughBalance implements Rule
 {
+    private $accountId;
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($id)
     {
-        //
+        $this->accountId = $id;
     }
 
     /**
@@ -26,7 +28,11 @@ class NotDisabledAccount implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Account::find($value)?->is_active;
+        $amount = (int)($value) * 100;
+
+        $accountBalance = Account::find($this->accountId)?->balance;
+
+        return $accountBalance >= $amount;
     }
 
     /**
@@ -36,6 +42,6 @@ class NotDisabledAccount implements Rule
      */
     public function message()
     {
-        return 'account is not active';
+        return 'The account does not have enough balance';
     }
 }
