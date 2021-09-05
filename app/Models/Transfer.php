@@ -15,4 +15,14 @@ class Transfer extends Model
         'date'   => 'date:Y-m-d',
         'amount' => 'integer'
     ];
+
+    public function scopeSumFrom($query, $account)
+    {
+        return $query->where('from_account', $account)->sum('amount');
+    }
+
+    public function scopeSumTo($query, $account)
+    {
+        return $query->where('to_account', $account)->sum('amount');
+    }
 }

@@ -26,7 +26,7 @@ class NotDisabledAccount implements Rule
      */
     public function passes($attribute, $value)
     {
-        return Account::find($value)->is_active;
+        return Account::find($value)?->is_active;
     }
 
     /**

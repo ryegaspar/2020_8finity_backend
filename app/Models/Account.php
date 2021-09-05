@@ -33,6 +33,30 @@ class Account extends Model
         return $query->where('is_active', true);
     }
 
+    public function recalculateBalance()
+    {
+        $fromTransfers = $this->fromTransfers()->sum('amount');
+        $toTransfers = $this->toTransfers()->sum('amount');
+        $transactions = $this->transactions()->sum('amount');
+
+        $this->update(['balance' => $transactions + $toTransfers - $fromTransfers]);
+    }
+
+    public function fromTransfers()
+    {
+        return $this->hasMany(Transfer::class, 'from_account');
+    }
+
+    public function toTransfers()
+    {
+        return $this->hasMany(Transfer::class, 'to_account');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+
     //    public function scopeTableView($query, array $filters = [])
 //    {
 //        return $query
