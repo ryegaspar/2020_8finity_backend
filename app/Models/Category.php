@@ -27,7 +27,7 @@ class Category extends Model
         });
     }
 
-    public function transaction()
+    public function transactions()
     {
         return $this->hasMany(Transaction::class);
     }

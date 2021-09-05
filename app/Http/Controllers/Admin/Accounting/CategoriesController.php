@@ -57,7 +57,7 @@ class CategoriesController extends Controller
                 'required',
                 Rule::in('in', 'out'),
                 new CategoryHasTransactions($category->getOriginal('type') !== request('type'),
-                    $category->transaction()->count())
+                    $category->transactions()->count())
             ],
             'name' => ['required', Rule::unique('categories', 'name')->ignore($category->id)],
             'icon' => 'required'
@@ -78,7 +78,7 @@ class CategoriesController extends Controller
             return response()->json([], 422);
         }
 
-        if ($category->transaction->count()) {
+        if ($category->transactions()->count()) {
             return response()->json([], 409);
         }
 
