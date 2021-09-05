@@ -33,11 +33,11 @@ class AddAccountTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/accounts', ['name' => 'new']);
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/accounts', ['name' => 'new'])
+            ->assertStatus(201);
 
-        tap(Account::latest()->first(), function ($account) use ($response, $admin) {
-            $response->assertStatus(201);
+        tap(Account::latest()->first(), function ($account) use ($admin) {
 
             $this->assertEquals('new', $account->name);
             $this->assertTrue($account->is_active);

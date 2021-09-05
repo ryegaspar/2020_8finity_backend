@@ -272,17 +272,16 @@ class EditTransactionTest extends TestCase
         $admin = Admin::factory()->create();
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
                 $this->newTransaction([
                     'category_id' => Category::factory()->income()->create(['name' => 'income'])->id,
                     'amount'      => 100
                 ])
-            );
+            )
+            ->assertStatus(204);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(204);
-
+        tap(Transaction::first(), function ($transaction) use ($admin) {
             $this->assertGreaterThan(0, $transaction->amount);
             $this->assertEquals(10000, $transaction->amount);
         });
@@ -294,18 +293,17 @@ class EditTransactionTest extends TestCase
         $admin = Admin::factory()->create();
         $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/transactions/{$transaction->id}",
                 $this->newTransaction([
                     'category_id'   => Category::factory()->expense()->create(['name' => 'expense'])->id,
                     'category_type' => 'expense',
                     'amount'        => 100
                 ])
-            );
+            )
+            ->assertStatus(204);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(204);
-
+        tap(Transaction::first(), function ($transaction) use ($admin) {
             $this->assertLessThan(0, $transaction->amount);
             $this->assertEquals(-10000, $transaction->amount);
         });

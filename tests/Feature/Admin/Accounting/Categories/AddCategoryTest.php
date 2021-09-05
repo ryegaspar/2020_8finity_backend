@@ -42,12 +42,11 @@ class AddCategoryTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/categories', $this->validParams());
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/categories', $this->validParams())
+            ->assertStatus(201);
 
-        tap(Category::latest()->first(), function ($category) use ($response, $admin) {
-            $response->assertStatus(201);
-
+        tap(Category::latest()->first(), function ($category) use ($admin) {
             $this->assertEquals('in', $category->type);
             $this->assertEquals('extra income', $category->name);
             $this->assertEquals('money-bill', $category->icon);

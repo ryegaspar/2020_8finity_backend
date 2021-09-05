@@ -40,12 +40,11 @@ class EditAccountTest extends TestCase
         $admin = Admin::factory()->create();
         $account = Account::factory()->create(['name' => 'old']);
 
-        $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new', 'is_active' => false]);
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/accounts/{$account->id}", ['name' => 'new', 'is_active' => false])
+            ->assertStatus(204);
 
-        tap(Account::latest()->first(), function ($account) use ($response, $admin) {
-            $response->assertStatus(204);
-
+        tap(Account::latest()->first(), function ($account) use ($admin) {
             $this->assertEquals('new', $account->name);
             $this->assertFalse($account->is_active);
         });

@@ -57,12 +57,11 @@ class EditCategoryTest extends TestCase
         $admin = Admin::factory()->create();
         $category = Category::factory()->create($this->oldCategory());
 
-        $response = $this->actingAs($admin, 'admin')
-            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory());
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/categories/{$category->id}", $this->newCategory())
+            ->assertStatus(204);
 
-        tap(Category::latest()->first(), function ($category) use ($response, $admin) {
-            $response->assertStatus(204);
-
+        tap(Category::latest()->first(), function ($category) use ($admin) {
             $this->assertEquals('in', $category->type);
             $this->assertEquals('new in transaction', $category->name);
             $this->assertEquals('money-bill-wave', $category->icon);
@@ -138,16 +137,15 @@ class EditCategoryTest extends TestCase
             'icon' => 'piggy-bank'
         ]);
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/categories/{$category->id}", [
                 'type' => 'out',
                 'name' => 'new category',
                 'icon' => 'money-bill-wave'
-            ]);
+            ])
+            ->assertStatus(204);
 
-        tap(Category::latest()->first(), function ($category) use ($response, $admin) {
-            $response->assertStatus(204);
-
+        tap(Category::latest()->first(), function ($category) use ($admin) {
             $this->assertEquals('out', $category->type);
             $this->assertEquals('new category', $category->name);
             $this->assertEquals('money-bill-wave', $category->icon);

@@ -51,11 +51,10 @@ class AddTransactionTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/transactions', $this->validParams());
+            ->json('post', 'admin/accounting/transactions', $this->validParams())
+            ->assertStatus(201);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(201);
-
+        tap(Transaction::first(), function ($transaction) use ($admin) {
             $this->assertEquals('new transaction', $transaction->description);
             $this->assertEquals(1, $transaction->category_id);
             $this->assertEquals($admin->id, $transaction->admin_id);
@@ -224,17 +223,16 @@ class AddTransactionTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/transactions',
                 $this->validParams([
                     'category_id' => Category::factory()->income()->create()->id,
                     'amount'      => 100
                 ])
-            );
+            )
+            ->assertStatus(201);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(201);
-
+        tap(Transaction::first(), function ($transaction) use ($admin) {
             $this->assertGreaterThan(0, $transaction->amount);
             $this->assertEquals(10000, $transaction->amount);
         });
@@ -245,17 +243,16 @@ class AddTransactionTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        $response = $this->actingAs($admin, 'admin')
+        $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/transactions',
                 $this->validParams([
                     'category_id' => Category::factory()->expense()->create()->id,
                     'amount'      => 100
                 ])
-            );
+            )
+        ->assertStatus(201);
 
-        tap(Transaction::first(), function ($transaction) use ($response, $admin) {
-            $response->assertStatus(201);
-
+        tap(Transaction::first(), function ($transaction) use ($admin) {
             $this->assertLessThan(0, $transaction->amount);
             $this->assertEquals(-10000, $transaction->amount);
         });
