@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use App\Filters\Transfer\TransferFilters;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,13 +19,41 @@ class Transfer extends Model
         'amount' => 'integer'
     ];
 
-    public function scopeSumFrom($query, $account)
+    public function getFormattedDateAttribute()
     {
-        return $query->where('from_account', $account)->sum('amount');
+        return Carbon::parse($this->date)->format('Y-m-d');
     }
 
-    public function scopeSumTo($query, $account)
+    public function scopeTableFilter(Builder $builder, $request)
     {
-        return $query->where('to_account', $account)->sum('amount');
+        return (new TransferFilters($request))
+            ->filter($builder);
     }
+
+    public function fromAccount()
+    {
+        return $this->belongsTo(Account::class, 'from_account');
+    }
+
+    public function toAccount()
+    {
+        return $this->belongsTo(Account::class, 'to_account');
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
+    }
+
+//    public function scopeSumFrom($query, $account)
+//    {
+//        return $query->where('from_account', $account)->sum('amount');
+//    }
+//
+//    public function scopeSumTo($query, $account)
+//    {
+//        return $query->where('to_account', $account)->sum('amount');
+//    }
+
+
 }

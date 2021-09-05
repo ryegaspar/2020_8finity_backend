@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Models\Account;
+use App\Http\Resources\PaginatedTransferCollection;
+use App\Models\Transfer;
 use App\Rules\AccountEnoughBalance;
 use App\Rules\ActiveAccount;
 use Illuminate\Http\Request;
@@ -17,20 +18,24 @@ class TransfersController extends Controller
 
     public function index(Request $request)
     {
-//        $transactions = Transaction::with('admin', 'category', 'account')
+        $transfers = Transfer::with('fromAccount', 'toAccount', 'admin')
 //            ->tableFilter($request)
-//            ->paginate($request->per_page);
+            ->paginate($request->per_page);
 
-        return response()->json([], 201);
+        return response()->json(new PaginatedTransferCollection($transfers));
     }
 
     public function store()
     {
         request()->validate([
             'description'  => 'required',
-            'from_account' => ['required','exists:accounts,id', new ActiveAccount()],
-            'to_account'   => ['required','exists:accounts,id','different:from_account', new ActiveAccount()],
-            'amount'       => ['required','regex:/^\d+(\.\d{1,2})?$/', new AccountEnoughBalance(request('from_account'))],
+            'from_account' => ['required', 'exists:accounts,id', new ActiveAccount()],
+            'to_account'   => ['required', 'exists:accounts,id', 'different:from_account', new ActiveAccount()],
+            'amount'       => [
+                'required',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                new AccountEnoughBalance(request('from_account'))
+            ],
             'date'         => 'required|date',
             'notes'        => 'nullable'
         ]);

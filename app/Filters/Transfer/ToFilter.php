@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filters\Transaction;
+namespace App\Filters\Transfer;
 
 use App\Filters\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;
 
-class SearchFilter extends FilterAbstract
+class ToFilter extends FilterAbstract
 {
     public function filter(Builder $builder, $value)
     {
-        return $builder->where('description', 'LIKE', "%{$value}%");
+        return $builder->where('to_account', $value);
     }
 }

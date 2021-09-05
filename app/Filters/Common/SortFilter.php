@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filters\Transaction;
+namespace App\Filters\Common;
 
 use App\Filters\FilterAbstract;
 use Illuminate\Database\Eloquent\Builder;

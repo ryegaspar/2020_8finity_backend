@@ -24,9 +24,9 @@ class TransactionResource extends JsonResource
             'category_icon'  => $this->category->icon,
             'category_name'  => $this->category->name,
             'category_id'    => (int)$this->category_id,
-            'admin_id'       => $this->admin->id,
+            'admin_id'       => $this->admin_id,
             'admin_username' => $this->admin->username,
-            'account_id'     => $this->account->id,
+            'account_id'     => $this->account_id,
             'account_name'   => $this->account->name,
             'account_status' => $this->account->is_active
         ];

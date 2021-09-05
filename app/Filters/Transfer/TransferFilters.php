@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Filters\Transaction;
+namespace App\Filters\Transfer;
 
 use App\Filters\Common\SearchFilter;
 use App\Filters\Common\SortFilter;
 use App\Filters\FiltersAbstract;
 
-class TransactionFilters extends FiltersAbstract
+class TransferFilters extends FiltersAbstract
 {
     protected $filters = [
-        'type'   => TypeFilter::class,
+        'from'   => FromFilter::class,
+        'to'     => ToFilter::class,
         'search' => SearchFilter::class,
         'sort'   => SortFilter::class
     ];

@@ -74,9 +74,9 @@ class GetTransactionTest extends TestCase
                         'category_icon'    => $categoryIncome->icon,
                         'category_name'    => $categoryIncome->name,
                         'category_id'      => $categoryIncome->id,
-                        'admin_id'         => $admin->id,
+                        'admin_id'         => "{$admin->id}",
                         'admin_username'   => $admin->username,
-                        'account_id'       => $account->id,
+                        'account_id'       => "{$account->id}",
                         'account_name'     => $account->name,
                         'account_status'   => $account->is_active
                     ],
@@ -90,9 +90,9 @@ class GetTransactionTest extends TestCase
                         'category_icon'    => $categoryExpense->icon,
                         'category_name'    => $categoryExpense->name,
                         'category_id'      => $categoryExpense->id,
-                        'admin_id'         => $admin->id,
+                        'admin_id'         => "{$admin->id}",
                         'admin_username'   => $admin->username,
-                        'account_id'       => $account->id,
+                        'account_id'       => "{$account->id}",
                         'account_name'     => $account->name,
                         'account_status'   => $account->is_active
                     ]
