@@ -46,8 +46,7 @@ class GetAccountTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/accounts')
+            ->get('admin/accounting/accounts')
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => $this->defaultValue
@@ -62,8 +61,7 @@ class GetAccountTest extends TestCase
         Account::factory()->create(['is_active' => false]);
 
         $response = $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/accounts/?active')
+            ->get('admin/accounting/accounts/?active')
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => $this->defaultValue
@@ -79,8 +77,7 @@ class GetAccountTest extends TestCase
         $account = Account::factory()->create(['name' => 'a_first']);
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/accounts?sort=name|asc')
+            ->get('admin/accounting/accounts?sort=name|asc')
             ->assertJson([
                 'data' => [
                     [

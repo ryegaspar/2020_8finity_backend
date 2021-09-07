@@ -79,8 +79,7 @@ class GetTransactionSummaryTest extends TestCase
         ]);
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/dashboard/transactions-summary')
+            ->get('admin/dashboard/transactions-summary')
             ->assertExactJson([
                 'data' => [
                     'income'  => [

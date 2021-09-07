@@ -119,8 +119,7 @@ class GetCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/categories/?all')
+            ->get('admin/accounting/categories/?all')
             ->assertStatus(200)
             ->assertExactJson([
                 'data' => $this->defaultValues
@@ -133,8 +132,7 @@ class GetCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/categories')
+            ->get('admin/accounting/categories')
             ->assertJson([
                 'data' => $this->defaultValues
             ]);
@@ -146,8 +144,7 @@ class GetCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/categories')
+            ->get('admin/accounting/categories')
             ->assertJsonStructure([
                 'total',
                 'per_page',
@@ -167,8 +164,7 @@ class GetCategoryTest extends TestCase
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/accounting/categories?sort=name|asc')
+            ->get('admin/accounting/categories?sort=name|asc')
             ->assertJson([
                 'data' => [
                     [

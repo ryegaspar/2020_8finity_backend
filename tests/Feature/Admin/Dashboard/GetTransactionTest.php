@@ -60,8 +60,7 @@ class GetTransactionTest extends TestCase
         ]);
 
         $this->actingAs($admin, 'admin')
-            ->withHeaders(['accept' => 'application/json'])
-            ->getJson('admin/dashboard/transactions')
+            ->get('admin/dashboard/transactions')
             ->assertExactJson([
                 'data' => [
                     [
