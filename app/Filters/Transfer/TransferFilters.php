@@ -9,9 +9,9 @@ use App\Filters\FiltersAbstract;
 class TransferFilters extends FiltersAbstract
 {
     protected $filters = [
-        'from'   => FromFilter::class,
-        'to'     => ToFilter::class,
-        'search' => SearchFilter::class,
-        'sort'   => SortFilter::class
+        'from_account' => FromFilter::class,
+        'to_account'   => ToFilter::class,
+        'search'       => SearchFilter::class,
+        'sort'         => SortFilter::class
     ];
 }

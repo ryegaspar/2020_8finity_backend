@@ -113,159 +113,155 @@ class GetTransferTest extends TestCase
             ]);
     }
 
-//    /** @test */
-//    public function has_paginated_data()
-//    {
-//        $admin = Admin::factory()->create();
-//
-//        Transaction::factory()->create([
-//            'admin_id' => $admin->id
-//        ]);
-//
-//        $this->actingAs($admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions')
-//            ->assertJsonStructure([
-//                'total',
-//                'per_page',
-//                'current_page',
-//                'last_page',
-//                'next_page_url',
-//                'prev_page_url',
-//                'from',
-//                'to',
-//                'data',
-//            ]);
-//    }
-//
-//    /** @test */
-//    public function can_sort_by_amount()
-//    {
-//        $this->create_transactions();
-//
-//        $this->actingAs($this->admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions?sort=amount|asc')
-//            ->assertJson([
-//                'data' => [
-//                    [
-//                        'id'     => $this->transaction2->id,
-//                        'amount' => "-8000",
-//                    ],
-//                    [
-//                        'id'     => $this->transaction3->id,
-//                        'amount' => "7000",
-//                    ],
-//                    [
-//                        'id'     => $this->transaction1->id,
-//                        'amount' => "12000",
-//                    ],
-//                ]
-//            ]);
-//    }
-//
-//    /** @test */
-//    public function can_sort_by_date()
-//    {
-//        $this->create_transactions();
-//
-//        $this->actingAs($this->admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions?sort=date|asc')
-//            ->assertJson([
-//                'data' => [
-//                    [
-//                        'id'   => $this->transaction1->id,
-//                        'date' => $this->transactionDay1,
-//                    ],
-//                    [
-//                        'id'   => $this->transaction2->id,
-//                        'date' => $this->transactionDay1,
-//                    ],
-//                    [
-//                        'id'   => $this->transaction3->id,
-//                        'date' => $this->transactionDay2,
-//                    ],
-//                ]
-//            ]);
-//    }
-//
-//    /** @test */
-//    public function can_filter_income_only()
-//    {
-//        $this->create_transactions();
-//
-//        $this->actingAs($this->admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions?type=income')
-//            ->assertJson([
-//                'data' => [
-//                    [
-//                        'id' => $this->transaction1->id,
-//                    ],
-//                    [
-//                        'id' => $this->transaction3->id,
-//                    ],
-//                ]
-//            ])
-//            ->assertJsonMissing([
-//                'data' => [
-//                    'id' => $this->transaction2->id
-//                ]
-//            ]);
-//    }
-//
-//    /** @test */
-//    public function can_filter_expenses_only()
-//    {
-//        $this->create_transactions();
-//
-//        $this->actingAs($this->admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions?type=expense')
-//            ->assertJson([
-//                'data' => [
-//                    [
-//                        'id' => $this->transaction2->id,
-//                    ],
-//                ]
-//            ])
-//            ->assertJsonMissing([
-//                'data' => [
-//                    [
-//                        'id' => $this->transaction1->id
-//                    ],
-//                    [
-//                        'id' => $this->transaction3->id,
-//                    ],
-//                ]
-//            ]);
-//    }
-//
-//    /** @test */
-//    public function can_search_through_description()
-//    {
-//        $this->create_transactions();
-//
-//        $this->actingAs($this->admin, 'admin')
-//            ->withHeaders(['accept' => 'application/json'])
-//            ->getJson('admin/accounting/transactions?search=transaction2')
-//            ->assertJson([
-//                'data' => [
-//                    [
-//                        'id' => $this->transaction2->id,
-//                    ],
-//                ]
-//            ])
-//            ->assertJsonMissing([
-//                'data' => [
-//                    [
-//                        'id' => $this->transaction1->id
-//                    ],
-//                    [
-//                        'id' => $this->transaction3->id,
-//                    ],
-//                ]
-//            ]);
-//    }
+    /** @test */
+    public function has_paginated_data()
+    {
+        $admin = Admin::factory()->create();
+
+        Transfer::factory()->create([
+            'admin_id' => $admin->id
+        ]);
+
+        $this->actingAs($admin, 'admin')
+            ->get('admin/accounting/transfers')
+            ->assertJsonStructure([
+                'total',
+                'per_page',
+                'current_page',
+                'last_page',
+                'next_page_url',
+                'prev_page_url',
+                'from',
+                'to',
+                'data',
+            ]);
+    }
+
+    /** @test */
+    public function can_sort_by_amount()
+    {
+        $this->create_transfers();
+
+        $this->actingAs($this->admin, 'admin')
+            ->get('admin/accounting/transfers?sort=amount|asc')
+            ->assertJson([
+                'data' => [
+                    [
+                        'id'     => $this->transfer3->id,
+                        'amount' => 3000,
+                    ],
+                    [
+                        'id'     => $this->transfer2->id,
+                        'amount' => 5000,
+                    ],
+                    [
+                        'id'     => $this->transfer1->id,
+                        'amount' => 8000,
+                    ],
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function can_sort_by_date()
+    {
+        $this->create_transfers();
+
+        $this->actingAs($this->admin, 'admin')
+            ->get('admin/accounting/transfers?sort=date|asc')
+            ->assertJson([
+                'data' => [
+                    [
+                        'id'   => $this->transfer1->id,
+                        'date' => $this->day1,
+                    ],
+                    [
+                        'id'   => $this->transfer2->id,
+                        'date' => $this->day1,
+                    ],
+                    [
+                        'id'   => $this->transfer3->id,
+                        'date' => $this->day2,
+                    ],
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function can_filter_from_accounts()
+    {
+        $this->create_transfers();
+
+        $response = $this->actingAs($this->admin, 'admin')
+            ->get("admin/accounting/transfers?from_account={$this->account1->id}")
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => $this->transfer1->id,
+                    ],
+                    [
+                        'id' => $this->transfer3->id
+                    ]
+                ]
+            ])
+            ->assertJsonMissing([
+                'data' => [
+                    [
+                        'id' => $this->transfer2->id
+                    ],
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function can_filter_to_accounts()
+    {
+        $this->create_transfers();
+
+        $response = $this->actingAs($this->admin, 'admin')
+            ->get("admin/accounting/transfers?to_account={$this->account1->id}")
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => $this->transfer2->id,
+                    ],
+                ]
+            ])
+            ->assertJsonMissing([
+                'data' => [
+                    [
+                        'id' => $this->transfer1->id
+                    ],
+                    [
+                        'id' => $this->transfer3->id
+                    ]
+                ]
+            ]);
+    }
+
+    /** @test */
+    public function can_search_through_description()
+    {
+        $this->create_transfers();
+
+        $this->actingAs($this->admin, 'admin')
+            ->get('admin/accounting/transfers?search=transfer2')
+            ->assertJson([
+                'data' => [
+                    [
+                        'id' => $this->transfer2->id,
+                    ],
+                ]
+            ])
+            ->assertJsonMissing([
+                'data' => [
+                    [
+                        'id' => $this->transfer1->id
+                    ],
+                    [
+                        'id' => $this->transfer3->id,
+                    ],
+                ]
+            ]);
+    }
 }

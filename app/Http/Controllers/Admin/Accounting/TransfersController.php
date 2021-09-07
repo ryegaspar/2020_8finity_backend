@@ -19,7 +19,7 @@ class TransfersController extends Controller
     public function index(Request $request)
     {
         $transfers = Transfer::with('fromAccount', 'toAccount', 'admin')
-//            ->tableFilter($request)
+            ->tableFilter($request)
             ->paginate($request->per_page);
 
         return response()->json(new PaginatedTransferCollection($transfers));
