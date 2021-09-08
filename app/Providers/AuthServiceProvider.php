@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\Transaction;
+use App\Models\Transfer;
 use App\Policies\TransactionPolicy;
+use App\Policies\TransferPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -15,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        Transaction::class => TransactionPolicy::class
+        Transaction::class => TransactionPolicy::class,
+        Transfer::class    => TransferPolicy::class,
     ];
 
     /**

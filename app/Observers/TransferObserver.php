@@ -28,7 +28,16 @@ class TransferObserver
      */
     public function updated(Transfer $transfer)
     {
-        //
+        Account::find($transfer->from_account)->recalculateBalance();
+        Account::find($transfer->to_account)->recalculateBalance();
+
+        if ($transfer->wasChanged('to_account')) {
+            Account::find($transfer->getOriginal('to_account'))->recalculateBalance();
+        }
+
+        if ($transfer->wasChanged('from_account')) {
+            Account::find($transfer->getOriginal('from_account'))->recalculateBalance();
+        }
     }
 
     /**

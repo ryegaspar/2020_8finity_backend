@@ -54,4 +54,31 @@ class TransfersController extends Controller
         return response()->json([], 201);
     }
 
+    public function update(Transfer $transfer)
+    {
+        $this->authorize('update', $transfer);
+
+        request()->validate([
+            'description'  => 'required',
+            'from_account' => ['required', 'exists:accounts,id', new ActiveAccount()],
+            'to_account'   => ['required', 'exists:accounts,id', 'different:from_account', new ActiveAccount()],
+            'amount'       => [
+                'required',
+                'regex:/^\d+(\.\d{1,2})?$/',
+            ],
+            'date'         => 'required|date',
+            'notes'        => 'nullable'
+        ]);
+
+        $transfer->update([
+            'description'  => request('description'),
+            'from_account' => request('from_account'),
+            'to_account'   => request('to_account'),
+            'amount'       => (int)(request('amount') * 100),
+            'date'         => request('date'),
+            'notes'        => request('notes')
+        ]);
+
+        return response()->json('', 204);
+    }
 }

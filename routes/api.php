@@ -49,6 +49,7 @@ Route::prefix('admin')
 
                 Route::get('transfers', 'TransfersController@index');
                 Route::post('transfers', 'TransfersController@store');
+                Route::patch('transfers/{transfer}', 'TransfersController@update');
 
                 Route::get('categories', 'CategoriesController@index');
                 Route::post('categories', 'CategoriesController@store');
