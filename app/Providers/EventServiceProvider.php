@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\Transfer;
+use App\Observers\CheckObserver;
 use App\Observers\TransactionObserver;
 use App\Observers\TransferObserver;
 use Illuminate\Auth\Events\Registered;
@@ -35,5 +37,6 @@ class EventServiceProvider extends ServiceProvider
 
         Transaction::observe(TransactionObserver::class);
         Transfer::observe(TransferObserver::class);
+        Check::observe(CheckObserver::class);
     }
 }

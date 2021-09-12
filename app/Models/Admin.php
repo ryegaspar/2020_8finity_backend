@@ -46,4 +46,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Transfer::class);
     }
+
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
+    }
 }
