@@ -60,13 +60,13 @@ class TransferPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
+     * @param Admin $admin
      * @param Transfer $transfer
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Transfer $transfer)
+    public function delete(Admin $admin, Transfer $transfer)
     {
-        //
+        return $admin->id == $transfer->admin_id;
     }
 
     /**

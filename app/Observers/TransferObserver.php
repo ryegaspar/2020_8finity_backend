@@ -57,7 +57,8 @@ class TransferObserver
      */
     public function deleted(Transfer $transfer)
     {
-        //
+        Account::find($transfer->from_account)->recalculateBalance();
+        Account::find($transfer->to_account)->recalculateBalance();
     }
 
     /**

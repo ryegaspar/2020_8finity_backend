@@ -81,4 +81,13 @@ class TransfersController extends Controller
 
         return response()->json('', 204);
     }
+
+    public function destroy(Transfer $transfer)
+    {
+        $this->authorize('delete', $transfer);
+
+        $transfer->delete();
+
+        return response()->json('', 204);
+    }
 }
