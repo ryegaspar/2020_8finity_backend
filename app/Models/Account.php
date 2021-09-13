@@ -42,6 +42,13 @@ class Account extends Model
         $this->update(['balance' => $transactions + $toTransfers - $fromTransfers]);
     }
 
+    public function recalculateCheckBalance()
+    {
+        $checks = $this->checks()->sum('amount');
+
+        $this->update(['check_balance' => $checks]);
+    }
+
     public function fromTransfers()
     {
         return $this->hasMany(Transfer::class, 'from_account');
@@ -55,6 +62,11 @@ class Account extends Model
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
     }
 
     //    public function scopeTableView($query, array $filters = [])

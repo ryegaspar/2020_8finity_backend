@@ -18,7 +18,8 @@ class CreateAccountsTable extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->boolean('is_active')->default(true);
-            $table->BigInteger('balance')->default(0);
+            $table->bigInteger('balance')->default(0);
+            $table->bigInteger('check_balance')->default(0);
             $table->timestamps();
         });
 

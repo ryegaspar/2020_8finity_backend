@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Models\Account;
 use App\Models\Check;
 
 class CheckObserver
@@ -29,7 +30,7 @@ class CheckObserver
      */
     public function created(Check $check)
     {
-        //
+        Account::find($check->account_id)->recalculateCheckBalance();
     }
 
     /**
