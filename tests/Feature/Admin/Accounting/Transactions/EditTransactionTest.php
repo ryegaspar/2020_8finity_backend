@@ -178,6 +178,23 @@ class EditTransactionTest extends TestCase
     }
 
     /** @test */
+    public function cannot_update_a_transaction_to_a_disabled_account()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['balance' => 10000, 'is_active' => false]);
+        $transaction = Transaction::factory()->create($this->oldTransaction(['admin_id' => $admin->id]));
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/transactions/{$transaction->id}", $this->newTransaction([
+                'account_id' => $account->id,
+                'amount'       => 25
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
+    }
+
+    /** @test */
     public function amount_is_required()
     {
         $admin = Admin::factory()->create();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Accounting;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PaginatedCheckCollection;
 use App\Models\Check;
+use App\Rules\ActiveAccount;
 use Illuminate\Http\Request;
 
 class ChecksController extends Controller
@@ -32,7 +33,7 @@ class ChecksController extends Controller
         request()->validate([
             'description' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'account_id'  => 'required|exists:accounts,id',
+            'account_id'  => ['required', 'exists:accounts,id', new ActiveAccount()],
             'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
             'post_date'   => 'required|date',
             'notes'       => 'nullable'

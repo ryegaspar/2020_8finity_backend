@@ -136,6 +136,22 @@ class AddTransactionTest extends TestCase
     }
 
     /** @test */
+    public function cannot_add_a_transaction_to_a_disabled_account()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create(['balance' => 10000, 'is_active' => false]);
+
+        $response = $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/accounting/transactions', $this->validParams([
+                'account_id' => $account->id,
+                'amount'       => 25
+            ]));
+
+        $response->assertStatus(422);
+        $response->assertJsonValidationErrors('account_id');
+    }
+
+    /** @test */
     public function amount_is_required()
     {
         $admin = Admin::factory()->create();
