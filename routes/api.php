@@ -52,6 +52,7 @@ Route::prefix('admin')
                 Route::patch('transfers/{transfer}', 'TransfersController@update');
                 Route::delete('transfers/{transfer}', 'TransfersController@destroy');
 
+                Route::get('checks', 'ChecksController@index');
                 Route::post('checks', 'ChecksController@store');
 
                 Route::get('categories', 'CategoriesController@index');
