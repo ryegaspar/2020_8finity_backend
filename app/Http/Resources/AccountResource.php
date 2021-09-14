@@ -15,10 +15,11 @@ class AccountResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'        => $this->id,
-            'name'      => $this->name,
-            'is_active' => $this->is_active,
-            'balance'   => $this->balance
+            'id'            => $this->id,
+            'name'          => $this->name,
+            'is_active'     => $this->is_active,
+            'balance'       => $this->balance,
+            'check_balance' => $this->check_balance
         ];
     }
 }
