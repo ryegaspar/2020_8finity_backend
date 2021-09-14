@@ -193,7 +193,7 @@ class EditTransferTest extends TestCase
     }
 
     /** @test */
-    public function cannot_transfer_to_a_disabled_account()
+    public function cannot_be_a_disabled_account()
     {
         $account = Account::factory()->create(['is_active' => false]);
 

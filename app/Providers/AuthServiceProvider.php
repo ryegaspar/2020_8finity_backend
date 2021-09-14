@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\Transfer;
+use App\Policies\CheckPolicy;
 use App\Policies\TransactionPolicy;
 use App\Policies\TransferPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -19,6 +21,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Transaction::class => TransactionPolicy::class,
         Transfer::class    => TransferPolicy::class,
+        Check::class       => CheckPolicy::class,
     ];
 
     /**

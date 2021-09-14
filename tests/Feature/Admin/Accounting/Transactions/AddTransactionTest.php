@@ -136,7 +136,7 @@ class AddTransactionTest extends TestCase
     }
 
     /** @test */
-    public function cannot_add_a_transaction_to_a_disabled_account()
+    public function cannot_add_transaction_with_a_disabled_account()
     {
         $admin = Admin::factory()->create();
         $account = Account::factory()->create(['balance' => 10000, 'is_active' => false]);

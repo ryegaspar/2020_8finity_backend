@@ -20,11 +20,7 @@ class ChecksController extends Controller
         $checks = Check::with('admin', 'category', 'account')
             ->tableFilter($request)
             ->paginate($request->per_page);
-//        $transactions = Transaction::with('admin', 'category', 'account')
-//            ->tableFilter($request)
-//            ->paginate($request->per_page);
 
-//        return response()->json(new PaginatedTransactionCollection($transactions));
         return response()->json(new PaginatedCheckCollection($checks));
     }
 
@@ -51,5 +47,30 @@ class ChecksController extends Controller
             ]);
 
         return response()->json([], 201);
+    }
+
+    public function update(Check $check)
+    {
+        $this->authorize('update', $check);
+
+        request()->validate([
+            'description' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'account_id'  => ['required', 'exists:accounts,id', new ActiveAccount()],
+            'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
+            'post_date'   => 'required|date',
+            'notes'       => 'nullable'
+        ]);
+
+        $check->update([
+            'description' => request('description'),
+            'category_id' => request('category_id'),
+            'account_id'  => request('account_id'),
+            'amount'      => (int)(request('amount') * 100),
+            'post_date'   => request('post_date'),
+            'notes'       => request('notes'),
+        ]);
+
+        return response()->json('', 204);
     }
 }

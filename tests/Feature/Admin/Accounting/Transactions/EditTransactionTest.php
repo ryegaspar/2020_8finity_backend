@@ -178,7 +178,7 @@ class EditTransactionTest extends TestCase
     }
 
     /** @test */
-    public function cannot_update_a_transaction_to_a_disabled_account()
+    public function cannot_be_a_disabled_account()
     {
         $admin = Admin::factory()->create();
         $account = Account::factory()->create(['balance' => 10000, 'is_active' => false]);

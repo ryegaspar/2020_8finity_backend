@@ -21,7 +21,7 @@ class CreateChecksTable extends Migration
             $table->foreignId('transaction_id')->nullable();
             $table->BigInteger('amount');
             $table->string('description', 255)->nullable();
-            $table->boolean('is_cancelled')->default(false);
+            $table->enum('status', ['pending', 'cleared', 'cancelled'])->default('pending');
             $table->text('notes')->nullable();
             $table->date('post_date');
             $table->timestamps();
