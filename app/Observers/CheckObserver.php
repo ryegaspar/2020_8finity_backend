@@ -41,7 +41,11 @@ class CheckObserver
      */
     public function updated(Check $check)
     {
-        //
+        Account::find($check->account_id)->recalculateCheckBalance();
+
+        if ($check->wasChanged('account_id')) {
+            Account::find($check->getOriginal('account_id'))->recalculateCheckBalance();
+        }
     }
 
     /**

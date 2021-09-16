@@ -13,10 +13,11 @@ class GetAccountTest extends TestCase
 
     private $defaultValue = [
         [
-            'id'        => 1,
-            'name'      => 'default',
-            'balance'   => 0,
-            'is_active' => true,
+            'id'            => 1,
+            'name'          => 'default',
+            'balance'       => 0,
+            'check_balance' => 0,
+            'is_active'     => true,
         ],
     ];
 
