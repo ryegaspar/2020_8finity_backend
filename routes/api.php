@@ -55,6 +55,7 @@ Route::prefix('admin')
                 Route::get('checks', 'ChecksController@index');
                 Route::post('checks', 'ChecksController@store');
                 Route::patch('checks/{check}', 'ChecksController@update');
+                Route::delete('checks/{check}', 'ChecksController@destroy');
 
                 Route::get('categories', 'CategoriesController@index');
                 Route::post('categories', 'CategoriesController@store');

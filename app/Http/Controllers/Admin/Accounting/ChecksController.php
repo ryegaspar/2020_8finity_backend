@@ -73,4 +73,13 @@ class ChecksController extends Controller
 
         return response()->json('', 204);
     }
+
+    public function destroy(Check $check)
+    {
+        $this->authorize('delete', $check);
+
+        $check->delete();
+
+        return response()->json('', 204);
+    }
 }

@@ -56,7 +56,7 @@ class CheckObserver
      */
     public function deleted(Check $check)
     {
-        //
+        Account::find($check->account_id)->recalculateCheckBalance();
     }
 
     /**

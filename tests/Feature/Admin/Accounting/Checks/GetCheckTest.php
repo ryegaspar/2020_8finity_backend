@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Admin\Accounting\Transactions;
+namespace Tests\Feature\Admin\Accounting\Checks;
 
 use App\Models\Account;
 use App\Models\Admin;
