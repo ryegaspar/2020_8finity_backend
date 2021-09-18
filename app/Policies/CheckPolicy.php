@@ -54,7 +54,7 @@ class CheckPolicy
      */
     public function update(Admin $admin, Check $check)
     {
-        return $admin->id == $check->admin_id;
+        return ($admin->id == $check->admin_id && $check->status === Check::PENDING);
     }
 
     /**
@@ -66,7 +66,7 @@ class CheckPolicy
      */
     public function delete(Admin $admin, Check $check)
     {
-        return $admin->id == $check->admin_id;
+        return ($admin->id == $check->admin_id && $check->status === Check::PENDING);
     }
 
     /**

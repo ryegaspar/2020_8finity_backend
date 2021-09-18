@@ -75,6 +75,23 @@ class EditCheckTest extends TestCase
     }
 
     /** @test */
+    public function checks_can_only_be_updated_when_its_status_is_pending()
+    {
+        $admin = Admin::factory()->create();
+
+        $checkCleared = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id, 'status' => 'cleared']));
+        $checkCancelled = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id, 'status' => 'cancelled']));
+
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/checks/{$checkCleared->id}", $this->newCheck())
+            ->assertStatus(403);
+
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/checks/{$checkCancelled->id}", $this->newCheck())
+            ->assertStatus(403);
+    }
+
+    /** @test */
     public function updating_a_check()
     {
         $admin = Admin::factory()->create();

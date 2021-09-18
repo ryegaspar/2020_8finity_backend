@@ -47,6 +47,23 @@ class DeleteCheckTest extends TestCase
     }
 
     /** @test */
+    public function checks_can_only_be_deleted_when_its_status_is_pending()
+    {
+        $admin = Admin::factory()->create();
+
+        $checkCleared = Check::factory()->create(['admin_id' => $admin->id, 'status' => 'cleared']);
+        $checkCancelled = Check::factory()->create(['admin_id' => $admin->id, 'status' => 'cancelled']);
+
+        $this->actingAs($admin, 'admin')
+            ->json('delete', "admin/accounting/checks/{$checkCleared->id}")
+            ->assertStatus(403);
+
+        $this->actingAs($admin, 'admin')
+            ->json('delete', "admin/accounting/checks/{$checkCancelled->id}")
+            ->assertStatus(403);
+    }
+
+    /** @test */
     public function deleting_a_check()
     {
         $admin = Admin::factory()->create();
