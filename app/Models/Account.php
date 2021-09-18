@@ -45,7 +45,9 @@ class Account extends Model
 
     public function recalculateCheckBalance()
     {
-        $checks = $this->checks()->sum('amount');
+        $checks = $this->checks()
+            ->where('status', 'pending')
+            ->sum('amount');
 
         $this->update(['check_balance' => $checks]);
     }
