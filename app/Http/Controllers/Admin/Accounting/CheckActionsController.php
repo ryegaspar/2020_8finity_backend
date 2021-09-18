@@ -30,8 +30,17 @@ class CheckActionsController extends Controller
 
         $check->update([
             'transaction_id' => $transaction->id,
-            'status'         => 'cleared'
+            'status'         => Check::CLEARED
         ]);
+
+        return response()->json('', 204);
+    }
+
+    public function cancel(Check $check)
+    {
+        $this->authorize('delete', $check);
+
+        $check->update(['status' => Check::CANCELLED]);
 
         return response()->json('', 204);
     }

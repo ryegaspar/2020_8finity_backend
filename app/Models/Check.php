@@ -12,6 +12,10 @@ class Check extends Model
 {
     use HasFactory;
 
+    const PENDING = 'pending';
+    const CLEARED = 'cleared';
+    const CANCELLED = 'cancelled';
+
     protected $guarded = [];
 
     protected $casts = [

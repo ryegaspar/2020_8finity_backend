@@ -58,6 +58,7 @@ Route::prefix('admin')
                 Route::delete('checks/{check}', 'ChecksController@destroy');
 
                 Route::patch('checks/process/{check}', 'CheckActionsController@clear');
+                Route::delete('checks/process/{check}', 'CheckActionsController@cancel');
 
                 Route::get('categories', 'CategoriesController@index');
                 Route::post('categories', 'CategoriesController@store');
