@@ -63,6 +63,7 @@ class AccountsController extends Controller
         }
 
         if ($account->transactions()->count() ||
+            $account->checks()->count() ||
             $account->toTransfers()->count() ||
             $account->fromTransfers()->count())
         {

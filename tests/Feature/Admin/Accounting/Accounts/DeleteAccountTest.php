@@ -4,6 +4,7 @@ namespace Tests\Feature\Admin\Accounting\Accounts;
 
 use App\Models\Account;
 use App\Models\Admin;
+use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\Transfer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -69,6 +70,23 @@ class DeleteAccountTest extends TestCase
         $account = Account::factory()->create();
 
         Transaction::factory()->create([
+            'account_id' => $account->id
+        ]);
+
+        $this->actingAs($admin, 'admin')
+            ->json('delete', "admin/accounting/accounts/{$account->id}")
+            ->assertStatus(409);
+
+        $this->assertDatabaseHas('accounts', ['id' => $account->id]);
+    }
+
+    /** @test */
+    public function cannot_delete_if_account_has_check()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+
+        Check::factory()->create([
             'account_id' => $account->id
         ]);
 

@@ -71,27 +71,4 @@ class Account extends Model
     {
         return $this->hasMany(Check::class);
     }
-
-    //    public function scopeTableView($query, array $filters = [])
-//    {
-//        return $query
-//            ->when(request('sort') ?? null, function ($query) {
-//                $sort = explode(',', request('sort'));
-//
-//                foreach ($sort as $item) {
-//                    list ($sortCol, $sortDir) = explode('|', $item);
-//                    $query->orderBy($sortCol, $sortDir);
-//                }
-//            })
-//            ->when(request('search') ?? null, function ($query) {
-//                $search = request('search');
-//                $query->where('description', 'LIKE', "%{$search}%");
-//            })
-//            ->when(request('type') && request('type') !== 'all', function ($query) {
-//                $type = request('type') === 'income' ? 'in' : 'out';
-//                $query->whereHas('category', function ($q) use ($type) {
-//                    $q->where('type', $type);
-//                });
-//            });
-//    }
 }

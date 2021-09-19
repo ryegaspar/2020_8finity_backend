@@ -31,4 +31,9 @@ class Category extends Model
     {
         return $this->hasMany(Transaction::class);
     }
+
+    public function checks()
+    {
+        return $this->hasMany(Check::class);
+    }
 }

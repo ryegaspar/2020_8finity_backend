@@ -78,7 +78,7 @@ class CategoriesController extends Controller
             return response()->json([], 422);
         }
 
-        if ($category->transactions()->count()) {
+        if ($category->transactions()->count() || $category->checks()->count()) {
             return response()->json([], 409);
         }
 
