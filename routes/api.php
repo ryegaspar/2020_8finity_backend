@@ -26,6 +26,8 @@ Route::middleware('auth:admin')
 Route::prefix('admin')
     ->namespace('Admin')
     ->group(function () {
+        Route::get('notifications', 'NotificationsController@index');
+        Route::delete('notifications/{id}', 'NotificationsController@destroy');
 
         Route::prefix('dashboard')
             ->namespace('Dashboard')
