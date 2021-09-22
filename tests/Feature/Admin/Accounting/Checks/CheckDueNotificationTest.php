@@ -29,11 +29,23 @@ class CheckDueNotificationTest extends TestCase
     {
         $admin = Admin::factory()->create();
 
-        DatabaseNotificationFactory::new()->create(['notifiable_id' => $admin->id]);
+        DatabaseNotificationFactory::new()->create([
+            'notifiable_id' => $admin->id,
+            'data'          => [
+                'message' => 'message'
+            ]
+        ]);
 
-        $this->assertCount(1,
-            $this->actingAs($admin, 'admin')->json('get', 'admin/notifications')->json()
-        );
+        $this->actingAs($admin, 'admin')
+            ->json('get', 'admin/notifications')
+            ->assertJsonStructure([
+                'data' => [
+                    [
+                        "created_at",
+                        "message"
+                    ]
+                ]
+            ]);
     }
 
     /** @test */
@@ -47,7 +59,7 @@ class CheckDueNotificationTest extends TestCase
         $this->assertCount(1, $admin->unreadNotifications);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', 'admin/notifications/'.$admin->unreadNotifications->first()->id);
+            ->json('delete', 'admin/notifications/' . $admin->unreadNotifications->first()->id);
 
         $this->assertCount(0, $admin->fresh()->unreadNotifications);
     }

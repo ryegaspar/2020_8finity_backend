@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Resources\NotificationCollection;
 
 class NotificationsController extends Controller
 {
@@ -14,7 +14,7 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        return auth()->user()->unreadNotifications;
+        return response()->json(new NotificationCollection(auth()->user()->unreadNotifications));
     }
 
     public function destroy($id)
