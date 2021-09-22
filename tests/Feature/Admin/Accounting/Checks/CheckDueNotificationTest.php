@@ -49,17 +49,18 @@ class CheckDueNotificationTest extends TestCase
     }
 
     /** @test */
-    public function an_admin_can_mark_a_notification_as_read()
+    public function an_admin_can_mark_all_notifications_as_read()
     {
         $this->withoutExceptionHandling();
         $admin = Admin::factory()->create();
 
         DatabaseNotificationFactory::new()->create(['notifiable_id' => $admin->id]);
+        DatabaseNotificationFactory::new()->create(['notifiable_id' => $admin->id]);
 
-        $this->assertCount(1, $admin->unreadNotifications);
+        $this->assertCount(2, $admin->unreadNotifications);
 
         $this->actingAs($admin, 'admin')
-            ->json('delete', 'admin/notifications/' . $admin->unreadNotifications->first()->id);
+            ->json('delete', 'admin/notifications');
 
         $this->assertCount(0, $admin->fresh()->unreadNotifications);
     }

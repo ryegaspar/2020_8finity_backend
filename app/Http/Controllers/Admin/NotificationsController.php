@@ -17,8 +17,8 @@ class NotificationsController extends Controller
         return response()->json(new NotificationCollection(auth()->user()->unreadNotifications));
     }
 
-    public function destroy($id)
+    public function destroy()
     {
-        auth()->user()->notifications()->findOrFail($id)->markAsRead();
+        auth()->user()->notifications()->update(['read_at' => now()]);
     }
 }

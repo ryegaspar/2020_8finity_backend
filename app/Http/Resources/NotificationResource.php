@@ -15,6 +15,7 @@ class NotificationResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id'         => $this->id,
             'created_at' => $this->created_at->diffForHumans(),
             'message'    => $this->data['message']
         ];
