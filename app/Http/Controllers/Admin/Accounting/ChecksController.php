@@ -31,7 +31,7 @@ class ChecksController extends Controller
             'category_id' => 'required|exists:categories,id',
             'account_id'  => ['required', 'exists:accounts,id', new ActiveAccount()],
             'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'post_date'   => 'required|date',
+            'due_date'    => 'required|date',
             'notes'       => 'nullable'
         ]);
 
@@ -43,7 +43,7 @@ class ChecksController extends Controller
                 'account_id'  => request('account_id'),
                 'amount'      => (int)(request('amount') * 100),
                 'notes'       => request('notes'),
-                'post_date'   => request('post_date'),
+                'due_date'    => request('due_date'),
             ]);
 
         return response()->json([], 201);
@@ -58,7 +58,7 @@ class ChecksController extends Controller
             'category_id' => 'required|exists:categories,id',
             'account_id'  => ['required', 'exists:accounts,id', new ActiveAccount()],
             'amount'      => 'required|regex:/^\d+(\.\d{1,2})?$/',
-            'post_date'   => 'required|date',
+            'due_date'    => 'required|date',
             'notes'       => 'nullable'
         ]);
 
@@ -67,7 +67,7 @@ class ChecksController extends Controller
             'category_id' => request('category_id'),
             'account_id'  => request('account_id'),
             'amount'      => (int)(request('amount') * 100),
-            'post_date'   => request('post_date'),
+            'due_date'    => request('due_date'),
             'notes'       => request('notes'),
         ]);
 

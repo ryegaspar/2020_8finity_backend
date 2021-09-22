@@ -23,7 +23,7 @@ class CreateChecksTable extends Migration
             $table->string('description', 255)->nullable();
             $table->enum('status', ['pending', 'cleared', 'cancelled'])->default('pending');
             $table->text('notes')->nullable();
-            $table->date('post_date');
+            $table->date('due_date');
             $table->timestamps();
         });
     }

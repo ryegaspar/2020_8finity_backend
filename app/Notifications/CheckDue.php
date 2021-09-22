@@ -58,7 +58,7 @@ class CheckDue extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => Carbon::now()->format('M d Y'). ' - check #: ' . $this->check->id . ' is due'
+            'message' => 'check # ' . $this->check->id . ' is due'
         ];
     }
 }

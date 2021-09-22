@@ -41,7 +41,7 @@ class GetCheckTest extends TestCase
             'admin_id'    => $this->admin->id,
             'account_id'  => $this->account->id,
             'amount'      => 12000,
-            'post_date'   => $this->checkDay1
+            'due_date'    => $this->checkDay1
         ]);
 
         $this->check2 = Check::create([
@@ -50,7 +50,7 @@ class GetCheckTest extends TestCase
             'admin_id'    => $this->admin->id,
             'account_id'  => $this->account->id,
             'amount'      => 8000,
-            'post_date'   => $this->checkDay1
+            'due_date'    => $this->checkDay1
         ]);
 
         $this->check3 = Check::create([
@@ -59,7 +59,7 @@ class GetCheckTest extends TestCase
             'account_id'  => $this->account->id,
             'admin_id'    => $this->admin->id,
             'amount'      => 7000,
-            'post_date'   => $this->checkDay2
+            'due_date'    => $this->checkDay2
         ]);
     }
 
@@ -91,16 +91,16 @@ class GetCheckTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'        => $this->check1->id,
-                        'post_date' => $this->checkDay1,
+                        'id'       => $this->check1->id,
+                        'due_date' => $this->checkDay1,
                     ],
                     [
-                        'id'        => $this->check2->id,
-                        'post_date' => $this->checkDay1,
+                        'id'       => $this->check2->id,
+                        'due_date' => $this->checkDay1,
                     ],
                     [
-                        'id'        => $this->check3->id,
-                        'post_date' => $this->checkDay2,
+                        'id'       => $this->check3->id,
+                        'due_date' => $this->checkDay2,
                     ],
                 ]
             ]);
@@ -165,16 +165,16 @@ class GetCheckTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'        => $this->check1->id,
-                        'post_date' => $this->checkDay1,
+                        'id'       => $this->check1->id,
+                        'due_date' => $this->checkDay1,
                     ],
                     [
-                        'id'        => $this->check2->id,
-                        'post_date' => $this->checkDay1,
+                        'id'       => $this->check2->id,
+                        'due_date' => $this->checkDay1,
                     ],
                     [
-                        'id'        => $this->check3->id,
-                        'post_date' => $this->checkDay2,
+                        'id'       => $this->check3->id,
+                        'due_date' => $this->checkDay2,
                     ],
                 ]
             ]);

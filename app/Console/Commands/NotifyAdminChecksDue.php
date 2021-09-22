@@ -39,7 +39,7 @@ class NotifyAdminChecksDue extends Command
      */
     public function handle()
     {
-        Check::whereDate('post_date', '=', now())
+        Check::whereDate('due_date', '=', now())
             ->each(function ($check) {
                 $check->admin->notify(new CheckDue($check));
             });

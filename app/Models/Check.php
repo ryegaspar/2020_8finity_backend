@@ -19,19 +19,19 @@ class Check extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'post_date' => 'date:Y-m-d',
-        'amount'    => 'integer'
+        'due_date' => 'date:Y-m-d',
+        'amount'   => 'integer'
     ];
 
-    public function getFormattedPostDateAttribute()
+    public function getFormattedDueDateAttribute()
     {
-        return Carbon::parse($this->post_date)->format('Y-m-d');
+        return Carbon::parse($this->due_date)->format('Y-m-d');
     }
 
     public function scopeTableFilter(Builder $builder, $request)
     {
         return (new TransactionFilters($request)) //TODO: use CheckFilters instead of piggy backing
-            ->filter($builder);
+        ->filter($builder);
     }
 
     public function category()

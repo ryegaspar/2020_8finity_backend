@@ -19,7 +19,7 @@ class CheckResource extends JsonResource
             'description'    => $this->description,
             'notes'          => $this->notes,
             'amount'         => $this->amount,
-            'post_date'      => $this->formatted_post_date,
+            'due_date'       => $this->formatted_due_date,
             'status'         => $this->status,
             'transaction_id' => $this->transaction_id,
             'category_type'  => $this->category->type == 'in' ? 'income' : 'expense',

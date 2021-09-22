@@ -22,7 +22,7 @@ class AddCheckTest extends TestCase
             'amount'      => 100.25,
             'description' => 'new check',
             'notes'       => 'note',
-            'post_date'   => '2021-01-01'
+            'due_date'    => '2021-01-01'
         ], $overrides);
     }
 
@@ -58,7 +58,7 @@ class AddCheckTest extends TestCase
             $this->assertEquals($admin->id, $check->admin_id);
             $this->assertEquals(1, $check->account_id);
             $this->assertEquals(10025, $check->amount);
-            $this->assertEquals(Carbon::parse('2021-01-01'), $check->post_date);
+            $this->assertEquals(Carbon::parse('2021-01-01'), $check->due_date);
             $this->assertEquals('note', $check->notes);
         });
     }
@@ -142,7 +142,7 @@ class AddCheckTest extends TestCase
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/checks', $this->validParams([
                 'account_id' => $account->id,
-                'amount'       => 25
+                'amount'     => 25
             ]));
 
         $response->assertStatus(422);
@@ -192,31 +192,31 @@ class AddCheckTest extends TestCase
     }
 
     /** @test */
-    public function post_date_is_required()
+    public function due_date_is_required()
     {
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/checks', $this->validParams([
-                'post_date' => ''
+                'due_date' => ''
             ]));
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('post_date');
+        $response->assertJsonValidationErrors('due_date');
     }
 
     /** @test */
-    public function post_date_must_be_valid_date()
+    public function due_date_must_be_valid_date()
     {
         $admin = Admin::factory()->create();
 
         $response = $this->actingAs($admin, 'admin')
             ->json('post', 'admin/accounting/checks', $this->validParams([
-                'post_date' => 'abc'
+                'due_date' => 'abc'
             ]));
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('post_date');
+        $response->assertJsonValidationErrors('due_date');
     }
 
     /** @test */
@@ -264,7 +264,7 @@ class AddCheckTest extends TestCase
                     'amount'      => 100
                 ])
             )
-        ->assertStatus(201);
+            ->assertStatus(201);
 
         tap(Check::first(), function ($check) use ($admin) {
             $this->assertLessThan(0, $check->amount);

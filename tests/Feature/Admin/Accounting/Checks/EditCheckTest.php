@@ -24,7 +24,7 @@ class EditCheckTest extends TestCase
             'category_id' => ($this->oldCategory = Category::factory()->income()->create())->id,
             'account_id'  => 1,
             'amount'      => "100.25",
-            'post_date'   => '2020-01-01',
+            'due_date'    => '2020-01-01',
             'notes'       => 'old note',
         ], $overrides);
     }
@@ -36,7 +36,7 @@ class EditCheckTest extends TestCase
             'category_id' => ($this->newCategory = Category::factory()->expense()->create())->id,
             'account_id'  => 1,
             'amount'      => "200.25",
-            'post_date'   => '2021-01-01',
+            'due_date'    => '2021-01-01',
             'notes'       => 'new note'
         ], $overrides);
     }
@@ -80,7 +80,10 @@ class EditCheckTest extends TestCase
         $admin = Admin::factory()->create();
 
         $checkCleared = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id, 'status' => 'cleared']));
-        $checkCancelled = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id, 'status' => 'cancelled']));
+        $checkCancelled = Check::factory()->create($this->oldCheck([
+            'admin_id' => $admin->id,
+            'status'   => 'cancelled'
+        ]));
 
         $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/checks/{$checkCleared->id}", $this->newCheck())
@@ -112,7 +115,7 @@ class EditCheckTest extends TestCase
             $this->assertEquals($admin->id, $check->admin_id);
             $this->assertEquals($account->id, $check->account_id);
             $this->assertEquals(-20025, $check->amount);
-            $this->assertEquals(Carbon::parse('2021-01-01'), $check->post_date);
+            $this->assertEquals(Carbon::parse('2021-01-01'), $check->due_date);
             $this->assertEquals('new note', $check->notes);
         });
     }
@@ -255,33 +258,33 @@ class EditCheckTest extends TestCase
     }
 
     /** @test */
-    public function post_date_is_required()
+    public function due_date_is_required()
     {
         $admin = Admin::factory()->create();
         $check = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/checks/{$check->id}", $this->newCheck([
-                'post_date' => ''
+                'due_date' => ''
             ]));
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('post_date');
+        $response->assertJsonValidationErrors('due_date');
     }
 
     /** @test */
-    public function post_date_must_be_valid_date()
+    public function due_date_must_be_valid_date()
     {
         $admin = Admin::factory()->create();
         $check = Check::factory()->create($this->oldCheck(['admin_id' => $admin->id]));
 
         $response = $this->actingAs($admin, 'admin')
             ->json('patch', "admin/accounting/checks/{$check->id}", $this->newCheck([
-                'post_date' => 'abc'
+                'due_date' => 'abc'
             ]));
 
         $response->assertStatus(422);
-        $response->assertJsonValidationErrors('post_date');
+        $response->assertJsonValidationErrors('due_date');
     }
 
     /** @test */

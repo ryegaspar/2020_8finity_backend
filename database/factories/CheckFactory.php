@@ -30,7 +30,7 @@ class CheckFactory extends Factory
             'admin_id'    => Admin::factory(),
             'account_id'  => Account::factory(),
             'amount'      => 10000,
-            'post_date'   => Carbon::now(),
+            'due_date'    => Carbon::now(),
         ];
     }
 }
