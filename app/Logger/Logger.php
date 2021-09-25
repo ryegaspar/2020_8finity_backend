@@ -2,9 +2,6 @@
 
 namespace App\Logger;
 
-use App\Models\Log;
-use Illuminate\Support\Facades\Auth;
-
 class Logger
 {
     private $model;
