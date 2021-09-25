@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
+use App\Logger\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
     use HasFactory;
+
+    use Loggable;
+
+    public $loggable_actions = ['created', 'updated', 'deleted'];
+    public $loggable_fields = ['name', 'is_active'];
 
     protected $guarded = [];
 
