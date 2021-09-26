@@ -26,7 +26,8 @@ class AppServiceProvider extends ServiceProvider
     {
         Relation::morphMap([
             'Account'  => 'App\Models\Account',
-            'Category' => 'App\Models\Category'
+            'Category' => 'App\Models\Category',
+            'Check'    => 'App\Models\Check'
         ]);
     }
 }
