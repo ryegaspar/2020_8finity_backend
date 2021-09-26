@@ -60,7 +60,7 @@ class AccountTest extends TestCase
     }
 
     /** @test */
-    public function log_is_created_when_deleting_account_gets_deleted()
+    public function log_is_created_when_an_account_gets_deleted()
     {
         $account = Account::factory()->create();
 

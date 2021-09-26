@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use App\Logger\Loggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    use HasFactory;
+    use HasFactory, Loggable;
+
+    public $loggable_actions = ['created', 'updated', 'deleted'];
+    public $loggable_fields = ['name', 'type', 'icon'];
 
     public const EXPENSE = 'out';
     public const INCOME = 'in';

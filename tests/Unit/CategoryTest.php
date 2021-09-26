@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Category;
+use App\Models\Log;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -148,5 +149,87 @@ class CategoryTest extends TestCase
         $this->assertEquals($categories[10], $category11);
         $this->assertEquals($categories[11], $category12);
         $this->assertEquals($categories[12], $category13);
+    }
+
+    /** @test */
+    public function log_is_created_when_a_category_gets_added()
+    {
+        $category = Category::factory()->create();
+
+        $this->assertDatabaseCount('logs', 1);
+
+        tap(Log::first(), function ($log) use ($category) {
+            $this->assertEquals('created', $log->action);
+            $this->assertEquals('Category', $log->loggable_type);
+
+            $changes = json_decode($log->changes, true);
+
+            $this->assertEquals([
+                'name' => $category->name,
+                'type' => 'in',
+                'icon' => 'fa fa-money-bill'
+            ], $changes);
+        });
+    }
+
+    /** @test */
+    public function log_is_created_when_a_category_gets_updated()
+    {
+        $category = Category::factory()->create([
+            'name' => 'old',
+            'type' => 'in',
+            'icon' => 'old icon'
+        ]);
+
+        $category->update([
+            'name' => 'new',
+            'type' => 'out',
+            'icon' => 'new icon'
+        ]);
+
+        $this->assertDatabaseCount('logs', 2);
+
+        tap(Log::find(2), function ($log) {
+            $this->assertEquals('updated', $log->action);
+            $this->assertEquals('Category', $log->loggable_type);
+
+            $changes = json_decode($log->changes, true);
+
+            $this->assertEquals([
+                'before' => [
+                    'name' => 'old',
+                    'type' => 'in',
+                    'icon' => 'old icon',
+                ],
+                'after'  => [
+                    'name' => 'new',
+                    'type' => 'out',
+                    'icon' => 'new icon',
+                ]
+            ], $changes);
+        });
+    }
+
+    /** @test */
+    public function log_is_created_when_a_category_gets_deleted()
+    {
+        $category = Category::factory()->create();
+
+        $category->delete();
+
+        $this->assertDatabaseCount('logs', 2);
+
+        tap(Log::find(2), function ($log) use ($category) {
+            $this->assertEquals('deleted', $log->action);
+            $this->assertEquals('Category', $log->loggable_type);
+
+            $changes = json_decode($log->changes, true);
+
+            $this->assertEquals([
+                'name' => $category->name,
+                'type' => $category->type,
+                'icon' => $category->icon,
+            ], $changes);
+        });
     }
 }

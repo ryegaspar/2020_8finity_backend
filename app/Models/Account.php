@@ -8,9 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Account extends Model
 {
-    use HasFactory;
-
-    use Loggable;
+    use HasFactory, Loggable;
 
     public $loggable_actions = ['created', 'updated', 'deleted'];
     public $loggable_fields = ['name', 'is_active'];
