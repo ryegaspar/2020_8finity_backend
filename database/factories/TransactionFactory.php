@@ -20,7 +20,7 @@ class TransactionFactory extends Factory
             'admin_id'    => Admin::factory(),
             'account_id'  => Account::factory(),
             'amount'      => 10000,
-            'date'        => Carbon::now(),
+            'date'        => Carbon::today()->toDateString(),
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filters\Transaction\TransactionFilters;
+use App\Logger\Loggable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +11,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transaction extends Model
 {
-    use HasFactory;
+    use HasFactory, Loggable;
+
+    public $loggable_actions = ['created', 'updated', 'deleted'];
+    public $loggable_fields = [
+        'category_id',
+        'account_id',
+        'amount',
+        'description',
+        'notes',
+        'date'
+    ];
 
     protected $guarded = [];
 

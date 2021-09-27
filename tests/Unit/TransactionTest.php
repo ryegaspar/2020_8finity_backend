@@ -2,8 +2,10 @@
 
 namespace Tests\Unit;
 
+use App\Models\Account;
 use App\Models\Admin;
 use App\Models\Category;
+use App\Models\Log;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
@@ -169,5 +171,109 @@ class TransactionTest extends TestCase
         Assert::assertArraySubset($expectedTransaction1, $transactions[0], true);
         Assert::assertArraySubset($expectedTransaction2, $transactions[1], true);
         $this->assertEquals(2, count($transactions));
+    }
+
+    /** @test */
+    public function log_is_created_when_a_transaction_gets_added()
+    {
+        // check factory creates - category and account
+        $transaction = Transaction::factory()->create();
+
+        $this->assertDatabaseCount('logs', 3);
+
+        tap(Log::find(3), function ($log) use ($transaction) {
+            $this->assertEquals('created', $log->action);
+            $this->assertEquals('Transaction', $log->loggable_type);
+
+            $changes = json_decode($log->changes, true);
+
+            $this->assertEquals([
+                'category_id' => $transaction->category_id,
+                'account_id'  => $transaction->account_id,
+                'amount'      => $transaction->amount,
+                'date'        => $transaction->formattedDate,
+            ], $changes);
+        });
+    }
+
+    /** @test */
+    public function log_is_created_when_a_transaction_gets_updated()
+    {
+        $category = Category::factory()->create();
+        $account = Account::factory()->create();
+
+        $transaction = Transaction::factory()->create([
+            'category_id' => $category->id,
+            'account_id'  => $account->id,
+            'amount'      => 50,
+            'description' => 'old description',
+            'notes'       => 'old notes',
+        ]);
+
+        $transaction->update([
+            'amount'      => 100,
+            'description' => 'new description',
+            'notes'       => 'new notes',
+        ]);
+
+        $this->assertDatabaseCount('logs', 4);
+
+        tap(Log::find(4),
+            function ($log) {
+                $this->assertEquals('updated', $log->action);
+                $this->assertEquals('Transaction', $log->loggable_type);
+
+                $changes = json_decode($log->changes, true);
+
+                $this->assertEquals([
+                    'before' => [
+                        'amount'      => 50,
+                        'description' => 'old description',
+                        'notes'       => 'old notes',
+                    ],
+                    'after'  => [
+                        'amount'      => 100,
+                        'description' => 'new description',
+                        'notes'       => 'new notes',
+                    ]
+                ], $changes);
+            });
+    }
+
+    /** @test */
+    public function log_is_created_when_a_transaction_gets_deleted()
+    {
+        $category = Category::factory()->create();
+        $account = Account::factory()->create();
+
+        $transaction = Transaction::factory()->create([
+            'category_id' => $category->id,
+            'account_id'  => $account->id,
+            'amount'      => 50,
+            'description' => 'old description',
+            'notes'       => 'old notes',
+        ]);
+
+        $date = $transaction->formattedDate;
+
+        $transaction->delete();
+
+        $this->assertDatabaseCount('logs', 4);
+
+        tap(Log::find(4), function ($log) use ($category, $account, $date) {
+            $this->assertEquals('deleted', $log->action);
+            $this->assertEquals('Transaction', $log->loggable_type);
+
+            $changes = json_decode($log->changes, true);
+
+            $this->assertEquals([
+                'category_id' => $category->id,
+                'account_id'  => $account->id,
+                'amount'      => 50,
+                'description' => 'old description',
+                'notes'       => 'old notes',
+                'date'        => $date
+            ], $changes);
+        });
     }
 }
