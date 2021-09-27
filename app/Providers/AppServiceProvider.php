@@ -28,7 +28,8 @@ class AppServiceProvider extends ServiceProvider
             'Account'     => 'App\Models\Account',
             'Category'    => 'App\Models\Category',
             'Check'       => 'App\Models\Check',
-            'Transaction' => 'App\Models\Transaction'
+            'Transaction' => 'App\Models\Transaction',
+            'Transfer'    => 'App\Models\Transfer'
         ]);
     }
 }

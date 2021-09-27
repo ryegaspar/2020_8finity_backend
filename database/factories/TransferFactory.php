@@ -30,7 +30,7 @@ class TransferFactory extends Factory
             'admin_id'     => Admin::factory(),
             'amount'       => 1000,
             'description'  => $this->faker->sentence,
-            'date'         => Carbon::now(),
+            'date'         => Carbon::today()->toDateString(),
         ];
     }
 }
