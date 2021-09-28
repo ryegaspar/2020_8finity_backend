@@ -36,7 +36,7 @@ class AccountTest extends TestCase
     }
 
     /** @test */
-    public function an_account_has_many_to_transactions()
+    public function an_account_has_many_transactions()
     {
         $account = Account::factory()->create();
         Transaction::factory()->create(['account_id' => $account->id]);
@@ -46,7 +46,7 @@ class AccountTest extends TestCase
     }
 
     /** @test */
-    public function an_account_has_many_to_checks()
+    public function an_account_has_many_checks()
     {
         $account = Account::factory()->create();
         Check::factory()->create(['account_id' => $account->id]);

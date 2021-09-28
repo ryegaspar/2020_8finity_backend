@@ -3,7 +3,10 @@
 namespace Tests\Unit;
 
 use App\Models\Category;
+use App\Models\Check;
 use App\Models\Log;
+use App\Models\Transaction;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -149,6 +152,26 @@ class CategoryTest extends TestCase
         $this->assertEquals($categories[10], $category11);
         $this->assertEquals($categories[11], $category12);
         $this->assertEquals($categories[12], $category13);
+    }
+
+    /** @test */
+    public function a_category_has_many_transactions()
+    {
+        $category = Category::factory()->create();
+        Transaction::factory()->create(['category_id' => $category->id]);
+
+        $this->assertEquals(1, $category->transactions()->count());
+        $this->assertInstanceOf(HasMany::class, $category->transactions());
+    }
+
+    /** @test */
+    public function a_category_has_many_checks()
+    {
+        $category = Category::factory()->create();
+        Check::factory()->create(['category_id' => $category->id]);
+
+        $this->assertEquals(1, $category->checks()->count());
+        $this->assertInstanceOf(HasMany::class, $category->checks());
     }
 
     /** @test */
