@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\Accounting\Checks;
 
-use App\Models\Account;
 use App\Models\Admin;
-use App\Models\Category;
 use App\Models\Check;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -77,28 +75,5 @@ class DeleteCheckTest extends TestCase
         $this->assertDatabaseMissing('checks', ['id' => $check->id]);
 
         $this->assertEquals(0, Check::count());
-    }
-
-    /** @test */
-    public function deleting_a_check_updates_account_balance()
-    {
-        $admin = Admin::factory()->create();
-
-        $account = Account::factory()->create();
-        $category = Category::factory()->income()->create();
-
-        $check = Check::factory()->create([
-            'admin_id'    => $admin->id,
-            'account_id'  => $account->id,
-            'category_id' => $category->id,
-            'amount'      => 10000
-        ]);
-
-        $this->assertEquals(10000, $account->fresh()->check_balance);
-
-        $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/accounting/checks/{$check->id}");
-
-        $this->assertEquals(0, $account->fresh()->check_balance);
     }
 }

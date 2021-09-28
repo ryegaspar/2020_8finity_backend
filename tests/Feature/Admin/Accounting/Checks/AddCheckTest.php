@@ -4,7 +4,6 @@ namespace Tests\Feature\Admin\Accounting\Checks;
 
 use App\Models\Account;
 use App\Models\Admin;
-use App\Models\Category;
 use App\Models\Check;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -230,94 +229,5 @@ class AddCheckTest extends TestCase
             ]));
 
         $response->assertStatus(201);
-    }
-
-    /** @test */
-    public function adding_a_check_with_an_income_category_has_positive_amount()
-    {
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/checks',
-                $this->validParams([
-                    'category_id' => Category::factory()->income()->create()->id,
-                    'amount'      => 100
-                ])
-            )
-            ->assertStatus(201);
-
-        tap(Check::first(), function ($check) use ($admin) {
-            $this->assertGreaterThan(0, $check->amount);
-            $this->assertEquals(10000, $check->amount);
-        });
-    }
-
-    /** @test */
-    public function adding_a_check_with_an_expense_category_has_negative_amount()
-    {
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/checks',
-                $this->validParams([
-                    'category_id' => Category::factory()->expense()->create()->id,
-                    'amount'      => 100
-                ])
-            )
-            ->assertStatus(201);
-
-        tap(Check::first(), function ($check) use ($admin) {
-            $this->assertLessThan(0, $check->amount);
-            $this->assertEquals(-10000, $check->amount);
-        });
-    }
-
-    /** @test */
-    public function adding_a_check_with_income_category_adds_to_its_account_check_balance()
-    {
-        $admin = Admin::factory()->create();
-        $account = Account::factory()->create();
-        $category = Category::factory()->income()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/checks',
-                $this->validParams([
-                    'account_id'  => $account->id,
-                    'category_id' => $category->id,
-                    'amount'      => 100
-                ])
-            );
-
-        $this->assertEquals(10000, $account->fresh()->check_balance);
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/checks',
-                $this->validParams([
-                    'account_id'  => $account->id,
-                    'category_id' => $category->id,
-                    'amount'      => 75
-                ])
-            );
-
-        $this->assertEquals(17500, $account->fresh()->check_balance);
-    }
-
-    /** @test */
-    public function adding_a_check_with_expense_category_lessens_to_its_account_check_balance()
-    {
-        $admin = Admin::factory()->create();
-        $account = Account::factory()->create();
-        $category = Category::factory()->expense()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/checks',
-                $this->validParams([
-                    'account_id'  => $account->id,
-                    'category_id' => $category->id,
-                    'amount'      => 100
-                ])
-            );
-
-        $this->assertEquals(-10000, $account->fresh()->check_balance);
     }
 }

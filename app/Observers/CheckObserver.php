@@ -9,7 +9,7 @@ class CheckObserver
 {
     private function updateAmountSign(Check $check)
     {
-        $check->amount =  $check->amount * ($check->category->type === 'in' ? 1 : -1);
+        $check->amount =  $check->amount * ($check->category()->first()->type === 'in' ? 1 : -1);
     }
 
     public function creating(Check $check)
