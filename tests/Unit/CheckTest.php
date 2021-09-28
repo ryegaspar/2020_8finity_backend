@@ -3,16 +3,40 @@
 namespace Tests\Unit;
 
 use App\Models\Account;
+use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Check;
 use App\Models\Log;
-use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class CheckTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function a_check_belongs_to_a_category()
+    {
+        $check = Check::factory()->create();
+
+        $this->assertInstanceOf(Category::class, $check->category);
+    }
+
+    /** @test */
+    public function a_check_belongs_to_admin()
+    {
+        $check = Check::factory()->create();
+
+        $this->assertInstanceOf(Admin::class, $check->admin);
+    }
+
+    /** @test */
+    public function a_check_belongs_to_an_account()
+    {
+        $check = Check::factory()->create();
+
+        $this->assertInstanceOf(Account::class, $check->account);
+    }
 
     /** @test */
     public function log_is_created_when_a_check_gets_added()
