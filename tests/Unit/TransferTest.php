@@ -3,6 +3,7 @@
 namespace Tests\Unit;
 
 use App\Models\Account;
+use App\Models\Admin;
 use App\Models\Log;
 use App\Models\Transfer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,6 +12,30 @@ use Tests\TestCase;
 class TransferTest extends TestCase
 {
     use RefreshDatabase;
+
+    /** @test */
+    public function a_transfer_belongs_to_an_account_from()
+    {
+        $transfer = Transfer::factory()->create();
+
+        $this->assertInstanceOf(Account::class, $transfer->fromAccount);
+    }
+
+    /** @test */
+    public function a_transfer_belongs_to_an_account_to()
+    {
+        $transfer = Transfer::factory()->create();
+
+        $this->assertInstanceOf(Account::class, $transfer->toAccount);
+    }
+
+    /** @test */
+    public function a_transfer_belongs_to_an_admin()
+    {
+        $transfer = Transfer::factory()->create();
+
+        $this->assertInstanceOf(Admin::class, $transfer->admin);
+    }
 
     /** @test */
     public function log_is_created_when_a_transfer_gets_added()

@@ -55,16 +55,4 @@ class Transfer extends Model
     {
         return $this->belongsTo(Admin::class);
     }
-
-//    public function scopeSumFrom($query, $account)
-//    {
-//        return $query->where('from_account', $account)->sum('amount');
-//    }
-//
-//    public function scopeSumTo($query, $account)
-//    {
-//        return $query->where('to_account', $account)->sum('amount');
-//    }
-
-
 }

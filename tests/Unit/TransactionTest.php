@@ -55,6 +55,14 @@ class TransactionTest extends TestCase
     }
 
     /** @test */
+    public function a_check_belongs_to_an_account()
+    {
+        $transaction = Transaction::factory()->create();
+
+        $this->assertInstanceOf(Account::class, $transaction->account);
+    }
+
+    /** @test */
     public function eager_loads_categories_when_getting_transactions_between()
     {
         Transaction::factory()->create();
