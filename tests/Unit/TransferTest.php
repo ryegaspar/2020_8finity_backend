@@ -3,8 +3,6 @@
 namespace Tests\Unit;
 
 use App\Models\Account;
-use App\Models\Admin;
-use App\Models\Category;
 use App\Models\Log;
 use App\Models\Transfer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
