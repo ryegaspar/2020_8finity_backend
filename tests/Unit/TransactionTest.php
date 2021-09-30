@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Log;
 use App\Models\Transaction;
+use App\Models\Transfer;
 use Carbon\Carbon;
 use DMS\PHPUnitExtensions\ArraySubset\ArraySubsetAsserts;
 use DMS\PHPUnitExtensions\ArraySubset\Assert;
@@ -179,6 +180,328 @@ class TransactionTest extends TestCase
         Assert::assertArraySubset($expectedTransaction1, $transactions[0], true);
         Assert::assertArraySubset($expectedTransaction2, $transactions[1], true);
         $this->assertEquals(2, count($transactions));
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_an_income_category_has_positive_amount()
+    {
+        Transaction::factory()->create([
+            'category_id' => Category::factory()->income()->create()->id,
+            'amount'      => 100
+        ]);
+
+        tap(Transaction::first(), function ($transaction) {
+            $this->assertGreaterThan(0, $transaction->amount);
+            $this->assertEquals(100, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_an_expense_category_has_negative_amount()
+    {
+        Transaction::factory()->create([
+            'category_id' => Category::factory()->expense()->create()->id,
+            'amount'      => 100
+        ]);
+
+        tap(Transaction::first(), function ($transaction) {
+            $this->assertLessThan(0, $transaction->amount);
+            $this->assertEquals(-100, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_income_category_adds_to_its_account_balance()
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account->fresh()->balance);
+
+        Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 50
+        ]);
+
+        $this->assertEquals(150, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function adding_a_transaction_with_expense_category_lessens_to_its_account_balance()
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->expense()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(-100, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function adding_a_transaction_to_an_account_that_has_transfers_have_correct_account_balance()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+
+        Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 10,
+        ]);
+
+        $this->assertEquals(90, $account1->fresh()->balance);
+        $this->assertEquals(10, $account2->fresh()->balance);
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 10
+        ]);
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+    }
+
+    /** @test */
+    public function deleting_a_transaction_updates_account_balance()
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account->fresh()->balance);
+
+        $transaction->delete();
+
+        $this->assertEquals(0, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function deleting_a_transaction_to_an_account_that_has_transfers_have_correct_account_balance()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(200, $account1->fresh()->balance);
+
+        Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 10,
+        ]);
+
+        $this->assertEquals(190, $account1->fresh()->balance);
+        $this->assertEquals(10, $account2->fresh()->balance);
+
+        $transaction->delete();
+
+        $this->assertEquals(90, $account1->fresh()->balance);
+        $this->assertEquals(10, $account2->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_with_an_income_category_has_positive_amount()
+    {
+        $expenseCategory = Category::factory()->expense()->create();
+        $incomeCategory = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'category_id' => $expenseCategory->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(-100, $transaction->amount);
+
+        $transaction->update([
+            'category_id' => $incomeCategory->id,
+            'amount'      => 100
+        ]);
+
+        tap(Transaction::first(), function ($transaction) {
+            $this->assertGreaterThan(0, $transaction->amount);
+            $this->assertEquals(100, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function updating_a_transaction_with_an_expense_category_has_negative_amount()
+    {
+        $expenseCategory = Category::factory()->expense()->create();
+        $incomeCategory = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'category_id' => $incomeCategory->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $transaction->amount);
+
+        $transaction->update([
+            'category_id' => $expenseCategory->id,
+            'amount'      => 100
+        ]);
+
+        tap(Transaction::first(), function ($transaction) {
+            $this->assertLessThan(0, $transaction->amount);
+            $this->assertEquals(-100, $transaction->amount);
+        });
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_the_same_income_category_updates_its_account_balance()
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account->fresh()->balance);
+
+        $transaction->update([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 50
+        ]);
+
+        $this->assertEquals(50, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_the_same_expense_category_updates_its_account_balance()
+    {
+        $account = Account::factory()->create();
+        $category = Category::factory()->expense()->create();
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(-100, $account->fresh()->balance);
+
+        $transaction->update([
+            'amount' => 50
+        ]);
+
+        $this->assertEquals(-50, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_amount_with_different_category_types_updates_its_account_balance()
+    {
+        $account = Account::factory()->create();
+        $expenseCategory = Category::factory()->expense()->create();
+        $incomeCategory = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account->id,
+            'category_id' => $incomeCategory->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account->fresh()->balance);
+
+        $transaction->update([
+            'category_id' => $expenseCategory->id,
+            'amount'      => 25
+        ]);
+
+        $this->assertEquals(-25, $account->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_with_different_account_updates_both_accounts()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+        $this->assertEquals(0, $account2->fresh()->balance);
+
+        $transaction->update([
+            'account_id' => $account2->id,
+            'amount'     => 100
+        ]);
+
+        $this->assertEquals(0, $account1->fresh()->balance);
+        $this->assertEquals(100, $account2->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_a_transaction_to_an_account_that_has_transfers_have_correct_account_balance()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        $transaction = Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+
+        Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 10,
+        ]);
+
+        $this->assertEquals(90, $account1->fresh()->balance);
+        $this->assertEquals(10, $account2->fresh()->balance);
+
+        $transaction->update([
+            'amount'     => 120
+        ]);
+
+        $this->assertEquals(110, $account1->fresh()->balance);
+        $this->assertEquals(10, $account2->fresh()->balance);
     }
 
     /** @test */
