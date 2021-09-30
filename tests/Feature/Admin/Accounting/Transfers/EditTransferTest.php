@@ -276,48 +276,4 @@ class EditTransferTest extends TestCase
 
         $response->assertStatus(204);
     }
-
-    /** @test */
-    public function updating_transfers_updates_all_account_balances()
-    {
-        $this->assertEquals(8000, $this->account1->fresh()->balance);
-        $this->assertEquals(2000, $this->account2->fresh()->balance);
-        $this->assertEquals(0, $this->account3->fresh()->balance);
-
-        $this->actingAs($this->admin, 'admin')
-            ->json('patch', "admin/accounting/transfers/{$this->oldTransfer->id}", $this->newTransfer());
-
-        $this->assertEquals(7500, $this->account1->fresh()->balance);
-        $this->assertEquals(0, $this->account2->fresh()->balance);
-        $this->assertEquals(2500, $this->account3->fresh()->balance);
-    }
-
-    /** @test */
-    public function updating_transfers_when_to_and_from_account_are_changed_updates_all_account_balances_respectively()
-    {
-        $account4 = Account::factory()->create();
-
-        Transaction::factory()->create([
-            'account_id'  => $account4->id,
-            'admin_id'    => $this->admin->id,
-            'category_id' => Category::factory()->income(),
-            'amount'      => 3000
-        ]);
-
-        $this->assertEquals(8000, $this->account1->fresh()->balance);
-        $this->assertEquals(2000, $this->account2->fresh()->balance);
-        $this->assertEquals(0, $this->account3->fresh()->balance);
-        $this->assertEquals(3000, $account4->fresh()->balance);
-
-        $this->actingAs($this->admin, 'admin')
-            ->json('patch', "admin/accounting/transfers/{$this->oldTransfer->id}", $this->newTransfer([
-                'from_account' => $account4->id,
-                'amount' => 5
-            ]));
-
-        $this->assertEquals(10000, $this->account1->fresh()->balance);
-        $this->assertEquals(0, $this->account2->fresh()->balance);
-        $this->assertEquals(500, $this->account3->fresh()->balance);
-        $this->assertEquals(2500, $account4->fresh()->balance);
-    }
 }

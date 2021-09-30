@@ -4,9 +4,7 @@ namespace Tests\Feature\Admin\Accounting\Transactions;
 
 use App\Models\Account;
 use App\Models\Admin;
-use App\Models\Category;
 use App\Models\Transaction;
-use App\Models\Transfer;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

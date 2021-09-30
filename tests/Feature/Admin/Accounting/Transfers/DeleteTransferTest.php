@@ -2,9 +2,7 @@
 
 namespace Tests\Feature\Admin\Accounting\Transactions;
 
-use App\Models\Account;
 use App\Models\Admin;
-use App\Models\Category;
 use App\Models\Transaction;
 use App\Models\Transfer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,7 +46,7 @@ class DeleteTransferTest extends TestCase
     }
 
     /** @test */
-    public function deleting_a_transaction()
+    public function deleting_a_transfer()
     {
         $admin = Admin::factory()->create();
 
@@ -61,36 +59,5 @@ class DeleteTransferTest extends TestCase
         $this->assertDatabaseMissing('transfers', ['id' => $transfer->id]);
 
         $this->assertEquals(0, Transaction::count());
-    }
-
-    /** @test */
-    public function deleting_a_transfer_updates_account_balance()
-    {
-        $admin = Admin::factory()->create();
-        $account1 = Account::factory()->create();
-        $account2 = Account::factory()->create();
-
-        Transaction::factory()->create([
-            'account_id'  => $account1->id,
-            'admin_id'    => $admin->id,
-            'category_id' => Category::factory()->income(),
-            'amount'      => 10000
-        ]);
-
-        $transfer = Transfer::factory()->create([
-            'from_account' => $account1->id,
-            'to_account'   => $account2->id,
-            'admin_id'     => $admin->id,
-            'amount'       => 2000
-        ]);
-
-        $this->assertEquals(8000, $account1->fresh()->balance);
-        $this->assertEquals(2000, $account2->fresh()->balance);
-
-        $this->actingAs($admin, 'admin')
-            ->json('delete', "admin/accounting/transfers/{$transfer->id}");
-
-        $this->assertEquals(10000, $account1->fresh()->balance);
-        $this->assertEquals(0, $account2->fresh()->balance);
     }
 }

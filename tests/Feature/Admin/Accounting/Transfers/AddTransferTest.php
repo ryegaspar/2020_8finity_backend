@@ -4,8 +4,6 @@ namespace Tests\Feature\Admin\Accounting\Transactions;
 
 use App\Models\Account;
 use App\Models\Admin;
-use App\Models\Category;
-use App\Models\Transaction;
 use App\Models\Transfer;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -291,34 +289,5 @@ class AddTransferTest extends TestCase
 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors('amount');
-    }
-
-    /** @test */
-    public function adding_transfers_updates_both_account_balances()
-    {
-        $admin = Admin::factory()->create();
-        $account1 = Account::factory()->create();
-        $account2 = Account::factory()->create();
-        $category = Category::factory()->income()->create();
-
-        Transaction::factory()->create([
-            'account_id'  => $account1->id,
-            'category_id' => $category->id,
-            'amount'      => 10000
-        ]);
-
-        $account1 = $account1->fresh();
-
-        $this->assertEquals(10000, $account1->balance);
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/accounting/transfers', $this->validParams([
-                'from_account' => $account1->fresh()->id,
-                'to_account'   => $account2->id,
-                'amount'       => 25
-            ]));
-
-        $this->assertEquals(7500, $account1->fresh()->balance);
-        $this->assertEquals(2500, $account2->fresh()->balance);
     }
 }

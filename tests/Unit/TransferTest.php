@@ -4,7 +4,9 @@ namespace Tests\Unit;
 
 use App\Models\Account;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Log;
+use App\Models\Transaction;
 use App\Models\Transfer;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -35,6 +37,139 @@ class TransferTest extends TestCase
         $transfer = Transfer::factory()->create();
 
         $this->assertInstanceOf(Admin::class, $transfer->admin);
+    }
+
+    /** @test */
+    public function adding_transfers_updates_both_account_balances()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $category = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $category->id,
+            'amount'      => 100
+        ]);
+
+        $account1 = $account1->fresh();
+
+        $this->assertEquals(100, $account1->balance);
+
+        Transfer::factory()->create([
+            'from_account' => $account1->fresh()->id,
+            'to_account'   => $account2->id,
+            'amount'       => 25
+        ]);
+
+        $this->assertEquals(75, $account1->fresh()->balance);
+        $this->assertEquals(25, $account2->fresh()->balance);
+    }
+
+    /** @test */
+    public function deleting_a_transfer_updates_account_balance()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => Category::factory()->income(),
+            'amount'      => 100
+        ]);
+
+        $transfer = Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 20
+        ]);
+
+        $this->assertEquals(80, $account1->fresh()->balance);
+        $this->assertEquals(20, $account2->fresh()->balance);
+
+        $transfer->delete();
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+        $this->assertEquals(0, $account2->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_transfers_updates_all_account_balances()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $account3 = Account::factory()->create();
+        $incomeCategory = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $incomeCategory->id,
+            'amount'      => 100
+        ]);
+
+        $transfer = Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 20
+        ]);
+
+        $this->assertEquals(80, $account1->fresh()->balance);
+        $this->assertEquals(20, $account2->fresh()->balance);
+        $this->assertEquals(0, $account3->fresh()->balance);
+
+        $transfer->update([
+            'from_account' => $account1->id,
+            'to_account'   => $account3->id,
+            'amount'       => 25
+        ]);
+
+        $this->assertEquals(75, $account1->fresh()->balance);
+        $this->assertEquals(0, $account2->fresh()->balance);
+        $this->assertEquals(25, $account3->fresh()->balance);
+    }
+
+    /** @test */
+    public function updating_transfers_when_to_and_from_account_are_changed_updates_all_account_balances_respectively()
+    {
+        $account1 = Account::factory()->create();
+        $account2 = Account::factory()->create();
+        $account3 = Account::factory()->create();
+        $account4 = Account::factory()->create();
+        $incomeCategory = Category::factory()->income()->create();
+
+        Transaction::factory()->create([
+            'account_id'  => $account1->id,
+            'category_id' => $incomeCategory->id,
+            'amount'      => 100
+        ]);
+
+        Transaction::factory()->create([
+            'account_id'  => $account4->id,
+            'category_id' => $incomeCategory->id,
+            'amount'      => 30
+        ]);
+
+        $transfer = Transfer::factory()->create([
+            'from_account' => $account1->id,
+            'to_account'   => $account2->id,
+            'amount'       => 20
+        ]);
+
+        $this->assertEquals(80, $account1->fresh()->balance);
+        $this->assertEquals(20, $account2->fresh()->balance);
+        $this->assertEquals(0, $account3->fresh()->balance);
+        $this->assertEquals(30, $account4->fresh()->balance);
+
+        $transfer->update([
+            'from_account' => $account4->id,
+            'to_account'   => $account3->id,
+            'amount'       => 5
+        ]);
+
+        $this->assertEquals(100, $account1->fresh()->balance);
+        $this->assertEquals(0, $account2->fresh()->balance);
+        $this->assertEquals(5, $account3->fresh()->balance);
+        $this->assertEquals(25, $account4->fresh()->balance);
     }
 
     /** @test */
