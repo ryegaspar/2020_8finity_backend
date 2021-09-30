@@ -66,5 +66,7 @@ Route::prefix('admin')
                 Route::post('categories', 'CategoriesController@store');
                 Route::patch('categories/{category}', 'CategoriesController@update');
                 Route::delete('categories/{category}', 'CategoriesController@destroy');
+
+                Route::get('logs', 'LogsController@index');
             });
     });
