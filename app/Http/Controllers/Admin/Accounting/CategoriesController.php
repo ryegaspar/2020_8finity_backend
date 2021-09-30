@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\PaginatedCategoryCollection;
 use App\Models\Category;
-use App\Models\Transaction;
+use App\Rules\CategoryHasChecks;
 use App\Rules\CategoryHasTransactions;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -56,8 +56,14 @@ class CategoriesController extends Controller
             'type' => [
                 'required',
                 Rule::in('in', 'out'),
-                new CategoryHasTransactions($category->getOriginal('type') !== request('type'),
-                    $category->transactions()->count())
+                new CategoryHasTransactions(
+                    $category->getOriginal('type') !== request('type'),
+                    $category->transactions()->count()
+                ),
+                new CategoryHasChecks(
+                    $category->getOriginal('type') !== request('type'),
+                    $category->checks()->count()
+                )
             ],
             'name' => ['required', Rule::unique('categories', 'name')->ignore($category->id)],
             'icon' => 'required'
