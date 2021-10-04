@@ -19,7 +19,7 @@ class LogsResource extends JsonResource
             'loggable_type'  => $this->loggable_type,
             'loggable_id'    => $this->loggable_id,
             'admin_id'       => $this->admin_id,
-            'admin_username' => $this->admin->username,
+            'admin_username' => $this->admin?->username,
             'action'         => $this->action,
             'changes'        => $this->changes,
             'created_at'     => $this->created_at,
