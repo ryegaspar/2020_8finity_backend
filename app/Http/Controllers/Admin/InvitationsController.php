@@ -22,6 +22,8 @@ class InvitationsController extends Controller
     {
         $invitation = Invitation::findByCode($code)->first();
 
+        abort_if($invitation->hasBeenUsed(), 404);
+
         return response()->json(new InvitationResource($invitation));
     }
 }

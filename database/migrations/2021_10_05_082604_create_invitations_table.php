@@ -15,6 +15,7 @@ class CreateInvitationsTable extends Migration
     {
         Schema::create('invitations', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('admin_id')->nullable();
             $table->string('code');
             $table->timestamps();
         });

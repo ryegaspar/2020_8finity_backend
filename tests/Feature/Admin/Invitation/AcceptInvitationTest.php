@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Admin\Invitation;
 
+use App\Models\Admin;
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,8 @@ class AcceptInvitationTest extends TestCase
     public function getting_an_unused_invitation()
     {
         Invitation::factory()->create([
-            'code' => 'TEST1234'
+            'admin_id' => null,
+            'code'     => 'TEST1234'
         ]);
 
         $this->get('/admin/invitations/TEST1234')
@@ -24,6 +26,26 @@ class AcceptInvitationTest extends TestCase
                 'code' => 'TEST1234'
             ]);
 
+    }
+
+    /** @test */
+    public function using_a_used_invitation()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234'
+        ]);
+
+        $this->get('/admin/invitations/TEST1234')
+            ->assertStatus(404);
+
+    }
+
+    /** @test */
+    public function getting_an_invitation_that_does_not_exists()
+    {
+        $this->get('/admin/invitations/TEST1234')
+            ->assertStatus(404);
     }
 
 //    /** @test */
