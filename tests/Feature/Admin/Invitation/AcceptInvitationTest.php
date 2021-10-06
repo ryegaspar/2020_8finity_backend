@@ -52,8 +52,6 @@ class AcceptInvitationTest extends TestCase
     /** @test */
     public function registering_with_a_valid_invitation_code()
     {
-        $this->withoutExceptionHandling();
-
         $invitation = Invitation::factory()->create([
             'admin_id' => null,
             'code'     => 'TEST1234',
@@ -77,6 +75,44 @@ class AcceptInvitationTest extends TestCase
         $this->assertTrue($invitation->fresh()->user->is($admin));
     }
 
+    /** @test */
+    public function registering_with_a_used_invitation_code()
+    {
+        $invitation = Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->assertEquals(1, Admin::count());
+
+        $this->json('post', 'admin/register', [
+            'first_name'            => 'john',
+            'last_name'             => 'doe',
+            'username'              => 'johndoe',
+            'email'                 => 'john@example.com',
+            'password'              => 'secret123',
+            'password_confirmation' => 'secret123',
+            'invitation_code'       => 'TEST1234'
+        ])->assertStatus(404);
+
+        $this->assertEquals(1, Admin::count());
+    }
+
+    /** @test */
+    public function registering_with_a_non_existent_invitation_code()
+    {
+        $this->json('post', 'admin/register', [
+            'first_name'            => 'john',
+            'last_name'             => 'doe',
+            'username'              => 'johndoe',
+            'email'                 => 'john@example.com',
+            'password'              => 'secret123',
+            'password_confirmation' => 'secret123',
+            'invitation_code'       => 'TEST1234'
+        ])->assertStatus(404);
+
+        $this->assertEquals(0, Admin::count());
+    }
 //    /** @test */
 //    public function guests_cannot_invite()
 //    {
