@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 Route::namespace('Auth')->group(function () {
     Route::post('admin/login', 'AdminLoginController@login');
     Route::post('admin/logout', 'AdminLoginController@logout');
+
+    Route::post('admin/register', 'AdminRegisterController@register');
+
 });
 
 Route::middleware('auth:admin')

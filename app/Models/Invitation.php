@@ -20,4 +20,9 @@ class Invitation extends Model
     {
         return $this->admin_id !== null;
     }
+
+    public function user()
+    {
+        return $this->belongsTo(Admin::class, 'admin_id');
+    }
 }

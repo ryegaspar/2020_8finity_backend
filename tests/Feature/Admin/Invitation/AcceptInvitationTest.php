@@ -5,6 +5,7 @@ namespace Tests\Feature\Admin\Invitation;
 use App\Models\Admin;
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AcceptInvitationTest extends TestCase
@@ -46,6 +47,34 @@ class AcceptInvitationTest extends TestCase
     {
         $this->get('/admin/invitations/TEST1234')
             ->assertStatus(404);
+    }
+
+    /** @test */
+    public function registering_with_a_valid_invitation_code()
+    {
+        $this->withoutExceptionHandling();
+
+        $invitation = Invitation::factory()->create([
+            'admin_id' => null,
+            'code'     => 'TEST1234',
+        ]);
+
+        $response = $this->json('post', 'admin/register', [
+            'first_name'            => 'john',
+            'last_name'             => 'doe',
+            'username'              => 'johndoe',
+            'email'                 => 'john@example.com',
+            'password'              => 'secret123',
+            'password_confirmation' => 'secret123',
+            'invitation_code'       => 'TEST1234'
+        ])->assertStatus(201);
+
+        $this->assertEquals(1, Admin::count());
+        $admin = Admin::first();
+
+        $this->assertEquals('john@example.com', $admin->email);
+        $this->assertTrue(Hash::check('secret123', $admin->password));
+        $this->assertTrue($invitation->fresh()->user->is($admin));
     }
 
 //    /** @test */
