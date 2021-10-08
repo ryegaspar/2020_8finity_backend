@@ -12,6 +12,19 @@ class AcceptInvitationTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function validParams($overrides = [])
+    {
+        return array_merge([
+            'first_name'            => 'john',
+            'last_name'             => 'doe',
+            'username'              => 'johndoe',
+            'email'                 => 'john@example.com',
+            'password'              => 'secret123',
+            'password_confirmation' => 'secret123',
+            'invitation_code'       => 'TEST1234'
+        ], $overrides);
+    }
+
     /** @test */
     public function getting_an_unused_invitation()
     {
@@ -57,15 +70,7 @@ class AcceptInvitationTest extends TestCase
             'code'     => 'TEST1234',
         ]);
 
-        $response = $this->json('post', 'admin/register', [
-            'first_name'            => 'john',
-            'last_name'             => 'doe',
-            'username'              => 'johndoe',
-            'email'                 => 'john@example.com',
-            'password'              => 'secret123',
-            'password_confirmation' => 'secret123',
-            'invitation_code'       => 'TEST1234'
-        ])->assertStatus(201);
+        $response = $this->json('post', 'admin/register', $this->validParams())->assertStatus(201);
 
         $this->assertEquals(1, Admin::count());
         $admin = Admin::first();
@@ -78,7 +83,7 @@ class AcceptInvitationTest extends TestCase
     /** @test */
     public function registering_with_a_used_invitation_code()
     {
-        $invitation = Invitation::factory()->create([
+        Invitation::factory()->create([
             'admin_id' => Admin::factory()->create(),
             'code'     => 'TEST1234',
         ]);
@@ -113,55 +118,139 @@ class AcceptInvitationTest extends TestCase
 
         $this->assertEquals(0, Admin::count());
     }
-//    /** @test */
-//    public function guests_cannot_invite()
-//    {
-//        $this->json('post', 'admin/invite', ['email' => 'john@example.com'])
-//            ->assertStatus(401);
-//    }
 
-//    /** @test */
-//    public function inviting_an_admin()
-//    {
-//        Mail::fake();
-//        $admin = Admin::factory()->create();
-//
-//        $this->actingAs($admin, 'admin')
-//            ->json('post', 'admin/invite', ['email' => 'john@example.com'])
-//            ->assertStatus(201);
-//
-//        tap(Account::latest()->first(), function ($account) use ($admin) {
-//
-//            $this->assertEquals('new', $account->name);
-//            $this->assertTrue($account->is_active);
-//        });
-//    }
-//
-//    /** @test */
-//    public function name_is_required()
-//    {
-//        $admin = Admin::factory()->create();
-//
-//        $response = $this->actingAs($admin, 'admin')
-//            ->json('post', 'admin/accounting/accounts', ['name' => '']);
-//
-//        $response->assertStatus(422);
-//        $response->assertJsonValidationErrors('name');
-//    }
-//
-//    /** @test */
-//    public function name_must_be_unique()
-//    {
-//        $admin = Admin::factory()->create();
-//        Account::factory()->create([
-//            'name' => 'new account'
-//        ]);
-//
-//        $response = $this->actingAs($admin, 'admin')
-//            ->json('post', 'admin/accounting/accounts', ['name' => 'new account']);
-//
-//        $response->assertStatus(422);
-//        $response->assertJsonValidationErrors('name');
-//
-//    }
+    /** @test */
+    public function first_name_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'first_name' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('first_name');
+    }
+
+    /** @test */
+    public function last_name_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'last_name' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('last_name');
+    }
+
+    /** @test */
+    public function username_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'username' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function must_be_a_valid_username()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'username' => 'john doe@'
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function email_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'email' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function must_be_a_valid_email()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'email' => 'invalid-email'
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function password_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'password' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+    }
+
+    /** @test */
+    public function minimum_of_8_characters_is_required_for_password()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'password' => 'pass'
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+    }
+
+    /** @test */
+    public function password_confirmation_is_required()
+    {
+        Invitation::factory()->create([
+            'admin_id' => Admin::factory()->create(),
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'password_confirmation' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('password');
+    }
 }

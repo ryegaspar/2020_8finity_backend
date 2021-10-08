@@ -22,6 +22,14 @@ class AdminRegisterController extends Controller
 
     public function register()
     {
+        request()->validate([
+            'first_name' => 'required|string',
+            'last_name'  => 'required|string',
+            'username'   => 'required|string|max:255|unique:admins,username|regex:/^([a-zA-Z\_\.]+)(\d+)?$/u',
+            'email'      => 'required|email',
+            'password'   => 'required|string|min:8|confirmed',
+        ]);
+
         $invitation = Invitation::findByCode(request('invitation_code'));
         abort_if($invitation->hasBeenUsed(), 404);
 
