@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Facades\InvitationCode;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InvitationResource;
+use App\Mail\InvitationEmail;
 use App\Models\Invitation;
+use Illuminate\Support\Facades\Mail;
 
 class InvitationsController extends Controller
 {
@@ -23,7 +25,7 @@ class InvitationsController extends Controller
         Invitation::create([
             'code'  => InvitationCode::generate(),
             'email' => request('email')
-        ]);
+        ])->send();
 
         return response()->json([], 201);
     }

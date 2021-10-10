@@ -3,9 +3,11 @@
 namespace Tests\Feature\Admin\Invitation;
 
 use App\Facades\InvitationCode;
+use App\Mail\InvitationEmail;
 use App\Models\Admin;
 use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class InviteAdminTest extends TestCase
@@ -32,6 +34,7 @@ class InviteAdminTest extends TestCase
     /** @test */
     public function inviting_an_admin()
     {
+        Mail::fake();
         InvitationCode::shouldReceive('generate')->andReturn('TESTCODE1234');
 
         $admin = Admin::factory()->create();
@@ -42,9 +45,13 @@ class InviteAdminTest extends TestCase
 
         $this->assertEquals(1, Invitation::count());
 
-        tap(Invitation::first(), function ($invitation) use ($admin) {
-            $this->assertEquals('john@example.com', $invitation->email);
-            $this->assertEquals('TESTCODE1234', $invitation->code);
+        $invitation = Invitation::first();
+        $this->assertEquals('john@example.com', $invitation->email);
+        $this->assertEquals('TESTCODE1234', $invitation->code);
+
+        Mail::assertSent(InvitationEmail::class, function ($mail) use ($invitation) {
+            return $mail->hasTo('john@example.com') &&
+                $mail->invitation->is($invitation);
         });
     }
 
