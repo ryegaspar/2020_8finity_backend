@@ -123,7 +123,7 @@ class AcceptInvitationTest extends TestCase
     public function first_name_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -138,7 +138,7 @@ class AcceptInvitationTest extends TestCase
     public function last_name_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -153,7 +153,7 @@ class AcceptInvitationTest extends TestCase
     public function username_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -168,7 +168,7 @@ class AcceptInvitationTest extends TestCase
     public function must_be_a_valid_username()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -180,10 +180,30 @@ class AcceptInvitationTest extends TestCase
     }
 
     /** @test */
+    public function must_be_a_unique_username()
+    {
+        Admin::factory()->create([
+            'username' => 'janedoe'
+        ]);
+
+        Invitation::factory()->create([
+            'admin_id' => null,
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'username' => 'janedoe'
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+
+    }
+
+    /** @test */
     public function email_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -198,7 +218,7 @@ class AcceptInvitationTest extends TestCase
     public function must_be_a_valid_email()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -213,7 +233,7 @@ class AcceptInvitationTest extends TestCase
     public function password_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -228,7 +248,7 @@ class AcceptInvitationTest extends TestCase
     public function minimum_of_8_characters_is_required_for_password()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
@@ -243,7 +263,7 @@ class AcceptInvitationTest extends TestCase
     public function password_confirmation_is_required()
     {
         Invitation::factory()->create([
-            'admin_id' => Admin::factory()->create(),
+            'admin_id' => null,
             'code'     => 'TEST1234',
         ]);
 
