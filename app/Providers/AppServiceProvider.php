@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\InvitationCodeGenerator;
+use App\RandomCodeGenerator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 
@@ -14,7 +16,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(InvitationCodeGenerator::class, RandomCodeGenerator::class);
     }
 
     /**

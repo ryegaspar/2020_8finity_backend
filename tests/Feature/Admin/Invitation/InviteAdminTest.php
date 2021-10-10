@@ -2,10 +2,10 @@
 
 namespace Tests\Feature\Admin\Invitation;
 
-use App\Models\Account;
+use App\Facades\InvitationCode;
 use App\Models\Admin;
+use App\Models\Invitation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class InviteAdminTest extends TestCase
@@ -22,30 +22,53 @@ class InviteAdminTest extends TestCase
             ->assertStatus(201);
     }
 
-//    /** @test */
-//    public function guests_cannot_invite()
-//    {
-//        $this->json('post', 'admin/invitations', ['email' => 'john@example.com'])
-//            ->assertStatus(401);
-//    }
+    /** @test */
+    public function guests_cannot_invite()
+    {
+        $this->json('post', 'admin/invitations', ['email' => 'john@example.com'])
+            ->assertStatus(401);
+    }
 
-//    /** @test */
-//    public function inviting_an_admin()
-//    {
-//        Mail::fake();
-//        $admin = Admin::factory()->create();
-//
-//        $this->actingAs($admin, 'admin')
-//            ->json('post', 'admin/invite', ['email' => 'john@example.com'])
-//            ->assertStatus(201);
-//
-//        tap(Account::latest()->first(), function ($account) use ($admin) {
-//
-//            $this->assertEquals('new', $account->name);
-//            $this->assertTrue($account->is_active);
-//        });
-//    }
-//
+    /** @test */
+    public function inviting_an_admin()
+    {
+        InvitationCode::shouldReceive('generate')->andReturn('TESTCODE1234');
+
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/invitations', ['email' => 'john@example.com'])
+            ->assertStatus(201);
+
+        $this->assertEquals(1, Invitation::count());
+
+        tap(Invitation::first(), function ($invitation) use ($admin) {
+            $this->assertEquals('john@example.com', $invitation->email);
+            $this->assertEquals('TESTCODE1234', $invitation->code);
+        });
+    }
+
+    /** @test */
+    public function email_is_required()
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/invitations', ['email' => ''])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
+    public function must_be_a_valid_email()
+    {
+        $admin = Admin::factory()->create();
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/invitations', ['email' => 'john'])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
 //    /** @test */
 //    public function name_is_required()
 //    {

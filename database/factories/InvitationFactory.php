@@ -22,7 +22,8 @@ class InvitationFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'code'  => 'TEST1234',
+            'email' => $this->faker->email
         ];
     }
 }
