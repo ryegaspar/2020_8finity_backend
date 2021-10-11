@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Facades\InvitationCode;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InvitationResource;
-use App\Mail\InvitationEmail;
 use App\Models\Invitation;
-use Illuminate\Support\Facades\Mail;
 
 class InvitationsController extends Controller
 {
