@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\InvitationCodeGenerator;
-use App\RandomCodeGenerator;
+use App\CodeGenerator\InvitationCodeGenerator;
+use App\CodeGenerator\RandomCodeGenerator;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\ServiceProvider;
 

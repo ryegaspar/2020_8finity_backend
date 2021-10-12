@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\CodeGenerator;
 
 interface InvitationCodeGenerator
 {

@@ -30,7 +30,9 @@ class InvitationEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.invitation-email')
+        return $this->markdown('emails.invitation-email', [
+            'url' => config('app.url') . "/admin/invitations/{$this->invitation->code}"
+        ])
             ->subject(config('app.name'). " Admin Invitation");
     }
 }

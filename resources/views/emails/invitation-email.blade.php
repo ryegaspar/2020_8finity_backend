@@ -1,3 +1,11 @@
-<p>Congratulations!!</p>
-<p>click the link below to create your account</p>
-{{ url("/admin/invitations/{$invitation->code}") }}
+@component('mail::message')
+    You are invited to be an Admin for **{{ config('app.name') }} App**
+
+    Click the button below to create your login credentials
+
+    @component('mail::button', ['url' => $url])
+        Register
+    @endcomponent
+
+    Thanks
+@endcomponent
