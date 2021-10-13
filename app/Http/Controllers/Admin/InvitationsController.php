@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Facades\InvitationCode;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\InviteAdminRequest;
 use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
 
@@ -14,15 +15,11 @@ class InvitationsController extends Controller
         $this->middleware('auth:admin')->except('show');
     }
 
-    public function store()
+    public function store(InviteAdminRequest $request)
     {
-        request()->validate([
-            'email'      => 'required|email',
-        ]);
-
         Invitation::create([
             'code'  => InvitationCode::generate(),
-            'email' => request('email')
+            'email' => $request->email
         ])->send();
 
         return response()->json([], 201);

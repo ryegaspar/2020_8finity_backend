@@ -67,6 +67,18 @@ class InviteAdminTest extends TestCase
     }
 
     /** @test */
+    public function email_must_be_unique()
+    {
+        $admin = Admin::factory()->create();
+        Invitation::factory()->create(['email' => 'john@example.com']);
+
+        $this->actingAs($admin, 'admin')
+            ->json('post', 'admin/invitations', ['email' => 'john@example.com'])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('email');
+    }
+
+    /** @test */
     public function must_be_a_valid_email()
     {
         $admin = Admin::factory()->create();
