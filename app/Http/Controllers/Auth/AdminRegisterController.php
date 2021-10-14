@@ -26,7 +26,6 @@ class AdminRegisterController extends Controller
             'first_name' => 'required|string',
             'last_name'  => 'required|string',
             'username'   => 'required|string|max:255|unique:admins,username|regex:/^([a-zA-Z\_\.]+)(\d+)?$/u',
-            'email'      => 'required|email',
             'password'   => 'required|string|min:8|confirmed',
         ]);
 
@@ -37,7 +36,7 @@ class AdminRegisterController extends Controller
             'first_name' => request('first_name'),
             'last_name'  => request('last_name'),
             'username'   => request('username'),
-            'email'      => request('email'),
+            'email'      => $invitation->email,
             'password'   => Hash::make(request('password'))
         ]);
 
