@@ -35,6 +35,11 @@ class CreateCategoriesTable extends Migration
                     'icon' => 'money-bill-wave'
                 ],
                 [
+                    'type' => 'in',
+                    'name' => 'payment',
+                    'icon' => 'money-check-alt'
+                ],
+                [
                     'type' => 'out',
                     'name' => 'cash advance',
                     'icon' => 'coins',

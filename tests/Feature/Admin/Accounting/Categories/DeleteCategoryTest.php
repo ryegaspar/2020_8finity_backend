@@ -60,7 +60,7 @@ class DeleteCategoryTest extends TestCase
 
         $this->assertDatabaseMissing('categories', ['id' => $category->id]);
 
-        $this->assertEquals(13, Category::count());
+        $this->assertEquals(14, Category::count());
     }
 
     /** @test */

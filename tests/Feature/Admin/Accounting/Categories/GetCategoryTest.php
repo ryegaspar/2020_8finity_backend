@@ -3,7 +3,6 @@
 namespace Tests\Feature\Admin\Accounting\Categories;
 
 use App\Models\Admin;
-use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -26,67 +25,73 @@ class GetCategoryTest extends TestCase
         ],
         [
             'id'   => 3,
+            'type' => 'income',
+            'name' => 'payment',
+            'icon' => 'money-check-alt'
+        ],
+        [
+            'id'   => 4,
             'type' => 'expense',
             'name' => 'cash advance',
             'icon' => 'coins',
         ],
         [
-            'id'   => 4,
+            'id'   => 5,
             'type' => 'expense',
             'name' => 'employee salary',
             'icon' => 'credit-card',
         ],
         [
-            'id'   => 5,
+            'id'   => 6,
             'type' => 'expense',
             'name' => 'electric bill',
             'icon' => 'lightbulb',
         ],
         [
-            'id'   => 6,
+            'id'   => 7,
             'type' => 'expense',
             'name' => 'internet',
             'icon' => 'wifi',
         ],
         [
-            'id'   => 7,
+            'id'   => 8,
             'type' => 'expense',
             'name' => 'water',
             'icon' => 'water',
 
         ],
         [
-            'id'   => 8,
+            'id'   => 9,
             'type' => 'expense',
             'name' => 'fuel',
             'icon' => 'gas-pump',
         ],
         [
-            'id'   => 9,
+            'id'   => 10,
             'type' => 'expense',
             'name' => 'gas',
             'icon' => 'fire',
         ],
         [
-            'id'   => 10,
+            'id'   => 11,
             'type' => 'expense',
             'name' => 'food',
             'icon' => 'utensils',
         ],
         [
-            'id'   => 11,
+            'id'   => 12,
             'type' => 'expense',
             'name' => 'entertainment',
             'icon' => 'tv',
         ],
         [
-            'id'   => 12,
+            'id'   => 13,
             'type' => 'expense',
             'name' => 'grocery',
             'icon' => 'shopping-basket',
         ],
         [
-            'id'   => 13,
+            'id'   => 14,
             'type' => 'expense',
             'name' => 'equipment/tools',
             'icon' => 'tools',
@@ -168,19 +173,19 @@ class GetCategoryTest extends TestCase
             ->assertJson([
                 'data' => [
                     [
-                        'id'     => 2,
+                        'id'   => 2,
                         'name' => "carry over",
                     ],
                     [
-                        'id'     => 3,
+                        'id'   => 4,
                         'name' => "cash advance",
                     ],
                     [
-                        'id' => 5,
+                        'id'   => 6,
                         'name' => 'electric bill'
                     ],
                     [
-                        'id'     => 4,
+                        'id'   => 5,
                         'name' => "employee salary",
                     ],
                 ]

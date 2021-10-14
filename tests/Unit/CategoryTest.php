@@ -20,7 +20,7 @@ class CategoryTest extends TestCase
         $categories = Category::all()->toArray();
 
         $category1 = [
-            'id'         => '1',
+            'id'         => 1,
             'type'       => 'in',
             'name'       => 'sales',
             'icon'       => 'piggy-bank',
@@ -29,7 +29,7 @@ class CategoryTest extends TestCase
         ];
 
         $category2 = [
-            'id'         => '2',
+            'id'         => 2,
             'type'       => 'in',
             'name'       => 'carry over',
             'icon'       => 'money-bill-wave',
@@ -38,7 +38,16 @@ class CategoryTest extends TestCase
         ];
 
         $category3 = [
-            'id'         => '3',
+            'id'         => 3,
+            'type'       => 'in',
+            'name'       => 'payment',
+            'icon'       => 'money-check-alt',
+            'created_at' => null,
+            'updated_at' => null
+        ];
+
+        $category4 = [
+            'id'         => 4,
             'type'       => 'out',
             'name'       => 'cash advance',
             'icon'       => 'coins',
@@ -46,8 +55,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category4 = [
-            'id'         => '4',
+        $category5 = [
+            'id'         => 5,
             'type'       => 'out',
             'name'       => 'employee salary',
             'icon'       => 'credit-card',
@@ -55,8 +64,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category5 = [
-            'id'         => '5',
+        $category6 = [
+            'id'         => 6,
             'type'       => 'out',
             'name'       => 'electric bill',
             'icon'       => 'lightbulb',
@@ -64,8 +73,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category6 = [
-            'id'         => '6',
+        $category7 = [
+            'id'         => 7,
             'type'       => 'out',
             'name'       => 'internet',
             'icon'       => 'wifi',
@@ -73,8 +82,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category7 = [
-            'id'         => '7',
+        $category8 = [
+            'id'         => 8,
             'type'       => 'out',
             'name'       => 'water',
             'icon'       => 'water',
@@ -83,8 +92,8 @@ class CategoryTest extends TestCase
 
         ];
 
-        $category8 = [
-            'id'         => '8',
+        $category9 = [
+            'id'         => 9,
             'type'       => 'out',
             'name'       => 'fuel',
             'icon'       => 'gas-pump',
@@ -92,8 +101,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category9 = [
-            'id'         => '9',
+        $category10 = [
+            'id'         => 10,
             'type'       => 'out',
             'name'       => 'gas',
             'icon'       => 'fire',
@@ -101,8 +110,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category10 = [
-            'id'         => '10',
+        $category11 = [
+            'id'         => 11,
             'type'       => 'out',
             'name'       => 'food',
             'icon'       => 'utensils',
@@ -110,8 +119,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category11 = [
-            'id'         => '11',
+        $category12 = [
+            'id'         => 12,
             'type'       => 'out',
             'name'       => 'entertainment',
             'icon'       => 'tv',
@@ -119,8 +128,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category12 = [
-            'id'         => '12',
+        $category13 = [
+            'id'         => 13,
             'type'       => 'out',
             'name'       => 'grocery',
             'icon'       => 'shopping-basket',
@@ -128,8 +137,8 @@ class CategoryTest extends TestCase
             'updated_at' => null
         ];
 
-        $category13 = [
-            'id'         => '13',
+        $category14 = [
+            'id'         => 14,
             'type'       => 'out',
             'name'       => 'equipment/tools',
             'icon'       => 'tools',
@@ -138,7 +147,7 @@ class CategoryTest extends TestCase
         ];
 
 
-        $this->assertEquals(count($categories), 13);
+        $this->assertEquals(count($categories), 14);
         $this->assertEquals($categories[0], $category1);
         $this->assertEquals($categories[1], $category2);
         $this->assertEquals($categories[2], $category3);
@@ -152,6 +161,7 @@ class CategoryTest extends TestCase
         $this->assertEquals($categories[10], $category11);
         $this->assertEquals($categories[11], $category12);
         $this->assertEquals($categories[12], $category13);
+        $this->assertEquals($categories[13], $category14);
     }
 
     /** @test */

@@ -48,7 +48,7 @@ class CategoriesController extends Controller
 
     public function update(Category $category)
     {
-        if ($category->id <= 13) {
+        if ($category->id <= 14) {
             return response()->json([], 422);
         }
 
