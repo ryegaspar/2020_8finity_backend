@@ -13,7 +13,7 @@ class NotifyAdminChecksDue extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:notify_check_due';
+    protected $signature = '8finity:notify_check_due';
 
     /**
      * The console command description.

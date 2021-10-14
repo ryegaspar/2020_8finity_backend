@@ -19,7 +19,7 @@ class CheckDueNotificationTest extends TestCase
         Check::factory()->create(['admin_id' => $admin->id]);
 
         $this->assertCount(0, $admin->notifications);
-        $this->artisan('admin:notify_check_due');
+        $this->artisan('8finity:notify_check_due');
 
         $this->assertCount(1, $admin->fresh()->notifications);
     }
