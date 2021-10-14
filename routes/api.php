@@ -33,7 +33,6 @@ Route::prefix('admin')
         Route::delete('notifications', 'NotificationsController@destroy');
 
         Route::get('invitations/{code}', 'InvitationsController@show');
-        Route::post('invitations', 'InvitationsController@store');
 
         Route::prefix('dashboard')
             ->namespace('Dashboard')

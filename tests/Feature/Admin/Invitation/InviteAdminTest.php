@@ -15,33 +15,12 @@ class InviteAdminTest extends TestCase
     use RefreshDatabase;
 
     /** @test */
-    public function only_authenticated_users_can_invite()
-    {
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/invitations', ['email' => 'john@example.com'])
-            ->assertStatus(201);
-    }
-
-    /** @test */
-    public function guests_cannot_invite()
-    {
-        $this->json('post', 'admin/invitations', ['email' => 'john@example.com'])
-            ->assertStatus(401);
-    }
-
-    /** @test */
-    public function inviting_an_admin()
+    public function inviting_an_admin_via_cli()
     {
         Mail::fake();
         InvitationCode::shouldReceive('generate')->andReturn('TESTCODE1234');
 
-        $admin = Admin::factory()->create();
-
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/invitations', ['email' => 'john@example.com'])
-            ->assertStatus(201);
+        $this->artisan('8finity:invite-admin', ['email' => 'john@example.com']);
 
         $this->assertEquals(1, Invitation::count());
 
@@ -56,36 +35,45 @@ class InviteAdminTest extends TestCase
     }
 
     /** @test */
-    public function email_is_required()
+    public function an_invitation_is_resent_if_the_email_invitation_has_not_yet_accepted()
     {
-        $admin = Admin::factory()->create();
+        Mail::fake();
 
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/invitations', ['email' => ''])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('email');
+        $invitation = Invitation::factory()->create([
+            'code'  => 'TESTCODE1234',
+            'email' => 'john@example.com'
+        ]);
+
+        $this->assertEquals(1, Invitation::count());
+
+        $this->artisan('8finity:invite-admin', ['email' => 'john@example.com']);
+
+        $this->assertEquals(1, Invitation::count());
+
+        Mail::assertSent(InvitationEmail::class, function ($mail) use ($invitation) {
+            return $mail->hasTo('john@example.com') &&
+                $mail->invitation->is($invitation);
+        });
     }
 
     /** @test */
-    public function email_must_be_unique()
+    public function an_invitation_is_not_sent_if_the_email_is_a_registered_admin()
     {
-        $admin = Admin::factory()->create();
-        Invitation::factory()->create(['email' => 'john@example.com']);
+        Mail::fake();
 
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/invitations', ['email' => 'john@example.com'])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('email');
-    }
+        Invitation::factory()->create([
+            'code'     => 'TESTCODE1234',
+            'email'    => 'john@example.com',
+            'admin_id' => Admin::factory()->create()
+        ]);
 
-    /** @test */
-    public function must_be_a_valid_email()
-    {
-        $admin = Admin::factory()->create();
+        $this->assertEquals(1, Invitation::count());
 
-        $this->actingAs($admin, 'admin')
-            ->json('post', 'admin/invitations', ['email' => 'john'])
-            ->assertStatus(422)
-            ->assertJsonValidationErrors('email');
+        $this->artisan('8finity:invite-admin', ['email' => 'john@example.com'])
+            ->expectsOutput('that email is already a registered admin');
+
+        $this->assertEquals(1, Invitation::count());
+
+        Mail::assertNothingSent();
     }
 }

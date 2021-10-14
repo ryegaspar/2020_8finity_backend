@@ -10,20 +10,10 @@ use App\Models\Invitation;
 
 class InvitationsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth:admin')->except('show');
-    }
-
-    public function store(InviteAdminRequest $request)
-    {
-        Invitation::create([
-            'code'  => InvitationCode::generate(),
-            'email' => $request->email
-        ])->send();
-
-        return response()->json([], 201);
-    }
+//    public function __construct()
+//    {
+//        $this->middleware('auth:admin')->except('show');
+//    }
 
     public function show($code)
     {
