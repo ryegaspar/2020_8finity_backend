@@ -48,6 +48,22 @@ class AdminLoginController extends Controller
     }
 
     /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    protected function credentials(Request $request)
+    {
+//        return $request->only($this->username(), 'password');
+        return [
+            $this->username() => $request->username,
+            'password'        => $request->password,
+            'is_active'       => true
+        ];
+    }
+
+    /**
      * The user has been authenticated
      *
      * @param Request $request
@@ -56,7 +72,7 @@ class AdminLoginController extends Controller
      */
     public function authenticated(Request $request, $user)
     {
-            return response()->json('', 200);
+        return response()->json('', 200);
     }
 
     public function username()
