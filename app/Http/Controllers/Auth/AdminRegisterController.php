@@ -25,7 +25,7 @@ class AdminRegisterController extends Controller
         request()->validate([
             'first_name' => 'required|string',
             'last_name'  => 'required|string',
-            'username'   => 'required|string|max:255|unique:admins,username|regex:/^([a-zA-Z\_\.]+)(\d+)?$/u',
+            'username'   => 'required|string|min:6|max:255|unique:admins,username|regex:/^([a-zA-Z\_\.]+)(\d+)?$/u',
             'password'   => 'required|string|min:8|confirmed',
         ]);
 

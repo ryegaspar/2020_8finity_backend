@@ -29,14 +29,16 @@ class AcceptInvitationTest extends TestCase
     {
         Invitation::factory()->create([
             'admin_id' => null,
-            'code'     => 'TEST1234'
+            'code'     => 'TEST1234',
+            'email'    => 'john@example.com'
         ]);
 
         $this->get('/admin/invitations/TEST1234')
             ->assertStatus(200)
             ->assertExactJson([
-                'id'   => 1,
-                'code' => 'TEST1234'
+                'id'    => 1,
+                'code'  => 'TEST1234',
+                'email' => 'john@example.com'
             ]);
     }
 
@@ -155,6 +157,21 @@ class AcceptInvitationTest extends TestCase
 
         $this->json('post', 'admin/register', $this->validParams([
             'username' => ''
+        ]))
+            ->assertStatus(422)
+            ->assertJsonValidationErrors('username');
+    }
+
+    /** @test */
+    public function minimum_of_6_characters_is_required_for_username()
+    {
+        Invitation::factory()->create([
+            'admin_id' => null,
+            'code'     => 'TEST1234',
+        ]);
+
+        $this->json('post', 'admin/register', $this->validParams([
+            'username' => 'abc'
         ]))
             ->assertStatus(422)
             ->assertJsonValidationErrors('username');
