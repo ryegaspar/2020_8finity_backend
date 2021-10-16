@@ -13,13 +13,17 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::namespace('Auth')->group(function () {
-    Route::post('admin/login', 'AdminLoginController@login');
-    Route::post('admin/logout', 'AdminLoginController@logout');
+Route::prefix('admin')
+    ->namespace('Auth\\Admin')
+    ->group(function () {
+        Route::post('login', 'LoginController@login');
+        Route::post('logout', 'LoginController@logout');
 
-    Route::post('admin/register', 'AdminRegisterController@register');
+        Route::post('register', 'RegisterController@register');
+        Route::post('forgot-password', 'ForgotPasswordController@sendResetLinkEmail');
+        Route::post('reset-password', 'ResetPasswordController@reset');
 
-});
+    });
 
 Route::middleware('auth:admin')
     ->get('/admin', function (Request $request) {

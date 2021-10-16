@@ -2,12 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use App\Models\Check;
 use App\Models\Transaction;
 use App\Models\Transfer;
 use App\Policies\CheckPolicy;
 use App\Policies\TransactionPolicy;
 use App\Policies\TransferPolicy;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -33,6 +35,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        ResetPassword::createUrlUsing(function(Admin $admin, string $token) {
+            return config('app.url') . "/reset-password?token={$token}";
+        });
     }
 }

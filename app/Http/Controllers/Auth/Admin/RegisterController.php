@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Auth\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Invitation;
@@ -8,7 +8,7 @@ use App\Models\Admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class AdminRegisterController extends Controller
+class RegisterController extends Controller
 {
     /**
      * Create a new controller instance.

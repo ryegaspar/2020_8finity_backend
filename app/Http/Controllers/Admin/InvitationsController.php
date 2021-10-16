@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\InviteAdminRequest;
 use App\Http\Resources\InvitationResource;
 use App\Models\Invitation;
 
