@@ -22,7 +22,6 @@ Route::prefix('admin')
         Route::post('register', 'RegisterController@register');
         Route::post('forgot-password', 'ForgotPasswordController@sendResetLinkEmail');
         Route::post('reset-password', 'ResetPasswordController@reset');
-
     });
 
 Route::middleware('auth:admin')
