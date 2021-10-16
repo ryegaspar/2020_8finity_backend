@@ -229,4 +229,5 @@ return [
 
     ],
 
+    'log_delete_after' => env('LOG_DELETE_AFTER', 'Laravel'),
 ];

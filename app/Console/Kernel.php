@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\DeleteOldLogs;
 use App\Console\Commands\NotifyAdminChecksDue;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -26,6 +27,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command(NotifyAdminChecksDue::class)->daily();
+        $schedule->command(DeleteOldLogs::class)->daily();
+        $schedule->command('auth:clear-resets')->daily();
         // $schedule->command('inspire')->hourly();
     }
 
