@@ -18,7 +18,9 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'is_active'
+        'password',
+        'remember_token',
+        'is_active'
     ];
 
     /**
@@ -28,6 +30,7 @@ class Admin extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'is_active'         => 'boolean'
     ];
 
     protected $appends = ['gravatar'];
@@ -35,8 +38,13 @@ class Admin extends Authenticatable
     public function getGravatarAttribute()
     {
         return "https://www.gravatar.com/avatar/"
-            .md5($this->email)
-            ."?d=mp";
+            . md5($this->email)
+            . "?d=mp";
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->first_name . ' ' . $this->last_name;
     }
 
     public function transactions()

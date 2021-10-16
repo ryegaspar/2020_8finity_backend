@@ -35,6 +35,7 @@ Route::prefix('admin')
         Route::get('notifications', 'NotificationsController@index');
         Route::delete('notifications', 'NotificationsController@destroy');
 
+        Route::get('lists', 'ListsAdminController');
         Route::get('invitations/{code}', 'InvitationsController@show');
 
         Route::prefix('dashboard')

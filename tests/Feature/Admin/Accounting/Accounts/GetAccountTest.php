@@ -42,8 +42,6 @@ class GetAccountTest extends TestCase
     /** @test */
     public function can_get_all_accounts()
     {
-        $this->withExceptionHandling();
-
         $admin = Admin::factory()->create();
 
         $this->actingAs($admin, 'admin')

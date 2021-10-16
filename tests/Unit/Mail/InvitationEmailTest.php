@@ -21,7 +21,7 @@ class InvitationEmailTest extends TestCase
 
         $email = new InvitationEmail($invitation);
 
-        $this->assertStringContainsString(url('/admin/invitations/TESTCODE1234'), $email->render());
+        $this->assertStringContainsString(url('/invitations/TESTCODE1234'), $email->render());
     }
 
     /** @test */
@@ -33,5 +33,4 @@ class InvitationEmailTest extends TestCase
 
         $this->assertEquals(config('app.name'). " Admin Invitation", $email->build()->subject);
     }
-
 }
