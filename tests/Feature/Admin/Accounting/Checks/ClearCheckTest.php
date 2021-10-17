@@ -109,4 +109,43 @@ class ClearCheckTest extends TestCase
         $this->assertEquals(10000, $account->fresh()->balance);
         $this->assertEquals(0, $account->fresh()->check_balance);
     }
+
+    /** @test */
+    public function clearing_a_check_with_expense_category_results_updates_account_balance_accordingly()
+    {
+        $admin = Admin::factory()->create();
+        $account = Account::factory()->create();
+        $category = Category::factory()->expense()->create();
+        $check = Check::factory()->create([
+            'description' => 'new check',
+            'admin_id'    => $admin->id,
+            'account_id'  => $account->id,
+            'category_id' => $category->id,
+            'amount'      => 10000,
+            'notes'       => 'new check note'
+        ]);
+
+        $this->assertEquals(0, $account->fresh()->balance);
+        $this->assertEquals(-10000, $account->fresh()->check_balance);
+
+        $this->actingAs($admin, 'admin')
+            ->json('patch', "admin/accounting/checks/process/{$check->id}")
+            ->assertStatus(204);
+
+        $this->assertEquals(1, Transaction::count());
+
+        tap(Transaction::first(), function ($transaction) use ($check) {
+            $this->assertEquals($check->description, $transaction->description);
+            $this->assertEquals($check->category_id, $transaction->category_id);
+            $this->assertEquals($check->admin_id, $transaction->admin_id);
+            $this->assertEquals($check->account_id, $transaction->account_id);
+            $this->assertEquals($check->amount, $transaction->amount);
+            $this->assertEquals($check->notes, $transaction->notes);
+
+            $this->assertEquals($check->fresh()->transaction_id, $transaction->id);
+        });
+
+        $this->assertEquals(-10000, $account->fresh()->balance);
+        $this->assertEquals(0, $account->fresh()->check_balance);
+    }
 }

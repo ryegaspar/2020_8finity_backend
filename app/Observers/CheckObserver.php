@@ -9,7 +9,7 @@ class CheckObserver
 {
     private function updateAmountSign(Check $check)
     {
-        $check->amount =  $check->amount * ($check->category()->first()->type === 'in' ? 1 : -1);
+        $check->amount = abs($check->amount) * ($check->category()->first()->type === 'in' ? 1 : -1);
     }
 
     public function creating(Check $check)
@@ -25,7 +25,7 @@ class CheckObserver
     /**
      * Handle the Check "created" event.
      *
-     * @param  \App\Models\Check  $check
+     * @param \App\Models\Check $check
      * @return void
      */
     public function created(Check $check)
@@ -36,7 +36,7 @@ class CheckObserver
     /**
      * Handle the Check "updated" event.
      *
-     * @param  \App\Models\Check  $check
+     * @param \App\Models\Check $check
      * @return void
      */
     public function updated(Check $check)
@@ -51,7 +51,7 @@ class CheckObserver
     /**
      * Handle the Check "deleted" event.
      *
-     * @param  \App\Models\Check  $check
+     * @param \App\Models\Check $check
      * @return void
      */
     public function deleted(Check $check)
@@ -62,7 +62,7 @@ class CheckObserver
     /**
      * Handle the Check "restored" event.
      *
-     * @param  \App\Models\Check  $check
+     * @param \App\Models\Check $check
      * @return void
      */
     public function restored(Check $check)
@@ -73,7 +73,7 @@ class CheckObserver
     /**
      * Handle the Check "force deleted" event.
      *
-     * @param  \App\Models\Check  $check
+     * @param \App\Models\Check $check
      * @return void
      */
     public function forceDeleted(Check $check)

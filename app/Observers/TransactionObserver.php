@@ -9,7 +9,7 @@ class TransactionObserver
 {
     private function updateAmountSign(Transaction $transaction)
     {
-        $transaction->amount =  $transaction->amount * ($transaction->category()->first()->type === 'in' ? 1 : -1);
+        $transaction->amount = abs($transaction->amount) * ($transaction->category()->first()->type === 'in' ? 1 : -1);
     }
 
     public function creating(Transaction $transaction)
