@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Check;
 use App\Models\Transaction;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -102,6 +103,7 @@ class ClearCheckTest extends TestCase
             $this->assertEquals($check->account_id, $transaction->account_id);
             $this->assertEquals($check->amount, $transaction->amount);
             $this->assertEquals($check->notes, $transaction->notes);
+            $this->assertEquals(Carbon::parse(now()->format('Y-m-d')), $transaction->date);
 
             $this->assertEquals($check->fresh()->transaction_id, $transaction->id);
         });

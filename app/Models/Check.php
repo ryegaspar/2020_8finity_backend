@@ -55,7 +55,7 @@ class Check extends Model
             'account_id'  => $this->account_id,
             'admin_id'    => auth('admin')->id(),
             'amount'      => $this->amount,
-            'date'        => Carbon::now(),
+            'date'        => Carbon::now()->format('Y-m-d'),
             'notes'       => $this->notes
         ]);
     }
