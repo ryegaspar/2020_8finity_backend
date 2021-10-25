@@ -48,33 +48,23 @@ Route::prefix('admin')
         Route::prefix('accounting')
             ->namespace('Accounting')
             ->group(function () {
-                Route::get('accounts', 'AccountsController@index');
-                Route::post('accounts', 'AccountsController@store');
-                Route::patch('accounts/{account}', 'AccountsController@update');
-                Route::delete('accounts/{account}', 'AccountsController@destroy');
+                Route::resource('accounts', 'AccountsController')
+                    ->only(['index', 'store', 'update', 'destroy']);
 
-                Route::get('transactions', 'TransactionsController@index');
-                Route::post('transactions', 'TransactionsController@store');
-                Route::patch('transactions/{transaction}', 'TransactionsController@update');
-                Route::delete('transactions/{transaction}', 'TransactionsController@destroy');
+                Route::resource('transactions', 'TransactionsController')
+                    ->only(['index', 'store', 'update', 'destroy']);
 
-                Route::get('transfers', 'TransfersController@index');
-                Route::post('transfers', 'TransfersController@store');
-                Route::patch('transfers/{transfer}', 'TransfersController@update');
-                Route::delete('transfers/{transfer}', 'TransfersController@destroy');
+                Route::resource('transfers', 'TransfersController')
+                    ->only(['index', 'store', 'update', 'destroy']);
 
-                Route::get('checks', 'ChecksController@index');
-                Route::post('checks', 'ChecksController@store');
-                Route::patch('checks/{check}', 'ChecksController@update');
-                Route::delete('checks/{check}', 'ChecksController@destroy');
+                Route::resource('checks', 'ChecksController')
+                    ->only(['index', 'store', 'update', 'destroy']);
+
+                Route::resource('categories', 'CategoriesController')
+                    ->only(['index', 'store', 'update', 'destroy']);
 
                 Route::patch('checks/process/{check}', 'CheckActionsController@clear');
                 Route::delete('checks/process/{check}', 'CheckActionsController@cancel');
-
-                Route::get('categories', 'CategoriesController@index');
-                Route::post('categories', 'CategoriesController@store');
-                Route::patch('categories/{category}', 'CategoriesController@update');
-                Route::delete('categories/{category}', 'CategoriesController@destroy');
 
                 Route::get('logs', 'LogsController@index');
             });

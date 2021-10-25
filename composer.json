@@ -19,6 +19,7 @@
         "laravel/ui": "^3.0"
     },
     "require-dev": {
+        "brianium/paratest": "^6.3",
         "dms/phpunit-arraysubset-asserts": "^0.2.0",
         "facade/ignition": "^2.3.6",
         "fzaninotto/faker": "^1.9.1",
