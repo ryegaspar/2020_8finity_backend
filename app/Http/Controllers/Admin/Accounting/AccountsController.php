@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\AccountCollection;
-use App\Http\Resources\PaginatedAccountCollection;
+use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Rules\ActiveAccountHasBalance;
 use Illuminate\Http\Request;
@@ -20,12 +19,12 @@ class AccountsController extends Controller
     public function index(Request $request)
     {
         if ($request->exists('active')) {
-            return response()->json(new AccountCollection(Account::active()->get()));
+            return AccountResource::collection(Account::active()->get());
         }
 
         $accounts = Account::tableFilter()->get();
 
-        return response()->json(new PaginatedAccountCollection($accounts));
+        return AccountResource::collection($accounts);
     }
 
     public function store()

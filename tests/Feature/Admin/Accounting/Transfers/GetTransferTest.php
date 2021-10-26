@@ -125,14 +125,14 @@ class GetTransferTest extends TestCase
         $this->actingAs($admin, 'admin')
             ->get('admin/accounting/transfers')
             ->assertJsonStructure([
-                'total',
-                'per_page',
-                'current_page',
-                'last_page',
-                'next_page_url',
-                'prev_page_url',
-                'from',
-                'to',
+                'meta' => [
+                    'total',
+                    'per_page',
+                    'current_page',
+                    'last_page',
+                    'from',
+                    'to',
+                ],
                 'data',
             ]);
     }

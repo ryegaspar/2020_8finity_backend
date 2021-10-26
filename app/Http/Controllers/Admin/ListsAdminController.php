@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\AdminCollection;
+use App\Http\Resources\AdminResource;
 use App\Models\Admin;
 
 class ListsAdminController extends Controller
@@ -15,6 +16,6 @@ class ListsAdminController extends Controller
 
     public function __invoke()
     {
-        return response()->json(new AdminCollection(Admin::all()));
+        return AdminResource::collection(Admin::all());
     }
 }

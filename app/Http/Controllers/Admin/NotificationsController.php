@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\NotificationCollection;
+use App\Http\Resources\NotificationResource;
 
 class NotificationsController extends Controller
 {
@@ -14,7 +14,7 @@ class NotificationsController extends Controller
 
     public function index()
     {
-        return response()->json(new NotificationCollection(auth()->user()->unreadNotifications));
+        return NotificationResource::collection(auth()->user()->unreadNotifications);
     }
 
     public function destroy()

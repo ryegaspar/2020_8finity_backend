@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PaginatedCheckCollection;
+use App\Http\Resources\CheckResource;
 use App\Models\Check;
 use App\Rules\ActiveAccount;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class ChecksController extends Controller
             ->tableFilter($request)
             ->paginate($request->per_page);
 
-        return response()->json(new PaginatedCheckCollection($checks));
+        return CheckResource::collection($checks);
     }
 
     public function store()

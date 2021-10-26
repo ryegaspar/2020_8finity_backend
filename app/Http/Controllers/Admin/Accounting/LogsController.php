@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PaginatedLogCollection;
+use App\Http\Resources\LogsResource;
 use App\Models\Log;
 use Illuminate\Http\Request;
 
@@ -20,6 +20,6 @@ class LogsController extends Controller
             ->tableFilter($request)
             ->paginate($request->per_page);
 
-        return response()->json(new PaginatedLogCollection($logs));
+        return LogsResource::collection($logs);
     }
 }

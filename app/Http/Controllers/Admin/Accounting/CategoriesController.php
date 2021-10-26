@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryCollection;
-use App\Http\Resources\PaginatedCategoryCollection;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Rules\CategoryHasChecks;
 use App\Rules\CategoryHasTransactions;
@@ -21,12 +20,12 @@ class CategoriesController extends Controller
     public function index(Request $request)
     {
         if ($request->exists('all')) {
-            return response()->json(new CategoryCollection(Category::all()));
+            return CategoryResource::collection(Category::all());
         }
 
         $categories = Category::tableFilter()->paginate($request->per_page);
 
-        return response()->json(new PaginatedCategoryCollection($categories));
+        return CategoryResource::collection($categories);
     }
 
     public function store()

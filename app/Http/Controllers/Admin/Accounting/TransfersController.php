@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PaginatedTransferCollection;
+use App\Http\Resources\TransferResource;
 use App\Models\Transfer;
 use App\Rules\AccountEnoughBalance;
 use App\Rules\ActiveAccount;
@@ -22,7 +22,7 @@ class TransfersController extends Controller
             ->tableFilter($request)
             ->paginate($request->per_page);
 
-        return response()->json(new PaginatedTransferCollection($transfers));
+        return TransferResource::collection($transfers);
     }
 
     public function store()

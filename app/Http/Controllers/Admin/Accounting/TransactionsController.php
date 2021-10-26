@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Accounting;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\PaginatedTransactionCollection;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use App\Rules\ActiveAccount;
 use Illuminate\Http\Request;
@@ -21,7 +21,7 @@ class TransactionsController extends Controller
             ->tableFilter($request)
             ->paginate($request->per_page);
 
-        return response()->json(new PaginatedTransactionCollection($transactions));
+        return TransactionResource::collection($transactions);
     }
 
     public function store()

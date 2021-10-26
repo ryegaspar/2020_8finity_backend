@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin\Dashboard;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TransactionCollection;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 
 class TransactionsController extends Controller
@@ -20,6 +20,6 @@ class TransactionsController extends Controller
 
         $transactions = Transaction::transactionsBetween($startDate, $endDate);
 
-        return response()->json(new TransactionCollection($transactions));
+        return TransactionResource::collection($transactions);
     }
 }
