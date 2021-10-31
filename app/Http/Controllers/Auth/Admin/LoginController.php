@@ -57,7 +57,7 @@ class LoginController extends Controller
     {
 //        return $request->only($this->username(), 'password');
         return [
-            $this->username() => $request->username,
+            $this->username() => strtolower($request->username),
             'password'        => $request->password,
             'is_active'       => true
         ];

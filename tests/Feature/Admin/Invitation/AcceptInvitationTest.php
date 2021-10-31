@@ -256,4 +256,20 @@ class AcceptInvitationTest extends TestCase
             ->assertStatus(422)
             ->assertJsonValidationErrors('password');
     }
+
+    /** @test */
+    public function registering_with_a_up_case_username_converts_it_to_lower_case()
+    {
+        $invitation = Invitation::factory()->create([
+            'admin_id' => null,
+            'code'     => 'TEST1234',
+            'email'    => 'john@example.com'
+        ]);
+
+        $response = $this->json('post', 'admin/register', $this->validParams(['username' => 'JohnDoe']))->assertStatus(201);
+
+        $admin = Admin::first();
+
+        $this->assertEquals('johndoe', $admin->username);
+    }
 }

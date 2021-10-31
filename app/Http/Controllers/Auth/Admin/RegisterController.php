@@ -35,7 +35,7 @@ class RegisterController extends Controller
         $admin = Admin::create([
             'first_name' => request('first_name'),
             'last_name'  => request('last_name'),
-            'username'   => request('username'),
+            'username'   => strtolower(request('username')),
             'email'      => $invitation->email,
             'password'   => Hash::make(request('password'))
         ]);
